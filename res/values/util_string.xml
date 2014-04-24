@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 更新 -->
+    <string name="update_title">发现新版本</string>
+    <string name="update_ok">立即升级</string>
+    <string name="update_cancel">稍后再说</string>
+
+    <!-- 加载框 -->
+    <string name="load_data_warn_str">数据加载中\u2026</string>
+    
+</resources>
