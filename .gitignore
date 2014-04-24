@@ -25,3 +25,5 @@ proguard/
 # Eclipse project files
 .classpath
 .project
+.settings/
+project.properties
