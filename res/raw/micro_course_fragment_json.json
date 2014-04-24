@@ -1,0 +1,12 @@
+{
+    "result": "0",
+    "hasNext": "false",  //是否有下一页true有，false没有
+    "nowPage": "1", //当前页 
+    "dataList": [            //栏目分类
+        {
+            "id": "111",
+            "title": "美食",
+            "image": "图片url"
+        }
+    ]
+}

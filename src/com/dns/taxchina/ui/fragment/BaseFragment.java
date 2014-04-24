@@ -38,7 +38,6 @@ public abstract class BaseFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		initBaseData();
 		initBaseViews();
@@ -58,6 +57,15 @@ public abstract class BaseFragment extends Fragment {
 	public void onLowMemory() {
 		super.onLowMemory();
 		System.gc();
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
+		initData();
+		View view = initViews(inflater, container, savedInstanceState);
+		initWidgetActions();
+		return view;
 	}
 
 	protected abstract void initData();

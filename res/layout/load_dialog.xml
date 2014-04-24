@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:padding="10dip" >
 
-    <com.witmob.callme.ui.widget.MyProgressBar
+    <com.dns.taxchina.ui.widget.MyProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="25dip"
         android:layout_height="25dip"
