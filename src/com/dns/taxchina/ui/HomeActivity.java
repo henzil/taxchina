@@ -19,7 +19,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
 	@Override
 	protected void initData() {
-		
 
 	}
 
