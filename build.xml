@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sing" default="final">
+    <property file="ant.properties"/>
+	<property file="project.properties"/>
+    <import file="${sdk.dir}/tools/ant/build.xml" />
+    
+    <target name="final" description="final target" depends="release">
+        <copy file="${out.dir}/${ant.project.name}-release.apk" tofile="./${ant.project.name}.apk" overwrite="true">
+        </copy>
+    </target>
+</project>
