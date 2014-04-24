@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- webview进度条 -->
+    <color name="progress_bar_bg_color">#CCCCCC</color> <!-- webview背景 -->
+    <color name="progress_bar_color">#00ff00</color> <!-- webview进度 -->
+    
+</resources>

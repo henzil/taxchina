@@ -9,18 +9,28 @@ import com.dns.taxchina.R;
 import com.dns.taxchina.ui.fragment.BaseFragment;
 import com.dns.taxchina.ui.util.FragmentUtil;
 
-public class HomeActivity extends BaseActivity implements View.OnClickListener {
+public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener {
 
 	private View indexBut, microCourseBut, newsBut, findBut, centerBut;
 
 	private BaseFragment currentFragment;
 
-	private int currentTag;
+	private int currentTag = -1;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		initData();
+		if (savedInstanceState != null) {
+			currentTag = savedInstanceState.getInt("currentTag", -1);
+		}
+		initViews();
+		initWidgetActions();
+	}
 
 	@Override
 	protected void initData() {
 
-		
 	}
 
 	@Override
@@ -72,18 +82,45 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 	}
 
 	private void changeFragment(int index) {
-		currentFragment = (BaseFragment) (new FragmentUtil()).fragmentByIndex(index);
-		if (currentFragment != null) {
-			currentTag = index;
-			Bundle bundle = new Bundle();
-			currentFragment.setArguments(bundle);
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-			ft.replace(R.id.mainLayout, currentFragment, "" + currentTag);
-			ft.commit();// 提交
+		FragmentManager manager = getSupportFragmentManager();
+
+		FragmentTransaction ft = manager.beginTransaction();
+		if (currentFragment != null && currentTag != index) {
+			BaseFragment subViewFragment = null;
+			if (manager.findFragmentByTag("" + index) != null) {
+				subViewFragment = (BaseFragment) manager.findFragmentByTag("" + index);
+				ft.hide(currentFragment).show(subViewFragment).commit();
+				currentTag = index;
+				currentFragment = subViewFragment;
+			} else {
+				subViewFragment = (BaseFragment) (new FragmentUtil()).fragmentByIndex(index);
+				if (subViewFragment != null) {
+					Bundle bundle = new Bundle();
+					subViewFragment.setArguments(bundle);
+					ft.hide(currentFragment).add(R.id.mainLayout, subViewFragment, "" + index).commit();
+					currentTag = index;
+					currentFragment = subViewFragment;
+				}
+			}
+		} else {
+			BaseFragment subViewFragment = null;
+			subViewFragment = (BaseFragment) (new FragmentUtil()).fragmentByIndex(index);
+			if (subViewFragment != null) {
+				Bundle bundle = new Bundle();
+				subViewFragment.setArguments(bundle);
+				ft.replace(R.id.mainLayout, subViewFragment, "" + index);
+				ft.commit();// 提交
+				currentTag = index;
+				currentFragment = subViewFragment;
+			}
 		}
 	}
 
 	private void initFragment() {
+		if (currentTag == -1) {
+			changeFragment(0);
+			return;
+		}
 		FragmentManager manager = getSupportFragmentManager();
 		// Clear all back stack.
 		int backStackCount = manager.getBackStackEntryCount();
@@ -99,7 +136,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 			removeFt.remove(manager.findFragmentById(R.id.mainLayout));
 			removeFt.commit();// 提交
 		}
-		changeFragment(0);
+		changeFragment(currentTag);
 	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("currentTag", currentTag);
+	};
 
 }
