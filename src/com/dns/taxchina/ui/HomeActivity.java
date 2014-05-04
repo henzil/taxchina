@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.dns.taxchina.R;
+import com.dns.taxchina.service.download.DownloadTaskManager;
 import com.dns.taxchina.ui.fragment.BaseFragment;
 import com.dns.taxchina.ui.util.FragmentUtil;
 
@@ -30,7 +31,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	@Override
 	protected void initData() {
-
+		DownloadTaskManager.getInstance(this).start();
 	}
 
 	@Override
@@ -144,5 +145,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 		super.onSaveInstanceState(outState);
 		outState.putInt("currentTag", currentTag);
 	};
+	
+	@Override
+	protected void onDestroy() {
+		DownloadTaskManager.getInstance(this).stop();
+		super.onDestroy();
+	}
 
 }

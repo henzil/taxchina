@@ -103,6 +103,7 @@ public class WebViewPlug {
 			Log.e("tag", "url = "+url);
 			Log.e("tag", "type = "+type);
 			Log.e("tag", "id = "+id);
+			
 		}
 	}
 
