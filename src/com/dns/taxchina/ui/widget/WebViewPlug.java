@@ -2,6 +2,7 @@ package com.dns.taxchina.ui.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.webkit.HttpAuthHandler;
 import android.webkit.JavascriptInterface;
@@ -32,11 +33,7 @@ public class WebViewPlug {
 		if (url == null) {
 			url = "";
 		}
-		if (!url.contains("http")) {
-			mWebView.loadUrl("http://" + url);
-		} else {
-			mWebView.loadUrl(url);
-		}
+		mWebView.loadUrl(url);
 
 	}
 
@@ -103,15 +100,17 @@ public class WebViewPlug {
 		@JavascriptInterface
 		public void download(String url, String type, String id) {
 			// TODO 下载视频方法
-			
+			Log.e("tag", "url = "+url);
+			Log.e("tag", "type = "+type);
+			Log.e("tag", "id = "+id);
 		}
 	}
 
 	final class LoginClickListener {
 		@JavascriptInterface
-		public void clickMethod() {
+		public void doLogin() {
 			// TODO
-			
+			Log.e("tag", "执行登陆");
 		}
 	}
 
