@@ -85,8 +85,10 @@ public class DownloadTaskDAO {
 			VideoModel Video = new VideoModel();
 			Video.setId(cursor.getString(VideoContentProvider.VIDEO_ID_INDEX));
 			downloadTask.setVideo(Video);
+			cursor.close();
 			return downloadTask;
 		}
+		cursor.close();
 		return null;
 	}
 
@@ -95,8 +97,10 @@ public class DownloadTaskDAO {
 		Uri url = Uri.withAppendedPath(VideoContentProvider.CONTENT_URI_TDOWNLOAD_VIDEO_BROWSE, fileId);
 		cursor = activity.managedQuery(url, null, null, null, null);
 		while (cursor.moveToNext()) {
+			cursor.close();
 			return true;
 		}
+		cursor.close();
 		return false;
 	}
 }
