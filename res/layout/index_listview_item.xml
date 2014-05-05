@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" 
-    android:paddingBottom="20dp"
-    android:background="#CCCCCC">
+    android:paddingBottom="20dp">
 
     <TextView
         android:id="@+id/textView1"
