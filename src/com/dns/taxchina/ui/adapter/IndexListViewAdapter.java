@@ -1,5 +1,6 @@
 package com.dns.taxchina.ui.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -15,25 +16,18 @@ import com.dns.taxchina.service.model.BaseItemModel;
 /**
  * @author fubiao
  * @version create time:2014-4-25_上午10:54:04
- * @Description 首页 listview item adapter
+ * @Description 首页  横向listview item adapter
  */
 public class IndexListViewAdapter extends BaseAdapter {
 
 	private Context context;
-	private String title;
-	private List<BaseItemModel> list;
+	private String TAG;
 
-	public IndexListViewAdapter(List<BaseItemModel> list, Context context) {
-		this.list = list;
+	private List<BaseItemModel> list = new ArrayList<BaseItemModel>();
+
+	public IndexListViewAdapter(Context context, String TAG) {
 		this.context = context;
-	}
-
-	public List<BaseItemModel> getList() {
-		return list;
-	}
-
-	public void setList(List<BaseItemModel> list) {
-		this.list = list;
+		this.TAG = TAG;
 	}
 
 	@Override
@@ -42,7 +36,7 @@ public class IndexListViewAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public BaseItemModel getItem(int position) {
+	public Object getItem(int position) {
 		return list.get(position);
 	}
 
@@ -53,7 +47,6 @@ public class IndexListViewAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(R.layout.index_listview_item, null);
 		}
@@ -68,5 +61,11 @@ public class IndexListViewAdapter extends BaseAdapter {
 			}
 		});
 		return convertView;
+	}
+
+	public void refresh(List<BaseItemModel> list) {
+		this.list.clear();
+		this.list.addAll(list);
+		notifyDataSetChanged();
 	}
 }
