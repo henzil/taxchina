@@ -1,6 +1,7 @@
 package com.dns.taxchina.ui.widget;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
@@ -9,16 +10,43 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.dns.taxchina.service.download.DownloadTaskManager;
+import com.dns.taxchina.service.model.DownloadTask;
+import com.dns.taxchina.service.model.VideoModel;
+
+@SuppressLint("SetJavaScriptEnabled")
 @SuppressWarnings("deprecation")
 public class WebViewPlug {
-	private Context context;
+	private Activity context;
+	
+	private String title;
 
-	public WebViewPlug(Context context) {
+	public WebViewPlug(Activity context) {
 		super();
 		this.context = context;
 	}
 
 	public void webViewPlug(String url, WebView mWebView) {
+		this.title = "";
+		mWebView.setWebViewClient(mWebViewClient);
+		mWebView.getSettings().setJavaScriptEnabled(true);
+		mWebView.getSettings().setPluginsEnabled(true);
+		mWebView.getSettings().setSupportZoom(false);
+		mWebView.getSettings().setBuiltInZoomControls(false);
+		mWebView.requestFocus(View.FOCUSABLES_TOUCH_MODE);
+		mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true); // 支持通过js打开新的窗口
+		mWebView.setHorizontalScrollBarEnabled(false);
+
+		mWebView.addJavascriptInterface(new VideoClickListener(), "video");
+		mWebView.addJavascriptInterface(new LoginClickListener(), "user");
+		if (url == null) {
+			url = "";
+		}
+		mWebView.loadUrl(url);
+	}
+	
+	public void webViewPlug(String url, WebView mWebView, String title) {
+		this.title = title;
 		mWebView.setWebViewClient(mWebViewClient);
 		mWebView.getSettings().setJavaScriptEnabled(true);
 		mWebView.getSettings().setPluginsEnabled(true);
@@ -103,7 +131,14 @@ public class WebViewPlug {
 			Log.e("tag", "url = "+url);
 			Log.e("tag", "type = "+type);
 			Log.e("tag", "id = "+id);
-			
+			VideoModel videoModel = new VideoModel();
+			videoModel.setId(id);
+			videoModel.setUrl(url);
+			videoModel.setTitle(title);
+			DownloadTask downloadTask = new DownloadTask();
+        	downloadTask.setFileId(id);
+	        downloadTask.setVideo(videoModel);
+			DownloadTaskManager.getInstance(context).addTask(downloadTask, videoModel);
 		}
 	}
 
