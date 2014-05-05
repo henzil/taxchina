@@ -15,10 +15,55 @@
     "dataList": [
         {
             "id": "父级栏目id",
-            "hasMore": "true ",
+            "hasMore": "true",
             "title": "父栏目title",
             "subList": [
                 {
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },
+                {
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },{
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },
+                {
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },{
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },
+                {
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },{
                     "id": "ID",
                     "title": "标题",
                     "info": "副标题",
@@ -38,7 +83,75 @@
         },
         {
             "id": "父级栏目id",
-            "hasMore": "true ",
+            "hasMore": "true",
+            "title": "父栏目title",
+            "subList": [
+                {
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },
+                {
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },{
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },
+                {
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },{
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },
+                {
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },{
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                },
+                {
+                    "id": "ID",
+                    "title": "标题",
+                    "info": "副标题",
+                    "image": "图片",
+                    "isVideo": "true",
+                    "url": "http://www.baidu.com"
+                }
+            ]
+        },
+        {
+            "id": "父级栏目id",
+            "hasMore": "true",
             "title": "父栏目title",
             "subList": [
                 {

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.model.BaseItemModel;
@@ -51,8 +50,6 @@ public class IndexListViewAdapter extends BaseAdapter {
 			convertView = LayoutInflater.from(context).inflate(R.layout.index_listview_item, null);
 		}
 
-		TextView textView = (TextView) convertView.findViewById(R.id.textView1);
-		textView.setText(list.get(position).getTitle());
 		convertView.setOnClickListener(new View.OnClickListener() {
 
 			@Override
