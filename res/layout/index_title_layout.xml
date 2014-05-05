@@ -11,11 +11,11 @@
         android:layout_centerVertical="true"
         android:text="asdfasdf" />
 
-    <Button
+    <TextView
         android:id="@+id/index_more_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="加载更多" />
+        android:text="显示全部>" />
 
 </RelativeLayout>

@@ -3,9 +3,9 @@ package com.dns.taxchina.ui.view;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.model.IndexTitleModel;
 
@@ -17,8 +17,7 @@ import com.dns.taxchina.service.model.IndexTitleModel;
 public class IndexTitleLayout extends LinearLayout implements IndexListElement {
 
 	private View view;
-	private TextView title;
-	private Button moreBtn;
+	private TextView title, more;
 
 	public IndexTitleLayout(Context context) {
 		super(context);
@@ -29,7 +28,7 @@ public class IndexTitleLayout extends LinearLayout implements IndexListElement {
 	public void initView(Context context) {
 		view = LayoutInflater.from(context).inflate(R.layout.index_title_layout, this, true);
 		title = (TextView) view.findViewById(R.id.index_title_text);
-		moreBtn = (Button) view.findViewById(R.id.index_more_btn);
+		more = (TextView) view.findViewById(R.id.index_more_btn);
 	}
 
 	@Override
@@ -37,11 +36,11 @@ public class IndexTitleLayout extends LinearLayout implements IndexListElement {
 		IndexTitleModel indexTitleModel = (IndexTitleModel) object;
 		title.setText(indexTitleModel.getTitle());
 		if (indexTitleModel.isHasMore()) {
-			moreBtn.setVisibility(View.VISIBLE);
-			moreBtn.setClickable(true);
+			more.setVisibility(View.VISIBLE);
+			more.setClickable(true);
 		} else {
-			moreBtn.setVisibility(View.GONE);
-			moreBtn.setClickable(false);
+			more.setVisibility(View.GONE);
+			more.setClickable(false);
 		}
 	}
 }
