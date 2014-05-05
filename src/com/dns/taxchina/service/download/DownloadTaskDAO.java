@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
 import com.dns.taxchina.service.model.DownloadTask;
@@ -26,7 +27,7 @@ public class DownloadTaskDAO {
 		values.put(VideoContentProvider.FILE_ID, downloadTask.getFileId());
 		values.put(VideoContentProvider.FILE_LENGTH, downloadTask.getFileLength());
 
-		values.put(VideoContentProvider.ID, downloadTask.getVideo().getId());
+		values.put(VideoContentProvider.VIDEO_ID, downloadTask.getVideo().getId());
 		activity.getContentResolver().insert(VideoContentProvider.CONTENT_URI_TDOWNLOAD_VIDEO_ADD, values);
 	}
 
@@ -54,10 +55,8 @@ public class DownloadTaskDAO {
 	// 获取所有下载信息
 	public ArrayList<DownloadTask> findAll() {
 		ArrayList<DownloadTask> arrayList = new ArrayList<DownloadTask>();
-//		Cursor cursor = database.query("yacc", null, null, null, null,
-//				null, null);
-		Cursor cursor = activity.managedQuery(VideoContentProvider.CONTENT_URI_TDOWNLOAD_VIDEO_BROWSES, null, null,
-				null, null);
+		CursorLoader cursorLoader = new CursorLoader(activity, VideoContentProvider.CONTENT_URI_TDOWNLOAD_VIDEO_BROWSES, null, null, null, null);
+		Cursor cursor = cursorLoader.loadInBackground();
 		for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 			DownloadTask downloadTask = new DownloadTask();
 			downloadTask.setFileId(cursor.getString(VideoContentProvider.FILE_ID_INDEX));
@@ -68,7 +67,6 @@ public class DownloadTaskDAO {
 			downloadTask.setVideo(Video);
 			arrayList.add(downloadTask);
 		}
-		cursor.close();
 		return arrayList;
 	}
 
@@ -76,7 +74,8 @@ public class DownloadTaskDAO {
 		Cursor cursor = null;
 
 		Uri url = Uri.withAppendedPath(VideoContentProvider.CONTENT_URI_TDOWNLOAD_VIDEO_BROWSE, "" + fileId);
-		cursor = activity.managedQuery(url, null, null, null, null);
+		CursorLoader cursorLoader = new CursorLoader(activity, url, null, null, null, null);
+		cursor = cursorLoader.loadInBackground();
 		while (cursor.moveToNext()) {
 			DownloadTask downloadTask = new DownloadTask();
 			downloadTask.setFileId(cursor.getString(VideoContentProvider.FILE_ID_INDEX));
@@ -85,22 +84,19 @@ public class DownloadTaskDAO {
 			VideoModel Video = new VideoModel();
 			Video.setId(cursor.getString(VideoContentProvider.VIDEO_ID_INDEX));
 			downloadTask.setVideo(Video);
-			cursor.close();
 			return downloadTask;
 		}
-		cursor.close();
 		return null;
 	}
 
 	public boolean hasFindById(String fileId) {
 		Cursor cursor = null;
 		Uri url = Uri.withAppendedPath(VideoContentProvider.CONTENT_URI_TDOWNLOAD_VIDEO_BROWSE, fileId);
-		cursor = activity.managedQuery(url, null, null, null, null);
+		CursorLoader cursorLoader = new CursorLoader(activity, url, null, null, null, null);
+		cursor = cursorLoader.loadInBackground();
 		while (cursor.moveToNext()) {
-			cursor.close();
 			return true;
 		}
-		cursor.close();
 		return false;
 	}
 }

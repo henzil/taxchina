@@ -26,7 +26,7 @@ public class LibIOUtil {
 	public static final String FS = File.separator;
 
 	// SD卡缓存
-	private static final String FORESTRY = "callme";
+	private static final String FORESTRY = "taxchina";
 	// private static final String CACHE = "cache";
 	private static final String IMAGE = "image";
 	private static final String DOWNLOAD = "download";
