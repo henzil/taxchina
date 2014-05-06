@@ -16,11 +16,11 @@
 
 <resources>
     <!-- 圆圈滑动 -->
-    <color name="default_circle_indicator_fill_color">#FFFFFF</color>
+    <color name="default_circle_indicator_fill_color">#FFC6C7C4</color> 
     <color name="default_circle_indicator_page_color">#7FFFFFFF</color>
     <integer name="default_circle_indicator_orientation">0</integer><!-- 圆排布 -->
     <dimen name="default_circle_indicator_radius">3.5dp</dimen><!-- 圆半径 -->
-    <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color><!-- 圆边缘颜色 -->
+    <color name="default_circle_indicator_stroke_color">#FF013444</color><!-- 圆边缘颜色 -->
     <dimen name="default_circle_indicator_stroke_width">0dp</dimen><!-- 圆边缘粗细 -->
     <dimen name="default_circle_indicator_spacing">12dp</dimen>
 

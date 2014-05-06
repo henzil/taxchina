@@ -42,4 +42,8 @@ public class IndexListViewLayout extends LinearLayout implements IndexListElemen
 		listView.setAdapter(indexListViewAdapter);
 		indexListViewAdapter.refresh(list);
 	}
+
+	public void goneView() {
+		indexListViewAdapter.recycleBitmaps();
+	}
 }
