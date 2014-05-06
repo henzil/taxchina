@@ -19,13 +19,14 @@
         android:textColor="@color/index_title_text_color"
         android:textSize="18sp" />
 
-    <TextView
+    <Button
         android:id="@+id/index_more_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/index_title_text"
         android:layout_alignParentRight="true"
         android:gravity="right"
+        android:background="@null"
         android:paddingRight="10dp"
         android:text="显示全部>"
         android:textColor="@color/index_title_more_color"

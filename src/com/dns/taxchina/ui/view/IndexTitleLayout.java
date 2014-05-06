@@ -3,8 +3,10 @@ package com.dns.taxchina.ui.view;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.model.IndexTitleModel;
@@ -17,7 +19,8 @@ import com.dns.taxchina.service.model.IndexTitleModel;
 public class IndexTitleLayout extends LinearLayout implements IndexListElement {
 
 	private View view;
-	private TextView title, more;
+	private TextView title;
+	private Button more;
 
 	public IndexTitleLayout(Context context) {
 		super(context);
@@ -28,7 +31,16 @@ public class IndexTitleLayout extends LinearLayout implements IndexListElement {
 	public void initView(Context context) {
 		view = LayoutInflater.from(context).inflate(R.layout.index_title_layout, this, true);
 		title = (TextView) view.findViewById(R.id.index_title_text);
-		more = (TextView) view.findViewById(R.id.index_more_btn);
+		more = (Button) view.findViewById(R.id.index_more_btn);
+
+		more.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO 跳转到全部课程页面
+				Toast.makeText(getContext(), "显示全部", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	@Override
