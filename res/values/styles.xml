@@ -25,4 +25,27 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <!-- <item name="android:backgroundDimEnabled">false</item> -->
     </style>
+    
+    <!-- ListView样式 -->
+    <style name="listview_style" parent="@style/list_view">
+        <item name="android:dividerHeight">0.0dip</item>
+    </style>
+    
+    <style name="list_view" parent="@android:style/Widget.ListView">
+        <item name="android:scrollbarThumbVertical">@drawable/base_list_scrollbar_handle</item>
+        <item name="android:fadingEdgeLength">0.0dip</item>
+        <item name="android:alwaysDrawnWithCache">true</item>
+        <item name="android:listSelector">@android:color/transparent</item>
+        <item name="android:drawSelectorOnTop">false</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">2.0dip</item>
+    </style>
+    
+      <!-- 列表分割线 -->
+    <style name="line_style">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0.5dip</item>
+        <item name="android:background">@drawable/line</item>
+    </style>
 </resources>

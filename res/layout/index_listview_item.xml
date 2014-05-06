@@ -1,14 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:paddingBottom="20dp">
+    android:layout_height="fill_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp" >
+
+    <ImageView
+        android:id="@+id/index_item_img"
+        android:layout_width="100dp"
+        android:layout_height="66dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_300x200" />
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_margin="20dp"
-        android:layout_width="50dp"
+        android:id="@+id/index_item_text"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:textSize="20sp" />
+        android:layout_below="@+id/index_item_img"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/index_listview_item_text_color"
+        android:textSize="12sp" />
 
 </RelativeLayout>

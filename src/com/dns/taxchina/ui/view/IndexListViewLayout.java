@@ -1,13 +1,13 @@
 package com.dns.taxchina.ui.view;
 
 import it.sephiroth.android.library.widget.HorizontalVariableListView;
+import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import com.dns.taxchina.R;
-import com.dns.taxchina.service.model.IndexContentItemModel;
+import com.dns.taxchina.service.model.BaseItemModel;
 import com.dns.taxchina.ui.adapter.IndexListViewAdapter;
 
 /**
@@ -34,11 +34,16 @@ public class IndexListViewLayout extends LinearLayout implements IndexListElemen
 		listView = (HorizontalVariableListView) view.findViewById(R.id.horizontal_list_view);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateView(Object object, String TAG) {
-		IndexContentItemModel indexContentItemModel = (IndexContentItemModel) object;
+		List<BaseItemModel> list = (List<BaseItemModel>) object;
 		indexListViewAdapter = new IndexListViewAdapter(context, TAG);
 		listView.setAdapter(indexListViewAdapter);
-		indexListViewAdapter.refresh(indexContentItemModel.getSubList());
+		indexListViewAdapter.refresh(list);
+	}
+
+	public void goneView() {
+		indexListViewAdapter.recycleBitmaps();
 	}
 }
