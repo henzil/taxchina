@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.dns.taxchina.service.download.DownloadTaskManager;
+import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.model.DownloadTask;
 import com.dns.taxchina.service.model.VideoModel;
 
@@ -131,10 +132,12 @@ public class WebViewPlug {
 			Log.e("tag", "url = "+url);
 			Log.e("tag", "type = "+type);
 			Log.e("tag", "id = "+id);
+			VideoDAO videoDAO = new VideoDAO(context);
 			VideoModel videoModel = new VideoModel();
 			videoModel.setId(id);
 			videoModel.setUrl(url);
 			videoModel.setTitle(title);
+			videoDAO.add(videoModel);
 			DownloadTask downloadTask = new DownloadTask();
         	downloadTask.setFileId(id);
 	        downloadTask.setVideo(videoModel);
