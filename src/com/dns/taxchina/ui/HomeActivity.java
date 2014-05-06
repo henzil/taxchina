@@ -84,7 +84,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	private void changeFragment(int index) {
 		FragmentManager manager = getSupportFragmentManager();
-
 		FragmentTransaction ft = manager.beginTransaction();
 		if (currentFragment != null && currentTag != index) {
 			BaseFragment subViewFragment = null;
