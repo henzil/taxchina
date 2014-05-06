@@ -79,7 +79,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	private void clickBut(int index) {
 		changeFragment(index);
-
 	}
 
 	private void changeFragment(int index) {
