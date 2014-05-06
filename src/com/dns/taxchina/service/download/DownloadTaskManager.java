@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import netlib.net.AsyncTaskLoaderImage;
 import netlib.util.LibIOUtil;
 
 import org.apache.http.Header;
@@ -15,29 +16,36 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import com.dns.taxchina.service.model.DownloadTask;
 import com.dns.taxchina.service.model.VideoModel;
 
 public class DownloadTaskManager {
+	
 	private static DownloadTaskManager downloadTaskManager;
 
 	private Activity context;
+
+	// 线程池，用于管理多个下载线程
+	private ExecutorService executorService;
 	
+	// 正在下载的 videoId；
+	private String videoId = null;
+	
+	private DownloadMode dataMode = DownloadMode.DOWNLOAD_END; 
+
 	public static DownloadTaskManager getInstance(Activity context) {
 		if (downloadTaskManager == null) {
 			downloadTaskManager = new DownloadTaskManager(context);
 		}
 		return downloadTaskManager;
 	}
-	
-	private DownloadTaskManager(Activity context){
+
+	private DownloadTaskManager(Activity context) {
 		this.context = context;
 	}
-
-	// 线程池，用于管理多个下载线程
-	private ExecutorService executorService;
 
 	// 添加下载任务
 	public void addTask(DownloadTask downloadTask, VideoModel videoModel) {
@@ -57,17 +65,22 @@ public class DownloadTaskManager {
 	// 开始数据库中未完成的任务
 	private void startTasks() {
 		DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
-		VideoDAO lvYeBookDAO = new VideoDAO(context);
+		VideoDAO videoDAO = new VideoDAO(context);
 		// 获取数据库中的所有未完成的任务
 		ArrayList<DownloadTask> arrayList = downloadTaskDAO.findAll();
 		// 将所有未完成的任务一一加入线程池
-		Log.d("fred", "unfinished task=" + arrayList.size());
+		Log.d("DownloadTaskManager", "unfinished task=" + arrayList.size());
 		for (int i = 0; i < arrayList.size(); i++) {
 			DownloadTask downloadTask = arrayList.get(i);
-			Log.v("tag", "downloadTask.getFileId() = " + downloadTask.getFileId());
-			VideoModel video = lvYeBookDAO.findById(downloadTask.getVideo().getId());
+			Log.v("DownloadTaskManager", "downloadTask.toString() = " + downloadTask.toString());
+			VideoModel video = videoDAO.findById(downloadTask.getVideo().getId());
 			executorService.submit(new DownLoadBytes(context, downloadTask, video));
 		}
+	}
+	
+	// 执行暂停某一个
+	public void pauseCurrentTask(String videoId){
+		dataMode = DownloadMode.PAUSE;
 	}
 
 	// 线程管理器开始工作
@@ -87,11 +100,15 @@ public class DownloadTaskManager {
 	public boolean isStop() {
 		return executorService.isShutdown();
 	}
+	
+	public String downloadingId(){
+		return videoId;
+	}
 
 	// 下载线程（内部类）
 	private class DownLoadBytes implements Runnable {
 		// 应用程序环境上下文，用于创建SQLiteOpenHelper
-		Activity context;
+		private Activity context;
 		// 已经下载的字节数
 		private long total;
 		// 一共能下载的字节数
@@ -103,18 +120,20 @@ public class DownloadTaskManager {
 		// 下载任务，更新和删除时使用
 		private DownloadTask downloadTask;
 
+		private VideoModel video;
+
 		public DownLoadBytes(Activity context, DownloadTask downloadTask, VideoModel videoModel) {
 			this.context = context;
 			this.fileId = downloadTask.getFileId();
 			this.fileLength = downloadTask.getFileLength();
 			this.downloadTask = downloadTask;
+			this.video = videoModel;
 			// 获取文件已经下载的字节数
 			if (downloadTask.getFilePath() == null) {
 				total = 0;
 			} else {
-				Log.v("tag", "downloadTask.getFilePath() = " + downloadTask.getFilePath());
+				Log.v("DownloadTaskManager", "downloadTask.getFilePath() = " + downloadTask.getFilePath());
 				downloadFile = new File(downloadTask.getFilePath());
-
 				total = downloadFile.length();
 			}
 		}
@@ -122,32 +141,35 @@ public class DownloadTaskManager {
 		@Override
 		public void run() {
 			VideoDAO videoDAO = new VideoDAO(context);
-			VideoModel video = downloadTask.getVideo();
-
+			dataMode = DownloadMode.START;
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			String url = video.getUrl();
-
-			Log.v("cat", "url = " + url);
+			Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ url = " + url);
 			HttpGet httpGet = new HttpGet(url);
-
+			videoId = video.getId();
+			
 			try {
 				// TODO 状态处理 500 200
 				int res = 0;
 				HttpResponse httpResponse = httpClient.execute(httpGet);
-
 				res = httpResponse.getStatusLine().getStatusCode();
+				Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ res = " + res);
 				if (res == 200) {
 					Header headerLength = httpResponse.getFirstHeader("Content-Length");
 					Header headerDisposition = httpResponse.getFirstHeader("Content-Disposition");
 					String lengthStr = headerLength.getValue();
-					String path = headerDisposition.getValue().substring(9);
+					for (Header header : httpResponse.getAllHeaders()) {
+						Log.i("DownloadTaskManager", "###############header.toString() = " + header.toString());
+					}
+
+					String path = AsyncTaskLoaderImage.getHash(url);
 					fileLength = Long.parseLong(lengthStr);
-					Log.i("cat", "###############" + fileLength);
-					Log.i("cat", "###############" + path);
+					Log.i("DownloadTaskManager", "###############" + fileLength);
+					Log.i("DownloadTaskManager", "###############" + path);
 					httpGet.addHeader("Range", "bytes=" + total + "-");
 					httpResponse = httpClient.execute(httpGet);
 					res = httpResponse.getStatusLine().getStatusCode();
-					Log.i("cat", "###############" + res);
+					Log.i("DownloadTaskManager", "###############" + res);
 					if (res == 206) {
 						/*
 						 * 当返回码为200时，做处理 得到服务器端返回json数据，并做处理
@@ -172,8 +194,15 @@ public class DownloadTaskManager {
 
 						for (; total < fileLength;) {
 							// 如何停止线程？
-//							Log.v("cat", ""+isStop());
+							if(dataMode == DownloadMode.PAUSE){
+								dataMode = DownloadMode.DOWNLOAD_END;
+								fileOutputStream.close();
+								httpClient.getConnectionManager().shutdown();
+								inputStream.close();
+								return;
+							}
 							if (isStop()) {
+								dataMode = DownloadMode.DOWNLOAD_END;
 								fileOutputStream.close();
 								httpClient.getConnectionManager().shutdown();
 								inputStream.close();
@@ -193,14 +222,18 @@ public class DownloadTaskManager {
 
 										video.setDownloadPercent(progressBarState);
 										videoDAO.update(video);
-										Log.d("fred", "pregressBarState=" + progressBarState);
-										Log.v("cat", "total = " + total);
-										Log.v("cat", "fileId = " + fileId);
-										// TODO 广播进度
-//										Intent intent = new Intent(Global.DOWNLOADING_PERCENT_INTENT_FILTER);
-//										intent.putExtra(Global.DOWNLOADING_BOOK_PERCENT, progressBarState);
-//										intent.putExtra(Global.DOWNLOADING_BOOK_PERCENT_UUID, lvYeBook.getUuid());
-//										context.sendBroadcast(intent);
+										Log.d("DownloadTaskManager", "pregressBarState=" + progressBarState);
+										Log.v("DownloadTaskManager", "total = " + total);
+										Log.v("DownloadTaskManager", "fileId = " + fileId);
+										// 广播进度
+										Intent intent = new Intent(
+												DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
+										intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
+												DownloadTaskContact.DOWNLOADING_TYPE_PERCENT_VALUE);
+										intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT, progressBarState);
+										intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT_ID, video.getId());
+										context.sendBroadcast(intent);
+										
 									}
 								}
 							}
@@ -209,18 +242,23 @@ public class DownloadTaskManager {
 						video.setIsDownloadComplete(1);
 						video.setDownloadPercent(100);
 						videoDAO.update(video);
+						dataMode = DownloadMode.DOWNLOAD_END;
 						// 读取下载完毕
 						fileOutputStream.close();
 						httpClient.getConnectionManager().shutdown();
 						inputStream.close();
-						// TODO 下载完成通知
-//						Intent intent = new Intent(Global.DOWNLOADING_ONE_BOOK_END_INTENT_FILTER);
-//						intent.putExtra(Global.DOWNLOADING_ONE_BOOK_END_UUID, lvYeBook.getUuid());
-//						context.sendBroadcast(intent);
+						// 下载完成通知
+						Intent intent = new Intent(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
+						intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
+								DownloadTaskContact.DOWNLOADING_TYPE_END_VALUE);
+						intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT_ID, video.getId());
+						context.sendBroadcast(intent);
+						videoId = null;
 					}
 				}
 
 			} catch (Exception e) {
+				Log.e("DownloadTaskManager", e.getMessage(), e);
 				throw new RuntimeException(e);
 			}
 		}
