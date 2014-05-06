@@ -1,0 +1,1 @@
+package com.dns.taxchina.service.download;/** * @author henzil * @version create time:2014-5-6_下午2:18:06 * @Description TODO *  * START：开始下载  * DOWNLOADING：正在下载中  * PAUSE：暂停 * DOWNLOAD_END：下载结束  暂停之后也叫结束 */public enum DownloadMode {	START, DOWNLOADING, PAUSE, DOWNLOAD_END}

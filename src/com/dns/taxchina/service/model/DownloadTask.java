@@ -70,4 +70,10 @@ public class DownloadTask {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "DownloadTask [video=" + video + ", fileLength=" + fileLength + ", filePath=" + filePath + ", fileId="
+				+ fileId + "]";
+	}
 }
