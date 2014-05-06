@@ -6,7 +6,7 @@
     <com.dns.taxchina.ui.widget.IndexViewPager
         android:id="@+id/view_pager"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="160dp" />
 
     <com.dns.taxchina.ui.widget.CirclePageIndicator
         android:id="@+id/indicator"
