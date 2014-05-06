@@ -1,15 +1,16 @@
 package com.dns.taxchina.ui.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.model.IndexTitleModel;
+import com.dns.taxchina.ui.CourseListActivity;
 
 /**
  * @author fubiao
@@ -21,6 +22,7 @@ public class IndexTitleLayout extends LinearLayout implements IndexListElement {
 	private View view;
 	private TextView title;
 	private Button more;
+	private IndexTitleModel indexTitleModel;
 
 	public IndexTitleLayout(Context context) {
 		super(context);
@@ -37,15 +39,17 @@ public class IndexTitleLayout extends LinearLayout implements IndexListElement {
 
 			@Override
 			public void onClick(View v) {
-				// TODO 跳转到全部课程页面
-				Toast.makeText(getContext(), "显示全部", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(getContext(), CourseListActivity.class);
+				intent.putExtra(CourseListActivity.LIST_ID, indexTitleModel.getId());
+				intent.putExtra(CourseListActivity.LIST_TITLE, indexTitleModel.getTitle());
+				getContext().startActivity(intent);
 			}
 		});
 	}
 
 	@Override
 	public void updateView(Object object, String TAG) {
-		IndexTitleModel indexTitleModel = (IndexTitleModel) object;
+		indexTitleModel = (IndexTitleModel) object;
 		title.setText(indexTitleModel.getTitle());
 		if (indexTitleModel.isHasMore()) {
 			more.setVisibility(View.VISIBLE);
