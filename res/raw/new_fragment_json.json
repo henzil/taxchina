@@ -1,0 +1,51 @@
+{
+    "result": "",
+    "hasNext": "true",
+    "nowPage": "",
+    "category": [
+        {
+            "id": "1001",
+            "title": "停车"
+        },
+        {
+            "id": "1001",
+            "title": "停车"
+        }
+    ],
+    "head": [
+        {
+            "id": "标示",
+            "title": "精品西餐牛排价值800元套餐券1",
+            "info": "副标题",
+            "image": "图片",
+            "isVideo": "true",
+            "url": "http://www.baidu.com"
+        },
+        {
+            "id": "标示",
+            "title": "精品西餐牛排价值800元套餐券1",
+            "info": "副标题",
+            "image": "图片",
+            "isVideo": "true",
+            "url": "http://www.baidu.com"
+        }
+    ],
+    "dataList": [
+        {
+            "id": "ID",
+            "title": "标题",
+            "info": "副标题",
+            "image": "图片",
+            "isVideo": "true",
+            "url": "http://www.baidu.com"
+        },
+        {
+            "id": "ID",
+            "title": "标题",
+            "info": "副标题",
+            "image": "图片",
+            "isVideo": "true",
+            "url": "http://www.baidu.com"
+        }
+    ]
+}

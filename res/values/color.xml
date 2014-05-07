@@ -9,4 +9,8 @@
     <color name="index_listview_item_text_color">#5E5E5E</color>
     <color name="top_bar_bg_color">#005C7E</color>
     
+    <!-- 咨询 tab 文字选中和非选中的颜色值 -->
+    <color name="title_tab_horizontal_text_default">#FF737373</color>
+    <color name="title_tab_horizontal_text_press">#FF2a2a2d</color>
+    
 </resources>
