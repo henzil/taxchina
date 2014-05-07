@@ -42,6 +42,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 		newsBut = findViewById(R.id.newsBut);
 		findBut = findViewById(R.id.findBut);
 		centerBut = findViewById(R.id.centerBut);
+		
+		indexBut.setSelected(true);
 	}
 
 	@Override
@@ -56,6 +58,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	@Override
 	public void onClick(View v) {
+		updateBtn(v);
 		switch (v.getId()) {
 		case R.id.indexBut:
 			clickBut(0);
@@ -77,9 +80,18 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 		}
 	}
 
+	private void updateBtn(View v) {
+		indexBut.setSelected(false);
+		microCourseBut.setSelected(false);
+		newsBut.setSelected(false);
+		findBut.setSelected(false);
+		centerBut.setSelected(false);
+		v.setSelected(true);
+	}
+
 	private void clickBut(int index) {
 		changeFragment(index);
-		
+
 	}
 
 	private void changeFragment(int index) {
@@ -144,7 +156,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 		super.onSaveInstanceState(outState);
 		outState.putInt("currentTag", currentTag);
 	};
-	
+
 	@Override
 	protected void onDestroy() {
 		DownloadTaskManager.getInstance(this).stop();

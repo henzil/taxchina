@@ -16,6 +16,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@android:color/black"
         android:orientation="horizontal" >
 
         <Button
@@ -23,13 +24,25 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="首页" />
+            android:background="@null"
+            android:drawableTop="@drawable/icon_home"
+            android:paddingTop="5dp"
+            android:text="首页"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/microCourseBut"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/icon_micro_course"
+            android:paddingTop="6dp"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:text="微课程" />
 
         <Button
@@ -37,6 +50,12 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/icon_consult"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:text="咨询" />
 
         <Button
@@ -44,6 +63,12 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/icon_find_course"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:text="找课程" />
 
         <Button
@@ -51,6 +76,12 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/icon_center"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:text="学员中心" />
     </LinearLayout>
 
