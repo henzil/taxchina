@@ -20,13 +20,14 @@
             android:layout_toLeftOf="@+id/find_course_btn"
             android:background="@drawable/white_content_bg"
             android:hint="搜  索"
+            android:textColorHint="@color/input_hint_color"
             android:paddingLeft="15dp"
             android:textSize="14sp" />
 
         <Button
             android:id="@+id/find_course_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="34dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
