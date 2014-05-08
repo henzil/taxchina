@@ -2,6 +2,7 @@
 <resources>
     
     <!-- webview进度条 -->
+    <color name="white">#FFFFFF</color>
     <color name="progress_bar_bg_color">#CCCCCC</color> <!-- webview背景 -->
     <color name="progress_bar_color">#00ff00</color> <!-- webview进度 -->
     <color name="index_title_text_color">#005B7B</color>

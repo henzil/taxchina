@@ -1,0 +1,56 @@
+{
+    "result": "0",
+    "dataList": [
+        {
+            "id": "111",
+            "title": "企业税务1",
+            "type": "1",
+            "searchKey": "企业税务"
+        },
+        {
+            "id": "111",
+            "title": "企业税务2",
+            "type": "2",
+            "info": "副标题",
+            "image": "图片",
+            "isVideo": "true",
+            "url": "http://www.baidu.com"
+        },
+        {
+            "id": "111",
+            "title": "企业税务3",
+            "type": "2",
+            "info": "副标题",
+            "image": "图片",
+            "isVideo": "true",
+            "url": "http://www.baidu.com"
+        },
+        {
+            "id": "111",
+            "title": "企业税务4",
+            "type": "2",
+            "info": "副标题",
+            "image": "图片",
+            "isVideo": "true",
+            "url": "http://www.baidu.com"
+        },
+        {
+            "id": "111",
+            "title": "企业税务5",
+            "type": "1",
+            "searchKey": "企业税务"
+        },
+        {
+            "id": "111",
+            "title": "企业税务6",
+            "type": "1",
+            "searchKey": "企业税务"
+        },
+        {
+            "id": "111",
+            "title": "企业税务7",
+            "type": "1",
+            "searchKey": "企业税务"
+        }
+    ]
+}
