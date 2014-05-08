@@ -95,6 +95,14 @@ public class LoginActivity extends BaseActivity {
 
 	@Override
 	protected void initWidgetActions() {
+		back.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		
 		login.setOnClickListener(new View.OnClickListener() {
 
 			@Override
