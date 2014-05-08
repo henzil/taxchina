@@ -5,15 +5,15 @@
     "category": [
         {
             "id": "1001",
-            "title": "停车"
+            "title": "皇马"
         },
         {
             "id": "1001",
-            "title": "停车"
+            "title": "巴萨"
         },
         {
             "id": "1001",
-            "title": "停车"
+            "title": "马竞"
         }
     ],
     "head": [
@@ -21,7 +21,7 @@
             "id": "标示",
             "title": "精品西餐牛排价值800元套餐券1",
             "info": "副标题",
-            "image": "图片",
+            "image": "http://photocdn.sohu.com/20131028/Img389027106.jpg",
             "isVideo": "true",
             "url": "http://www.baidu.com"
         },
@@ -29,7 +29,7 @@
             "id": "标示",
             "title": "精品西餐牛排价值800元套餐券1",
             "info": "副标题",
-            "image": "图片",
+            "image": "http://www.cnncw.cn/pdf/ncrbnew/res/1/20110819/70891313688364203.jpg",
             "isVideo": "true",
             "url": "http://www.baidu.com"
         }

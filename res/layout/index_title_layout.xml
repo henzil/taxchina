@@ -16,6 +16,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/tip_icon"
+        android:drawablePadding="5dp"
         android:textColor="@color/index_title_text_color"
         android:textSize="18sp" />
 
@@ -25,10 +27,11 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/index_title_text"
         android:layout_alignParentRight="true"
-        android:gravity="right"
         android:background="@null"
+        android:drawableRight="@drawable/more_arrow"
+        android:gravity="center"
         android:paddingRight="10dp"
-        android:text="显示全部>"
+        android:text="显示全部"
         android:textColor="@color/index_title_more_color"
         android:textSize="14sp" />
 

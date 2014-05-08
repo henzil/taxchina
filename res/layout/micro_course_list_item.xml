@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+    
+    <ImageView
+        android:id="@+id/micro_course_item_tip_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tip_icon" />
+
+    <ImageView
+        android:id="@+id/micro_course_item_img"
+        android:layout_width="103dp"
+        android:layout_height="66dp"
+        android:layout_toRightOf="@+id/micro_course_item_tip_img"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_103x66" />
+
+    <TextView
+        android:id="@+id/micro_course_item_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="25dp"
+        android:layout_toLeftOf="@+id/micro_course_arrow_img"
+        android:layout_toRightOf="@+id/micro_course_item_img"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/micro_course_title_text_color"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/micro_course_arrow_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/arrow_img" />
+
+    <View
+        android:id="@+id/micro_course_item_line"
+        style="@style/line_style"
+        android:layout_below="@+id/micro_course_item_img"
+        android:layout_marginTop="15dip" />
+
+</RelativeLayout>

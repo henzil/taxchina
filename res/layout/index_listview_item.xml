@@ -9,10 +9,10 @@
 
     <ImageView
         android:id="@+id/index_item_img"
-        android:layout_width="100dp"
+        android:layout_width="103dp"
         android:layout_height="66dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_300x200" />
+        android:src="@drawable/default_103x66" />
 
     <TextView
         android:id="@+id/index_item_text"
