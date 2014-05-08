@@ -114,8 +114,6 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 	private void onLoadEvent() {
 		HashMap<String, String> reqMap = new HashMap<String, String>();
 		reqMap.put("mode", "5");
-		reqMap.put("deviceId", "imei");
-		reqMap.put("from", "" + "Android");
 		reqMap.put("id", id);
 		reqMap.put("nowPage", 1 + "");
 		reqMap.put("pageSize", PAGE_SIZE + "");
@@ -128,8 +126,6 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 	public void onRefresh() {
 		HashMap<String, String> reqMap = new HashMap<String, String>();
 		reqMap.put("mode", "5");
-		reqMap.put("deviceId", "imei");
-		reqMap.put("from", "" + "Android");
 		reqMap.put("id", id);
 		reqMap.put("nowPage", 1 + "");
 		reqMap.put("pageSize", PAGE_SIZE + "");
@@ -142,8 +138,6 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 	public void onLoadMore() {
 		HashMap<String, String> reqMap = new HashMap<String, String>();
 		reqMap.put("mode", "5");
-		reqMap.put("deviceId", "imei");
-		reqMap.put("from", "" + "Android");
 		reqMap.put("id", id);
 		reqMap.put("nowPage", pageNum + 1 + "");
 		reqMap.put("pageSize", PAGE_SIZE + "");

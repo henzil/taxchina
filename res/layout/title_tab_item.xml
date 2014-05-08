@@ -15,11 +15,11 @@
         android:layout_width="100dp"
         android:layout_height="30dp"
         android:ellipsize="end"
-        android:textSize="17sp"
         android:gravity="center"
-        android:textColor="@color/title_tab_horizontal_text_default"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="17sp" />
 
 </FrameLayout>

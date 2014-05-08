@@ -1,8 +1,12 @@
 {
-    "result": "",
+    "result": "0",
     "hasNext": "true",
-    "nowPage": "",
+    "nowPage": "1",
     "category": [
+        {
+            "id": "1001",
+            "title": "停车"
+        },
         {
             "id": "1001",
             "title": "停车"

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/news_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/course_item_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="呵呵呵呵呵呵呵呵呵呵"
+            android:textColor="@color/index_title_text_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/course_item_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+            android:textColor="@color/index_listview_item_text_color"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/course_item_line"
+        style="@style/line_style"
+        android:layout_below="@+id/news_title_layout"
+        android:layout_marginTop="15dip" />
+
+</RelativeLayout>

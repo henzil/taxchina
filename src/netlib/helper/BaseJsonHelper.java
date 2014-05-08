@@ -9,6 +9,9 @@ public abstract class BaseJsonHelper {
 	protected Context context;
 	
 	protected String DEVICE_ID = "deviceId";
+	protected String FROME = "from";
+	public String ANDROID = "android";
+	
 
 	public BaseJsonHelper(Context context) {
 		this.context = context;
