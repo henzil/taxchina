@@ -12,11 +12,13 @@ import netlib.net.DataMode;
 import netlib.util.ErrorCodeUtil;
 import netlib.util.LibIOUtil;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnKeyListener;
+import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.service.model.BaseItemModel;
 import com.dns.taxchina.service.model.CourseListModel;
 import com.dns.taxchina.ui.adapter.CourseListAdapter;
+import com.dns.taxchina.ui.adapter.CourseListAdapter.ViewHolder;
 import com.dns.taxchina.ui.constant.GetDataModeCostant;
 import com.dns.taxchina.ui.widget.XListView;
 
@@ -120,6 +123,17 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 		});
 
 		listView.setXListViewListener(this);
+
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				BaseItemModel model = ((ViewHolder) view.getTag()).model;
+				Intent intent = new Intent(CourseListActivity.this, DetailActivity.class);
+				intent.putExtra(DetailActivity.DETAIL_MODEL, model);
+				startActivity(intent);
+			}
+		});
 
 		onLoadEvent();
 	}
