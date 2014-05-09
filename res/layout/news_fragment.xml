@@ -2,32 +2,67 @@
 <!-- 咨询 fragment -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-    
+    android:layout_height="fill_parent"
+    android:background="#EAEAEA" >
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" >
-        
+
         <include layout="@layout/top_bar_box" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white" >
+        </LinearLayout>
 
         <!-- 内容 -->
 
-        <com.dns.taxchina.ui.widget.TitleTabHorizontalScrollView
-            android:id="@+id/scrollView"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="30dp"
-            android:background="@color/top_bar_bg_color"
-            android:fadingEdge="none"
-            android:scrollbars="@null" >
+            android:layout_height="35dp"
+            android:background="@color/top_bar_bg_color" >
 
-            <LinearLayout
-                android:id="@+id/horizontal_layout"
+            <Button
+                android:id="@+id/left_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/arrow_left" />
+
+            <com.dns.taxchina.ui.widget.TitleTabHorizontalScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal" >
-            </LinearLayout>
-        </com.dns.taxchina.ui.widget.TitleTabHorizontalScrollView>
+                android:layout_toLeftOf="@+id/right_btn"
+                android:layout_toRightOf="@+id/left_btn"
+                android:fadingEdge="none"
+                android:scrollbars="@null" >
+
+                <LinearLayout
+                    android:id="@+id/horizontal_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+                </LinearLayout>
+            </com.dns.taxchina.ui.widget.TitleTabHorizontalScrollView>
+
+            <Button
+                android:id="@+id/right_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/arrow_right" />
+        </RelativeLayout>
 
         <com.dns.taxchina.ui.widget.MainViewPager
             android:id="@+id/mainViewPager"
