@@ -41,6 +41,13 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
+        
+        <!-- 学习记录 -->
+        <activity
+            android:name="com.dns.taxchina.ui.StudayRecordActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <!-- 登录 -->
         <activity

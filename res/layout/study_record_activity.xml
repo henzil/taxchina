@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EAEAEA"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -55,6 +56,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_bar_box"
+        android:background="@color/white"
         android:paddingBottom="10dp"
         android:paddingTop="10dp" >
 
@@ -67,7 +69,7 @@
             android:layout_weight="1"
             android:background="@drawable/check_btn"
             android:text="已完成"
-            android:textColor="@color/white" />
+            android:textColor="@color/over_color" />
 
         <Button
             android:id="@+id/not_over_btn"
@@ -78,11 +80,11 @@
             android:layout_weight="1"
             android:background="@drawable/check_btn"
             android:text="未完成"
-            android:textColor="@color/white" />
+            android:textColor="@color/over_color" />
     </LinearLayout>
 
     <ListView
-        android:id="@+id/x_list_view"
+        android:id="@+id/list_view"
         style="@style/listview_style"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -92,7 +94,18 @@
         android:id="@+id/sd_layout"
         android:layout_width="fill_parent"
         android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/x_list_view"
         android:background="#005C7E" >
+
+        <TextView
+            android:id="@+id/available_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="总空间300MB/剩余空间150MB  （50%）"
+            android:textColor="@color/white" />
     </RelativeLayout>
 
 </RelativeLayout>

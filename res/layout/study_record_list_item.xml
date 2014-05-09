@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/study_record_list_item_tip_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tip_icon" />
+
+    <RelativeLayout
+        android:id="@+id/study_record_title_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/study_record_item_btn"
+        android:layout_toRightOf="@+id/study_record_list_item_tip_img"
+        android:orientation="vertical"
+        android:paddingRight="15dp" >
+
+        <TextView
+            android:id="@+id/study_record_item_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="初级税务师课程  第一讲  税务课程"
+            android:textColor="#005C7E"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/study_record_item_info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/study_record_item_title_text"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊sssssssssssssssssss啊"
+            android:textColor="#6C6C6C"
+            android:textSize="11sp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/study_record_item_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/stop_btn"
+        android:gravity="center"
+        android:text="下载"
+        android:textColor="@color/white" />
+
+    <View
+        android:id="@+id/study_record_item_line"
+        style="@style/line_style"
+        android:layout_below="@+id/study_record_title_layout"
+        android:layout_marginTop="15dip" />
+
+</RelativeLayout>
