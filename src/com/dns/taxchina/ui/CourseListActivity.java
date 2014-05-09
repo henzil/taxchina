@@ -11,8 +11,11 @@ import netlib.net.DataJsonAsyncTask;
 import netlib.net.DataMode;
 import netlib.util.ErrorCodeUtil;
 import netlib.util.LibIOUtil;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnKeyListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +55,17 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 
 	@Override
 	protected void initData() {
+		loadingDialog.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					if (loadingDialog != null)
+						loadingDialog.cancel();
+				}
+				return true;
+			}
+		});
+
 		Intent intent = getIntent();
 		titleStr = intent.getStringExtra(LIST_TITLE);
 		id = intent.getStringExtra(LIST_ID);
@@ -112,6 +126,10 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 
 	// 程序加载数据
 	private void onLoadEvent() {
+		if (loadingDialog != null && !loadingDialog.isShowing()) {
+			loadingDialog.show();
+		}
+
 		HashMap<String, String> reqMap = new HashMap<String, String>();
 		reqMap.put("mode", "5");
 		reqMap.put("id", id);
@@ -147,6 +165,12 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 	}
 
 	protected void updateView(Object object, int mode) {
+		if (loadingDialog != null) {
+			if (loadingDialog.isShowing()) {
+				loadingDialog.dismiss();
+			}
+		}
+
 		if (mode == LOAD_MODE || mode == REFRESH_MODE) {
 			listView.stopRefresh();
 		} else if (mode == MORE_MODE) {
@@ -231,6 +255,9 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 		}
 		if (adapter != null) {
 			adapter.recycleBitmaps();
+		}
+		if (loadingDialog != null) {
+			loadingDialog = null;
 		}
 	}
 }

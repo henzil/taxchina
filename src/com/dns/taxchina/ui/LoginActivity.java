@@ -1,6 +1,7 @@
 package com.dns.taxchina.ui;
 
 import java.util.HashMap;
+
 import netlib.helper.DataServiceHelper;
 import netlib.model.BaseModel;
 import netlib.model.ErrorModel;
@@ -8,13 +9,17 @@ import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
 import netlib.util.ErrorCodeUtil;
 import netlib.util.LibIOUtil;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.service.model.LoginResultModel;
@@ -40,16 +45,16 @@ public class LoginActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
-//		loadingDialog.setOnKeyListener(new OnKeyListener() {
-//			@Override
-//			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-//				if (keyCode == KeyEvent.KEYCODE_BACK) {
-//					if (loadingDialog != null)
-//						loadingDialog.cancel();
-//				}
-//				return true;
-//			}
-//		});
+		loadingDialog.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					if (loadingDialog != null)
+						loadingDialog.cancel();
+				}
+				return true;
+			}
+		});
 
 		dataPool = new DataAsyncTaskPool();
 		jsonHelper = new ModelHelper(LoginActivity.this);
@@ -57,9 +62,9 @@ public class LoginActivity extends BaseActivity {
 
 			@Override
 			public void preExecute() {
-//				if (loadingDialog != null && !loadingDialog.isShowing()) {
-//					loadingDialog.show();
-//				}
+				if (loadingDialog != null && !loadingDialog.isShowing()) {
+					loadingDialog.show();
+				}
 			}
 
 			@Override
@@ -137,12 +142,11 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	protected void updateView(Object object) {
-//		if (loadingDialog != null) {
-//			if (loadingDialog.isShowing()) {
-//				loadingDialog.dismiss();
-//			}
-//			loadingDialog = null;
-//		}
+		if (loadingDialog != null) {
+			if (loadingDialog.isShowing()) {
+				loadingDialog.dismiss();
+			}
+		}
 //		if (mode == LOAD_MODE || mode == REFRESH_MODE) {
 //		} else if (mode == MORE_MODE) {
 //		}
@@ -176,6 +180,9 @@ public class LoginActivity extends BaseActivity {
 		super.onDestroy();
 		if (asyncTask != null) {
 			asyncTask.cancel(true);
+		}
+		if (loadingDialog != null) {
+			loadingDialog = null;
 		}
 	}
 }

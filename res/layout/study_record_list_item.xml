@@ -32,7 +32,7 @@
             android:singleLine="true"
             android:text="初级税务师课程  第一讲  税务课程"
             android:textColor="#005C7E"
-            android:textSize="14sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/study_record_item_info_text"
@@ -42,9 +42,9 @@
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊sssssssssssssssssss啊"
+            android:text="24MB/120MB （20%）"
             android:textColor="#6C6C6C"
-            android:textSize="11sp" />
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <Button

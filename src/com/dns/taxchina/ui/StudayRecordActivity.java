@@ -1,10 +1,27 @@
 package com.dns.taxchina.ui;
 
+import java.util.HashMap;
+
+import netlib.helper.DataServiceHelper;
+import netlib.model.BaseModel;
+import netlib.model.ErrorModel;
+import netlib.net.DataAsyncTaskPool;
+import netlib.net.DataJsonAsyncTask;
+import netlib.util.ErrorCodeUtil;
+import netlib.util.LibIOUtil;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.dns.taxchina.R;
+import com.dns.taxchina.service.helper.ModelHelper;
+import com.dns.taxchina.service.model.StudyRecordModel;
+import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
 
 /**
  * @author fubiao
@@ -16,9 +33,62 @@ public class StudayRecordActivity extends BaseActivity {
 	private TextView back;
 	private Button alreadOver, notOver;
 
+	public static final int ALREADOVER_TYEP = 0;
+	public static final int NOTOVER_TYPE = 1;
+
+	public int type = 0;
+
+	private ListView listView;
+	private StudyRecordAdapter adapter;
+
+	protected DataJsonAsyncTask asyncTask;
+	protected DataAsyncTaskPool dataPool;
+	protected DataServiceHelper dataServiceHelper;
+
+	protected ModelHelper jsonHelper;
+
 	@Override
 	protected void initData() {
+		loadingDialog.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					if (loadingDialog != null)
+						loadingDialog.cancel();
+				}
+				return true;
+			}
+		});
 
+		dataPool = new DataAsyncTaskPool();
+		jsonHelper = new ModelHelper(StudayRecordActivity.this);
+		dataServiceHelper = new DataServiceHelper() {
+
+			@Override
+			public void preExecute() {
+				if (loadingDialog != null && !loadingDialog.isShowing()) {
+					loadingDialog.show();
+				}
+			}
+
+			@Override
+			public void postExecute(String TAG, Object result, Object... params) {
+				Log.v("tag", "updateView");
+				updateView(result);
+			}
+
+			@Override
+			public Object doInBackground(Object... params) {
+
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				return jsonHelper.parseJson(LibIOUtil.convertStreamToStr(getResources().openRawResource(R.raw.study_record_list_json)));
+				// return null;
+			}
+		};
 	}
 
 	@Override
@@ -28,7 +98,20 @@ public class StudayRecordActivity extends BaseActivity {
 		alreadOver = (Button) findViewById(R.id.already_over_btn);
 		notOver = (Button) findViewById(R.id.not_over_btn);
 
+		listView = (ListView) findViewById(R.id.list_view);
+		adapter = new StudyRecordAdapter(StudayRecordActivity.this, TAG);
+		listView.setAdapter(adapter);
+
 		alreadOver.setSelected(true);
+	}
+
+	public void doNet() {
+		HashMap<String, String> reqMap = new HashMap<String, String>();
+		reqMap.put("mode", "");
+		reqMap.put("type", type + "");
+		jsonHelper.updateParams(getString(R.string.base_url), reqMap, "com.dns.taxchina.service.model.StudyRecordModel");
+		asyncTask = new DataJsonAsyncTask(TAG, dataServiceHelper, jsonHelper);
+		dataPool.execute(asyncTask);
 	}
 
 	@Override
@@ -46,6 +129,8 @@ public class StudayRecordActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				updateBtn(v);
+				type = ALREADOVER_TYEP;
+				doNet();
 			}
 		});
 
@@ -54,14 +139,62 @@ public class StudayRecordActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				updateBtn(v);
+				type = NOTOVER_TYPE;
+				doNet();
 			}
 		});
 
+		doNet();
 	}
 
 	private void updateBtn(View v) {
 		alreadOver.setSelected(false);
 		notOver.setSelected(false);
 		v.setSelected(true);
+	}
+
+	protected void updateView(Object object) {
+		if (loadingDialog != null) {
+			if (loadingDialog.isShowing()) {
+				loadingDialog.dismiss();
+			}
+		}
+//		if (mode == LOAD_MODE || mode == REFRESH_MODE) {
+//		} else if (mode == MORE_MODE) {
+//		}
+
+		if (object == null) {
+//			errorData(mode);
+			return;
+		}
+		if (object instanceof ErrorModel) {// 网络连接失败
+			ErrorModel errorModel = (ErrorModel) object;
+//			errorData(mode);
+			// TODO 提示出网络错误
+			Toast.makeText(StudayRecordActivity.this, ErrorCodeUtil.convertErrorCode(StudayRecordActivity.this, errorModel.getErrorCode()), Toast.LENGTH_SHORT)
+					.show();
+			return;
+		}
+		BaseModel m = (BaseModel) object;// 服务器返回错误
+		if (m.getResult() > 0) {
+			// TODO 提示出服务器端错误。
+//			errorData(mode);
+			Toast.makeText(StudayRecordActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		StudyRecordModel studyRecordModel = (StudyRecordModel) object;
+		adapter.refresh(studyRecordModel.getDataList());
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (asyncTask != null) {
+			asyncTask.cancel(true);
+		}
+		if (loadingDialog != null) {
+			loadingDialog = null;
+		}
 	}
 }
