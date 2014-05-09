@@ -95,7 +95,7 @@
                 android:paddingLeft="25dp"
                 android:paddingRight="25dp"
                 android:paddingTop="5dp"
-                android:text="会员卡学习卡激活"
+                android:text="允许非wifi网络下载"
                 android:textSize="16sp" />
 
             <View style="@style/line_style" />
