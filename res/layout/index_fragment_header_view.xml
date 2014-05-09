@@ -3,20 +3,26 @@
     android:layout_width="fill_parent"
     android:layout_height="155dp" >
 
-    <com.dns.taxchina.ui.widget.IndexViewPager
-        android:id="@+id/view_pager"
+    <RelativeLayout
+        android:id="@+id/head_layout"
         android:layout_width="fill_parent"
-        android:layout_height="155dp" />
+        android:layout_height="155dp" >
 
-    <com.dns.taxchina.ui.widget.CirclePageIndicator
-        android:id="@+id/indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:paddingBottom="12dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="17dp"
-        android:paddingTop="5dp" />
+        <com.dns.taxchina.ui.widget.IndexViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="155dp" />
+
+        <com.dns.taxchina.ui.widget.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="17dp"
+            android:paddingTop="5dp" />
+    </RelativeLayout>
 
 </RelativeLayout>
