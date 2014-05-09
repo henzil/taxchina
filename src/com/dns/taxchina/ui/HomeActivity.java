@@ -162,5 +162,4 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 		DownloadTaskManager.getInstance(this).stop();
 		super.onDestroy();
 	}
-
 }
