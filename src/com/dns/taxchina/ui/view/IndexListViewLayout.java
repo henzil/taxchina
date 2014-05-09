@@ -1,14 +1,21 @@
 package com.dns.taxchina.ui.view;
 
 import it.sephiroth.android.library.widget.HorizontalVariableListView;
+
 import java.util.List;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.model.BaseItemModel;
+import com.dns.taxchina.ui.DetailActivity;
 import com.dns.taxchina.ui.adapter.IndexListViewAdapter;
+import com.dns.taxchina.ui.adapter.IndexListViewAdapter.ViewHolder;
 
 /**
  * @author fubiao
@@ -32,6 +39,18 @@ public class IndexListViewLayout extends LinearLayout implements IndexListElemen
 	public void initView(Context context) {
 		view = LayoutInflater.from(context).inflate(R.layout.index_listview_layout, this, true);
 		listView = (HorizontalVariableListView) view.findViewById(R.id.horizontal_list_view);
+
+		listView.setOnItemClickedListener(new HorizontalVariableListView.OnItemClickedListener() {
+
+			@Override
+			public boolean onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				BaseItemModel model = ((ViewHolder) arg1.getTag()).model;
+				Intent intent = new Intent(getContext(), DetailActivity.class);
+				intent.putExtra(DetailActivity.DETAIL_MODEL, model);
+				getContext().startActivity(intent);
+				return false;
+			}
+		});
 	}
 
 	@SuppressWarnings("unchecked")
