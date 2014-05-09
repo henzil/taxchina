@@ -28,7 +28,7 @@ import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
  * @version create time:2014-5-9_下午1:36:57
  * @Description 学习记录Activity
  */
-public class StudayRecordActivity extends BaseActivity {
+public class StudyRecordActivity extends BaseActivity {
 
 	private TextView back;
 	private Button alreadOver, notOver;
@@ -61,7 +61,7 @@ public class StudayRecordActivity extends BaseActivity {
 		});
 
 		dataPool = new DataAsyncTaskPool();
-		jsonHelper = new ModelHelper(StudayRecordActivity.this);
+		jsonHelper = new ModelHelper(StudyRecordActivity.this);
 		dataServiceHelper = new DataServiceHelper() {
 
 			@Override
@@ -99,7 +99,7 @@ public class StudayRecordActivity extends BaseActivity {
 		notOver = (Button) findViewById(R.id.not_over_btn);
 
 		listView = (ListView) findViewById(R.id.list_view);
-		adapter = new StudyRecordAdapter(StudayRecordActivity.this, TAG);
+		adapter = new StudyRecordAdapter(StudyRecordActivity.this, TAG);
 		listView.setAdapter(adapter);
 
 		alreadOver.setSelected(true);
@@ -171,7 +171,7 @@ public class StudayRecordActivity extends BaseActivity {
 			ErrorModel errorModel = (ErrorModel) object;
 //			errorData(mode);
 			// TODO 提示出网络错误
-			Toast.makeText(StudayRecordActivity.this, ErrorCodeUtil.convertErrorCode(StudayRecordActivity.this, errorModel.getErrorCode()), Toast.LENGTH_SHORT)
+			Toast.makeText(StudyRecordActivity.this, ErrorCodeUtil.convertErrorCode(StudyRecordActivity.this, errorModel.getErrorCode()), Toast.LENGTH_SHORT)
 					.show();
 			return;
 		}
@@ -179,7 +179,7 @@ public class StudayRecordActivity extends BaseActivity {
 		if (m.getResult() > 0) {
 			// TODO 提示出服务器端错误。
 //			errorData(mode);
-			Toast.makeText(StudayRecordActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(StudyRecordActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
 			return;
 		}
 

@@ -126,10 +126,12 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				BaseItemModel model = ((ViewHolder) view.getTag()).model;
-				Intent intent = new Intent(FindResultActivity.this, DetailActivity.class);
-				intent.putExtra(DetailActivity.DETAIL_MODEL, model);
-				startActivity(intent);
+				if (view.getTag() instanceof ViewHolder) {
+					BaseItemModel model = ((ViewHolder) view.getTag()).model;
+					Intent intent = new Intent(FindResultActivity.this, DetailActivity.class);
+					intent.putExtra(DetailActivity.DETAIL_MODEL, model);
+					startActivity(intent);
+				}
 			}
 		});
 

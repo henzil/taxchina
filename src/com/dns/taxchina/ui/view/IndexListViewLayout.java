@@ -44,10 +44,12 @@ public class IndexListViewLayout extends LinearLayout implements IndexListElemen
 
 			@Override
 			public boolean onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				BaseItemModel model = ((ViewHolder) arg1.getTag()).model;
-				Intent intent = new Intent(getContext(), DetailActivity.class);
-				intent.putExtra(DetailActivity.DETAIL_MODEL, model);
-				getContext().startActivity(intent);
+				if (arg1.getTag() instanceof ViewHolder) {
+					BaseItemModel model = ((ViewHolder) arg1.getTag()).model;
+					Intent intent = new Intent(getContext(), DetailActivity.class);
+					intent.putExtra(DetailActivity.DETAIL_MODEL, model);
+					getContext().startActivity(intent);
+				}
 				return false;
 			}
 		});
