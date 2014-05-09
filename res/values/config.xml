@@ -2,6 +2,6 @@
 <resources>
 
     <!-- 访问服务器端url -->
-    <string name="base_url">http://www.baidu.com</string>
+    <string name="base_url">http://tz1.taxchina.com/wcm/cswsp/app/index.aspx</string>
 
 </resources>
