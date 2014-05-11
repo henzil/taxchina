@@ -60,6 +60,13 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
+        
+        <!-- 学员中心web -->
+        <activity
+            android:name="com.dns.taxchina.ui.CenterDetailActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <!-- 登录 -->
         <activity

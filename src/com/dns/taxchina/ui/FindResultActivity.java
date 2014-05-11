@@ -10,7 +10,6 @@ import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
 import netlib.net.DataMode;
 import netlib.util.ErrorCodeUtil;
-import netlib.util.LibIOUtil;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
@@ -87,13 +86,13 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 			@Override
 			public Object doInBackground(Object... params) {
 
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				return jsonHelper.parseJson(LibIOUtil.convertStreamToStr(getResources().openRawResource(R.raw.find_result_activity_json)));
-				// return null;
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//				return jsonHelper.parseJson(LibIOUtil.convertStreamToStr(getResources().openRawResource(R.raw.find_result_activity_json)));
+				return null;
 			}
 		};
 	}
