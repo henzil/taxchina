@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
-import com.dns.taxchina.service.model.BaseItemModel;
+import com.dns.taxchina.service.model.VideoModel;
 
 /**
  * @author fubiao
@@ -21,19 +21,19 @@ import com.dns.taxchina.service.model.BaseItemModel;
 public class StudyRecordAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<BaseItemModel> list = new ArrayList<BaseItemModel>();
+	private List<VideoModel> list = new ArrayList<VideoModel>();
 
 	public StudyRecordAdapter(Context context, String TAG) {
 		this.context = context;
 	}
 
-	public void refresh(List<BaseItemModel> arg0) {
+	public void refresh(List<VideoModel> arg0) {
 		list.clear();
 		list.addAll(arg0);
 		notifyDataSetChanged();
 	}
 
-	public void addData(List<BaseItemModel> arg0) {
+	public void addData(List<VideoModel> arg0) {
 		list.addAll(arg0);
 		notifyDataSetChanged();
 	}
@@ -44,7 +44,7 @@ public class StudyRecordAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public BaseItemModel getItem(int position) {
+	public VideoModel getItem(int position) {
 		return list.get(position);
 	}
 
@@ -70,7 +70,7 @@ public class StudyRecordAdapter extends BaseAdapter {
 	public class ViewHolder {
 		private TextView title, text;
 		private View line;
-		public BaseItemModel model;
+		public VideoModel model;
 
 		public ViewHolder(View view) {
 			title = (TextView) view.findViewById(R.id.study_record_item_title_text);
@@ -78,10 +78,10 @@ public class StudyRecordAdapter extends BaseAdapter {
 			line = view.findViewById(R.id.study_record_item_line);
 		}
 
-		public void update(final BaseItemModel baseItemModel, int positon) {
+		public void update(final VideoModel baseItemModel, int positon) {
 			model = baseItemModel;
 			title.setText(model.getTitle());
-			text.setText(model.getInfo());
+			text.setText("" + model.getDownloadPercent());
 
 			if (positon == getCount() - 1) {
 				line.setVisibility(View.INVISIBLE);
