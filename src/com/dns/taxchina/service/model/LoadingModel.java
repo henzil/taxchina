@@ -1,0 +1,1 @@
+package com.dns.taxchina.service.model;import netlib.model.BaseModel;/** * @author henzil * @version create time:2014-4-24_下午2:39:33 * @Description 启动页 model */public class LoadingModel extends BaseModel {	private static final long serialVersionUID = 962872886101106200L;}

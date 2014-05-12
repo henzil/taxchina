@@ -100,13 +100,13 @@ public class LoginActivity extends BaseActivity {
 	@Override
 	protected void initWidgetActions() {
 		back.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
-		
+
 		login.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -171,6 +171,7 @@ public class LoginActivity extends BaseActivity {
 
 		LoginResultModel loginResultModel = (LoginResultModel) object;
 		LoginUtil.saveUserId(LoginActivity.this, loginResultModel.getUserId());
+		LoginUtil.saveUserName(LoginActivity.this, userName);
 		finish();
 	}
 

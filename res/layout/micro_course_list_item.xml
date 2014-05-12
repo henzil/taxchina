@@ -26,7 +26,7 @@
         android:id="@+id/micro_course_item_title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="25dp"
         android:layout_toLeftOf="@+id/micro_course_arrow_img"

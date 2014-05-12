@@ -46,6 +46,7 @@ public class CourseCollectionActivity extends BaseActivity {
 			}
 			if (courseModels == null || courseModels.size() == 0) {
 //				emptyFailView(getString(R.string.collect_empty));
+				adapter.refresh(courseModels);
 			} else {
 				adapter.refresh(courseModels);
 			}

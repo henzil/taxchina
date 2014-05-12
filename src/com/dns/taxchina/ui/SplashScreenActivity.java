@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import netlib.constant.BaseApiConstant;
 import netlib.helper.DataServiceHelper;
-import netlib.model.BaseModel;
 import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
 import android.content.Intent;
@@ -13,6 +12,7 @@ import android.view.KeyEvent;
 
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.helper.ModelHelper;
+import com.dns.taxchina.service.model.LoadingModel;
 
 /**
  * @author fubiao
@@ -78,13 +78,13 @@ public class SplashScreenActivity extends BaseActivity {
 		reqMap.put("mode", "1");
 		reqMap.put(BaseApiConstant.CONNECTION_TIMEOUT, "" + 5000);
 		reqMap.put(BaseApiConstant.SOCKET_TIMEOUT, "" + 5000);
-		jsonHelper.updateParams(getString(R.string.base_url), reqMap, "netlib.model.BaseModel");
+		jsonHelper.updateParams(getString(R.string.base_url), reqMap, "com.dns.taxchina.service.model.LoadingModel");
 		asyncTask = new DataJsonAsyncTask(TAG, dataServiceHelper, jsonHelper);
 		dataPool.execute(asyncTask);
 	}
 
 	protected void updateView(Object object) {
-		BaseModel baseModel = (BaseModel) object;
+		LoadingModel model = (LoadingModel) object;
 		mHandler.postDelayed(new Runnable() {
 
 			@Override
