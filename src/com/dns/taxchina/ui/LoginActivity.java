@@ -7,9 +7,12 @@ import netlib.model.BaseModel;
 import netlib.model.ErrorModel;
 import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
+import netlib.util.AppUtil;
 import netlib.util.ErrorCodeUtil;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.service.model.LoginResultModel;
+import com.dns.taxchina.ui.constant.LoginBroadcastConstant;
 import com.dns.taxchina.ui.util.LoginUtil;
 
 /**
@@ -42,8 +46,12 @@ public class LoginActivity extends BaseActivity {
 	private EditText userNameEdit, pswdEdit;
 	private Button login;
 
+	private String packageName;
+
 	@Override
 	protected void initData() {
+		packageName = AppUtil.getPackageName(this);
+
 		loadingDialog.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -75,12 +83,13 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public Object doInBackground(Object... params) {
 
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//				return jsonHelper.parseJson(LibIOUtil.convertStreamToStr(getResources().openRawResource(R.raw.login_activity_json)));
+				// try {
+				// Thread.sleep(1000);
+				// } catch (InterruptedException e) {
+				// e.printStackTrace();
+				// }
+				// return
+				// jsonHelper.parseJson(LibIOUtil.convertStreamToStr(getResources().openRawResource(R.raw.login_activity_json)));
 				return null;
 			}
 		};
@@ -146,17 +155,17 @@ public class LoginActivity extends BaseActivity {
 				loadingDialog.dismiss();
 			}
 		}
-//		if (mode == LOAD_MODE || mode == REFRESH_MODE) {
-//		} else if (mode == MORE_MODE) {
-//		}
+		// if (mode == LOAD_MODE || mode == REFRESH_MODE) {
+		// } else if (mode == MORE_MODE) {
+		// }
 
 		if (object == null) {
-//			errorData(mode);
+			// errorData(mode);
 			return;
 		}
 		if (object instanceof ErrorModel) {// 网络连接失败
 			ErrorModel errorModel = (ErrorModel) object;
-//			errorData(mode);
+			// errorData(mode);
 			// TODO 提示出网络错误
 			Toast.makeText(LoginActivity.this, ErrorCodeUtil.convertErrorCode(LoginActivity.this, errorModel.getErrorCode()), Toast.LENGTH_SHORT).show();
 			return;
@@ -164,15 +173,24 @@ public class LoginActivity extends BaseActivity {
 		BaseModel m = (BaseModel) object;// 服务器返回错误
 		if (m.getResult() > 0) {
 			// TODO 提示出服务器端错误。
-//			errorData(mode);
+			// errorData(mode);
 			Toast.makeText(LoginActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
 			return;
 		}
 
 		LoginResultModel loginResultModel = (LoginResultModel) object;
+		sendLoginCast();
 		LoginUtil.saveUserId(LoginActivity.this, loginResultModel.getUserId());
 		LoginUtil.saveUserName(LoginActivity.this, userName);
 		finish();
+	}
+
+	private void sendLoginCast() {
+		Intent intent = new Intent(packageName + LoginBroadcastConstant.LOGIN_INTENT_FILTER);
+		Bundle bundle = new Bundle();
+		bundle.putInt(LoginBroadcastConstant.IS_LOGIN_BUNDLE_KEY, LoginBroadcastConstant.LOGIN_SUCCESS_TAG);
+		intent.putExtras(bundle);
+		sendBroadcast(intent);
 	}
 
 	@Override

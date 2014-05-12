@@ -51,10 +51,10 @@ public class StudyRecordActivity extends BaseActivity {
 	protected DataServiceHelper dataServiceHelper;
 
 	protected ModelHelper jsonHelper;
-	
+
 	private List<VideoModel> doneList = new ArrayList<VideoModel>();
 	private List<VideoModel> unDoneList = new ArrayList<VideoModel>();
-	
+
 	private DownLoadBroadcastReceiver broadcastReceiver;
 
 	@Override
@@ -69,10 +69,10 @@ public class StudyRecordActivity extends BaseActivity {
 				return true;
 			}
 		});
-		
+
 		broadcastReceiver = new DownLoadBroadcastReceiver();
 		registerReceiver(broadcastReceiver, new IntentFilter(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER));
-		
+
 	}
 
 	@Override
@@ -90,19 +90,19 @@ public class StudyRecordActivity extends BaseActivity {
 	}
 
 	public void initDBData() {
-		//  数据库拿取数据
+		// 数据库拿取数据
 		unDoneList.clear();
 		doneList.clear();
 		VideoDAO videoDAO = new VideoDAO(this);
 		List<VideoModel> list = videoDAO.findAll();
-		for(VideoModel model : list){
-			if(model.getDownloadPercent()<100){
+		for (VideoModel model : list) {
+			if (model.getDownloadPercent() < 100) {
 				unDoneList.add(model);
 			} else {
 				doneList.add(model);
 			}
 		}
-		adapter.refresh(type == ALREADOVER_TYEP? doneList : unDoneList);
+		adapter.refresh(type == ALREADOVER_TYEP ? doneList : unDoneList);
 	}
 
 	@Override
@@ -134,15 +134,17 @@ public class StudyRecordActivity extends BaseActivity {
 				adapter.refresh(unDoneList);
 			}
 		});
-		
+
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				if(type == ALREADOVER_TYEP && arg1.getTag() instanceof StudyRecordAdapter.ViewHolder){
+				if (type == ALREADOVER_TYEP && arg1.getTag() instanceof StudyRecordAdapter.ViewHolder) {
 					StudyRecordAdapter.ViewHolder holder = (StudyRecordAdapter.ViewHolder) arg1.getTag();
 					Log.e("tag", "holder.model.getVideoPath(); = " + holder.model.getVideoPath());
-					// TODO 傅彪加一下视频播放跳转。
+					Intent intent = new Intent(StudyRecordActivity.this, VideoActivity.class);
+					intent.putExtra(VideoActivity.VIDEO_MODEL_KEY, holder.model);
+					startActivity(intent);
 				}
 			}
 		});
@@ -162,8 +164,7 @@ public class StudyRecordActivity extends BaseActivity {
 		public void onReceive(Context context, Intent intent) {
 			if (intent != null) {
 				int type = intent.getIntExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, -1);
-				if (type == DownloadTaskContact.DOWNLOADING_TYPE_PERCENT_VALUE
-						|| type == DownloadTaskContact.DOWNLOADING_TYPE_END_VALUE) {
+				if (type == DownloadTaskContact.DOWNLOADING_TYPE_PERCENT_VALUE || type == DownloadTaskContact.DOWNLOADING_TYPE_END_VALUE) {
 					initDBData();
 				}
 			}
@@ -179,7 +180,7 @@ public class StudyRecordActivity extends BaseActivity {
 		if (loadingDialog != null) {
 			loadingDialog = null;
 		}
-		
+
 		unregisterReceiver(broadcastReceiver);
 	}
 }
