@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_pressed="true" android:state_window_focused="false" android:color="@color/top_bar_bg_color"/>
-    <item android:state_focused="true" android:state_window_focused="false" android:color="@color/top_bar_bg_color"/>
-    <item android:state_selected="true" android:state_window_focused="false" android:color="@color/top_bar_bg_color"/>
-    <item android:state_pressed="true" android:color="@color/top_bar_bg_color"/>
-    <item android:state_focused="true" android:color="@color/top_bar_bg_color"/>
-    <item android:state_selected="true" android:color="@color/top_bar_bg_color"/>
-    <item android:color="@color/white"/>
+    <item android:state_pressed="true" android:state_window_focused="false" android:color="@color/white"/>
+    <item android:state_focused="true" android:state_window_focused="false" android:color="@color/white"/>
+    <item android:state_selected="true" android:state_window_focused="false" android:color="@color/white"/>
+    <item android:state_pressed="true" android:color="@color/white"/>
+    <item android:state_focused="true" android:color="@color/white"/>
+    <item android:state_selected="true" android:color="@color/white"/>
+    <item android:color="@color/top_bar_bg_color"/>
 
 </selector>
