@@ -12,8 +12,10 @@ import android.webkit.WebViewClient;
 
 import com.dns.taxchina.service.download.DownloadTaskManager;
 import com.dns.taxchina.service.download.VideoDAO;
+import com.dns.taxchina.service.model.BaseItemModel;
 import com.dns.taxchina.service.model.DownloadTask;
 import com.dns.taxchina.service.model.VideoModel;
+import com.dns.taxchina.ui.util.LoginUtil;
 
 @SuppressLint("SetJavaScriptEnabled")
 @SuppressWarnings("deprecation")
@@ -46,8 +48,8 @@ public class WebViewPlug {
 		mWebView.loadUrl(url);
 	}
 	
-	public void webViewPlug(String url, WebView mWebView, String title) {
-		this.title = title;
+	public void webViewPlug(String url, WebView mWebView, BaseItemModel model) {
+		this.title = model.getTitle();
 		mWebView.setWebViewClient(mWebViewClient);
 		mWebView.getSettings().setJavaScriptEnabled(true);
 		mWebView.getSettings().setPluginsEnabled(true);
@@ -62,6 +64,7 @@ public class WebViewPlug {
 		if (url == null) {
 			url = "";
 		}
+		url = url + "?userId=" + LoginUtil.getUserId(context) + "&from=Android" + "&docId="+model.getId();
 		mWebView.loadUrl(url);
 
 	}

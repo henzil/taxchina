@@ -46,16 +46,23 @@ public class CenterDetailActivity extends BaseActivity {
 		title = (TextView) findViewById(R.id.title_text);
 		back = (TextView) findViewById(R.id.back_text);
 		webView = (WebView) findViewById(R.id.web_view);
-		plug.webViewPlug(url, webView, "title");
 
 		if (type == ACTIVATION_TYPE) {
 			title.setText("会员卡激活");
+			// TODO
+			plug.webViewPlug(url, webView);
 		} else if (type == SUGGESTION_TYPE) {
 			title.setText("意见反馈");
+			// TODO
+			plug.webViewPlug(url, webView);
 		} else if (type == ABOUT_US_TYPE) {
 			title.setText("关于我们");
+			// TODO
+			plug.webViewPlug(url, webView);
 		} else if (type == CONTANCT_US_TYPE) {
 			title.setText("联系我们");
+			// TODO
+			plug.webViewPlug(url, webView);
 		}
 	}
 
