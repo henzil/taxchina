@@ -3,15 +3,17 @@ package com.dns.taxchina.ui.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
+import com.dns.taxchina.service.download.DownloadTaskManager;
 import com.dns.taxchina.service.model.VideoModel;
+import com.dns.taxchina.ui.StudyRecordActivity;
 
 /**
  * @author fubiao
@@ -20,11 +22,14 @@ import com.dns.taxchina.service.model.VideoModel;
  */
 public class StudyRecordAdapter extends BaseAdapter {
 
-	private Context context;
+	private StudyRecordActivity context;
 	private List<VideoModel> list = new ArrayList<VideoModel>();
+	
+	private String currentVideoId = null;
 
-	public StudyRecordAdapter(Context context, String TAG) {
+	public StudyRecordAdapter(StudyRecordActivity context, String TAG) {
 		this.context = context;
+		currentVideoId = DownloadTaskManager.getInstance(context).downloadingId();
 	}
 
 	public void refresh(List<VideoModel> arg0) {
@@ -71,22 +76,34 @@ public class StudyRecordAdapter extends BaseAdapter {
 		private TextView title, text;
 		private View line;
 		public VideoModel model;
+		private Button studyRecordBtn;
 
 		public ViewHolder(View view) {
 			title = (TextView) view.findViewById(R.id.study_record_item_title_text);
 			text = (TextView) view.findViewById(R.id.study_record_item_info_text);
 			line = view.findViewById(R.id.study_record_item_line);
+			studyRecordBtn = (Button) view.findViewById(R.id.study_record_item_btn);
 		}
 
 		public void update(final VideoModel baseItemModel, int positon) {
 			model = baseItemModel;
 			title.setText(model.getTitle());
-			text.setText("" + model.getDownloadPercent());
+			text.setText("" + model.getDownloadPercent() + "%");
 
 			if (positon == getCount() - 1) {
 				line.setVisibility(View.INVISIBLE);
 			} else {
 				line.setVisibility(View.VISIBLE);
+			}
+			if(context.type == StudyRecordActivity.ALREADOVER_TYEP){
+				studyRecordBtn.setVisibility(View.GONE);
+			} else {
+				studyRecordBtn.setVisibility(View.VISIBLE);
+				if(currentVideoId != null && currentVideoId.equals(model.getId())){
+					studyRecordBtn.setText("暂停");
+				} else {
+					studyRecordBtn.setText("下载");
+				}
 			}
 		}
 	}

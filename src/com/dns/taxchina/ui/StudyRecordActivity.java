@@ -12,18 +12,23 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
+import com.dns.taxchina.service.download.DownloadMode;
 import com.dns.taxchina.service.download.DownloadTaskContact;
 import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.service.model.VideoModel;
 import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
+import com.dns.taxchina.ui.adapter.StudyRecordAdapter.ViewHolder;
 
 /**
  * @author fubiao
@@ -129,6 +134,18 @@ public class StudyRecordActivity extends BaseActivity {
 				updateBtn(v);
 				type = NOTOVER_TYPE;
 				adapter.refresh(unDoneList);
+			}
+		});
+		
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				if(type == ALREADOVER_TYEP && arg1.getTag() instanceof StudyRecordAdapter.ViewHolder){
+					StudyRecordAdapter.ViewHolder holder = (StudyRecordAdapter.ViewHolder) arg1.getTag();
+					Log.e("tag", "holder.model.getVideoPath(); = " + holder.model.getVideoPath());
+					// TODO 傅彪加一下视频播放跳转。
+				}
 			}
 		});
 
