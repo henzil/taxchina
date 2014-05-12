@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -101,8 +102,24 @@ public class StudyRecordAdapter extends BaseAdapter {
 				studyRecordBtn.setVisibility(View.VISIBLE);
 				if(currentVideoId != null && currentVideoId.equals(model.getId())){
 					studyRecordBtn.setText("暂停");
+					studyRecordBtn.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO 暂停一个下载
+							DownloadTaskManager.getInstance(context).pauseCurrentTask();
+						}
+					});
 				} else {
 					studyRecordBtn.setText("下载");
+					studyRecordBtn.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO 暂停一个下载并去下载一个新的。
+							DownloadTaskManager.getInstance(context).pauseCurrentTask(model);
+						}
+					});
 				}
 			}
 		}

@@ -23,18 +23,18 @@ import com.dns.taxchina.service.model.DownloadTask;
 import com.dns.taxchina.service.model.VideoModel;
 
 public class DownloadTaskManager {
-	
+
 	private static DownloadTaskManager downloadTaskManager;
 
 	private Activity context;
 
 	// 线程池，用于管理多个下载线程
 	private ExecutorService executorService;
-	
+
 	// 正在下载的 videoId；
 	private String videoId = null;
-	
-	private DownloadMode dataMode = DownloadMode.DOWNLOAD_END; 
+
+	private DownloadMode dataMode = DownloadMode.DOWNLOAD_END;
 
 	public static DownloadTaskManager getInstance(Activity context) {
 		if (downloadTaskManager == null) {
@@ -77,9 +77,38 @@ public class DownloadTaskManager {
 			executorService.submit(new DownLoadBytes(context, downloadTask, video));
 		}
 	}
-	
+
 	// 执行暂停某一个
-	public void pauseCurrentTask(String videoId){
+	public void pauseCurrentTask(VideoModel model) {
+		executorService.shutdownNow();
+		dataMode = DownloadMode.PAUSE;
+		if (model != null) {
+			Log.e("tag", "isStop () = " + isStop());
+			executorService = Executors.newFixedThreadPool(1);
+			DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
+			VideoDAO videoDAO = new VideoDAO(context);
+			// 获取数据库中的所有未完成的任务
+			ArrayList<DownloadTask> arrayList = downloadTaskDAO.findAll();
+			for (int i = 0; i < arrayList.size(); i++) {
+				DownloadTask t = arrayList.get(i);
+				if (model.getId().equals(t.getVideo().getId())) {
+					arrayList.remove(i);
+					arrayList.add(0, t);
+				}
+			}
+			// 将所有未完成的任务一一加入线程池
+			Log.d("DownloadTaskManager", "unfinished task=" + arrayList.size());
+			for (int i = 0; i < arrayList.size(); i++) {
+				DownloadTask downloadTask = arrayList.get(i);
+				Log.v("DownloadTaskManager", "downloadTask.toString() = " + downloadTask.toString());
+				VideoModel video = videoDAO.findById(downloadTask.getVideo().getId());
+				executorService.submit(new DownLoadBytes(context, downloadTask, video));
+			}
+		}
+	}
+
+	// 执行暂停某一个
+	public void pauseCurrentTask() {
 		dataMode = DownloadMode.PAUSE;
 	}
 
@@ -100,8 +129,8 @@ public class DownloadTaskManager {
 	public boolean isStop() {
 		return executorService.isShutdown();
 	}
-	
-	public String downloadingId(){
+
+	public String downloadingId() {
 		return videoId;
 	}
 
@@ -147,7 +176,7 @@ public class DownloadTaskManager {
 			Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ url = " + url);
 			HttpGet httpGet = new HttpGet(url);
 			videoId = video.getId();
-			
+
 			try {
 				// TODO 状态处理 500 200
 				int res = 0;
@@ -194,7 +223,7 @@ public class DownloadTaskManager {
 
 						for (; total < fileLength;) {
 							// 如何停止线程？
-							if(dataMode == DownloadMode.PAUSE){
+							if (dataMode == DownloadMode.PAUSE || !videoId.equals(video.getId())) {
 								dataMode = DownloadMode.DOWNLOAD_END;
 								fileOutputStream.close();
 								httpClient.getConnectionManager().shutdown();
@@ -214,7 +243,7 @@ public class DownloadTaskManager {
 									oldCount += count;
 									fileOutputStream.write(b, 0, count);
 									if ((Float.parseFloat(Integer.toString(oldCount)) / Float.parseFloat(Long
-											.toString(fileLength))) > 0.05) {
+											.toString(fileLength))) > 0.01) {
 										oldCount = 0;
 										// 广播通知主线程重新绘制相应的进度条
 										int progressBarState = (int) ((Float.parseFloat(Long.toString(total)) / Float
@@ -233,7 +262,7 @@ public class DownloadTaskManager {
 										intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT, progressBarState);
 										intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT_ID, video.getId());
 										context.sendBroadcast(intent);
-										
+
 									}
 								}
 							}
