@@ -9,7 +9,9 @@ import android.webkit.HttpAuthHandler;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
+import com.dns.taxchina.R;
 import com.dns.taxchina.service.download.DownloadTaskManager;
 import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.model.BaseItemModel;
@@ -136,23 +138,38 @@ public class WebViewPlug {
 			Log.e("tag", "type = "+type);
 			Log.e("tag", "id = "+id);
 			VideoDAO videoDAO = new VideoDAO(context);
-			VideoModel videoModel = new VideoModel();
-			videoModel.setId(id);
-			videoModel.setUrl(url);
-			videoModel.setTitle(title);
-			videoDAO.add(videoModel);
-			DownloadTask downloadTask = new DownloadTask();
-        	downloadTask.setFileId(id);
-	        downloadTask.setVideo(videoModel);
-			DownloadTaskManager.getInstance(context).addTask(downloadTask, videoModel);
+			
+			VideoModel videoModel = videoDAO.findById(id);
+			if(videoModel == null){
+				// 去下载
+				videoModel = new VideoModel();
+				videoModel.setId(id);
+				videoModel.setUrl(url);
+				videoModel.setTitle(title);
+				videoDAO.add(videoModel);
+				DownloadTask downloadTask = new DownloadTask();
+	        	downloadTask.setFileId(id);
+		        downloadTask.setVideo(videoModel);
+				DownloadTaskManager.getInstance(context).addTask(downloadTask, videoModel);
+			} else {
+				if(videoModel.getDownloadPercent() < 100){
+					// 正在下载中，弹出提示。
+					Toast.makeText(context, R.string.this_video_downloading, Toast.LENGTH_LONG).show();
+					
+				} else {
+					// TODO 去播放页面
+					
+				}
+			}
+			
 		}
 	}
 
 	final class LoginClickListener {
 		@JavascriptInterface
 		public void doLogin() {
-			// TODO
 			Log.e("tag", "执行登陆");
+			LoginUtil.gotoLogin(context);
 		}
 	}
 

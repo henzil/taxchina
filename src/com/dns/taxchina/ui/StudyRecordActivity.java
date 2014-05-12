@@ -22,13 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
-import com.dns.taxchina.service.download.DownloadMode;
 import com.dns.taxchina.service.download.DownloadTaskContact;
 import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.service.model.VideoModel;
 import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
-import com.dns.taxchina.ui.adapter.StudyRecordAdapter.ViewHolder;
 
 /**
  * @author fubiao

@@ -12,6 +12,9 @@
     <string name="collect_success">收藏成功</string>
     <string name="cancel_collect_success">取消收藏成功</string>
     
+    <!-- 详情页 -->
+    <string name="this_video_downloading">该视频正在下载中，请稍后</string>
+    
     <!-- 视频 -->
     <string name="play_error">播放错误</string>
     <string name="play_please_waiting">正在缓冲，请稍后\u2026</string>
