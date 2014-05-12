@@ -9,7 +9,7 @@
     <color name="micro_course_title_text_color">#8A8A8A</color>
     <color name="index_title_more_color">#005C7C</color>
     <color name="index_listview_item_text_color">#5E5E5E</color>
-    <color name="top_bar_bg_color">#005C7E</color>
+    <color name="top_bar_bg_color">#015b7e</color>
     <color name="input_hint_color">#9C9C9C</color>
     
     <!-- 咨询 tab 文字选中和非选中的颜色值 -->

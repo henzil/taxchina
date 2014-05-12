@@ -8,7 +8,6 @@ import netlib.model.ErrorModel;
 import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
 import netlib.util.ErrorCodeUtil;
-import netlib.util.LibIOUtil;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.text.TextUtils;
@@ -76,13 +75,13 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public Object doInBackground(Object... params) {
 
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				return jsonHelper.parseJson(LibIOUtil.convertStreamToStr(getResources().openRawResource(R.raw.login_activity_json)));
-				// return null;
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//				return jsonHelper.parseJson(LibIOUtil.convertStreamToStr(getResources().openRawResource(R.raw.login_activity_json)));
+				return null;
 			}
 		};
 	}
@@ -133,7 +132,7 @@ public class LoginActivity extends BaseActivity {
 
 	public void doNet() {
 		HashMap<String, String> reqMap = new HashMap<String, String>();
-		reqMap.put("mode", "6");
+		reqMap.put("mode", "8");
 		reqMap.put("userName", userName);
 		reqMap.put("password", password);
 		jsonHelper.updateParams(getString(R.string.base_url), reqMap, "com.dns.taxchina.service.model.LoginResultModel");

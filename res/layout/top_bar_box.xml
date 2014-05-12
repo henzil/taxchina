@@ -25,11 +25,11 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:drawableLeft="@drawable/back"
+        android:drawableLeft="@drawable/back_btn"
         android:drawablePadding="3dp"
         android:gravity="center_vertical"
         android:text="@string/back"
         android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
 </RelativeLayout>

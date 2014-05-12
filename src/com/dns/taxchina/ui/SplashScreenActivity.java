@@ -2,16 +2,17 @@ package com.dns.taxchina.ui;
 
 import java.util.HashMap;
 
+import netlib.constant.BaseApiConstant;
+import netlib.helper.DataServiceHelper;
 import netlib.model.BaseModel;
-import netlib.net.HttpClientUtil;
-import netlib.util.ErrorCodeUtil;
+import netlib.net.DataAsyncTaskPool;
+import netlib.net.DataJsonAsyncTask;
 import android.content.Intent;
 import android.os.Handler;
 import android.view.KeyEvent;
 
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.helper.ModelHelper;
-import com.dns.taxchina.service.model.UpdateModel;
 
 /**
  * @author fubiao
@@ -20,8 +21,11 @@ import com.dns.taxchina.service.model.UpdateModel;
  */
 public class SplashScreenActivity extends BaseActivity {
 
+	protected DataJsonAsyncTask asyncTask;
+	protected DataAsyncTaskPool dataPool;
+	protected DataServiceHelper dataServiceHelper;
+
 	private ModelHelper jsonHelper;
-	private Handler initHandler;
 
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -29,11 +33,7 @@ public class SplashScreenActivity extends BaseActivity {
 			case 0:
 				Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
 				startActivity(intent);
-				break;
-			case 1:
-				if (!isFinishing()) {
-					finish();
-				}
+				finish();
 			default:
 				break;
 			}
@@ -42,55 +42,56 @@ public class SplashScreenActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
+		dataPool = new DataAsyncTaskPool();
 		jsonHelper = new ModelHelper(SplashScreenActivity.this);
-		initHandler = new Handler();
+		dataServiceHelper = new DataServiceHelper() {
+
+			@Override
+			public void preExecute() {
+
+			}
+
+			@Override
+			public void postExecute(String TAG, Object result, Object... params) {
+				updateView(result);
+			}
+
+			@Override
+			public Object doInBackground(Object... params) {
+				return null;
+			}
+		};
 	}
 
 	@Override
 	protected void initViews() {
 		setContentView(R.layout.splash_screen_activity);
-
-		initNet();
-
-		new Thread() {
-			public void run() {
-
-				mHandler.postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-						mHandler.sendEmptyMessage(0);
-					}
-				}, 1000);
-			};
-		}.start();
 	}
 
 	@Override
 	protected void initWidgetActions() {
-
+		initNet();
 	}
 
 	public void initNet() {
-		new Thread(new Runnable() {
+		HashMap<String, String> reqMap = new HashMap<String, String>();
+		reqMap.put("mode", "1");
+		reqMap.put(BaseApiConstant.CONNECTION_TIMEOUT, "" + 5000);
+		reqMap.put(BaseApiConstant.SOCKET_TIMEOUT, "" + 5000);
+		jsonHelper.updateParams(getString(R.string.base_url), reqMap, "netlib.model.BaseModel");
+		asyncTask = new DataJsonAsyncTask(TAG, dataServiceHelper, jsonHelper);
+		dataPool.execute(asyncTask);
+	}
+
+	protected void updateView(Object object) {
+		BaseModel baseModel = (BaseModel) object;
+		mHandler.postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
-				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("mode", "1");
-				String serverStr = HttpClientUtil.doPostRequest(getString(R.string.base_url), params, SplashScreenActivity.this);
-				if (serverStr != null && !ErrorCodeUtil.isError(serverStr)) {
-					final BaseModel model = (UpdateModel) jsonHelper.parseJson(serverStr);
-					initHandler.post(new Runnable() {
-
-						@Override
-						public void run() {
-							mHandler.sendEmptyMessage(1);
-						}
-					});
-				}
+				mHandler.sendEmptyMessage(0);
 			}
-		}).start();
+		}, 1000);
 	}
 
 	@Override
