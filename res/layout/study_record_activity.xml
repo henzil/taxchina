@@ -88,6 +88,7 @@
         style="@style/listview_style"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_above="@+id/sd_layout"
         android:layout_below="@+id/check_layout" />
 
     <RelativeLayout
@@ -95,15 +96,14 @@
         android:layout_width="fill_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/x_list_view"
         android:background="#005C7E" >
 
         <TextView
             android:id="@+id/available_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_centerInParent="true"
+            android:singleLine="true"
             android:text="总空间300MB/剩余空间150MB  （50%）"
             android:textColor="@color/white" />
     </RelativeLayout>

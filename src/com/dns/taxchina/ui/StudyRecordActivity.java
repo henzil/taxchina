@@ -6,8 +6,12 @@ import java.util.List;
 import netlib.helper.DataServiceHelper;
 import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
+import com.dns.taxchina.service.download.DownloadTaskContact;
 import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.service.model.VideoModel;
@@ -46,6 +51,8 @@ public class StudyRecordActivity extends BaseActivity {
 	
 	private List<VideoModel> doneList = new ArrayList<VideoModel>();
 	private List<VideoModel> unDoneList = new ArrayList<VideoModel>();
+	
+	private DownLoadBroadcastReceiver broadcastReceiver;
 
 	@Override
 	protected void initData() {
@@ -59,37 +66,9 @@ public class StudyRecordActivity extends BaseActivity {
 				return true;
 			}
 		});
-
-//		dataPool = new DataAsyncTaskPool();
-//		jsonHelper = new ModelHelper(StudyRecordActivity.this);
-//		dataServiceHelper = new DataServiceHelper() {
-//
-//			@Override
-//			public void preExecute() {
-//				if (loadingDialog != null && !loadingDialog.isShowing()) {
-//					loadingDialog.show();
-//				}
-//			}
-//
-//			@Override
-//			public void postExecute(String TAG, Object result, Object... params) {
-//				Log.v("tag", "updateView");
-//				updateView(result);
-//			}
-//
-//			@Override
-//			public Object doInBackground(Object... params) {
-//
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//				return jsonHelper.parseJson(LibIOUtil.convertStreamToStr(getResources().openRawResource(R.raw.study_record_list_json)));
-//				// return null;
-//			}
-//		};
 		
+		broadcastReceiver = new DownLoadBroadcastReceiver();
+		registerReceiver(broadcastReceiver, new IntentFilter(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER));
 		
 	}
 
@@ -107,14 +86,8 @@ public class StudyRecordActivity extends BaseActivity {
 		alreadOver.setSelected(true);
 	}
 
-	public void doNet() {
-//		HashMap<String, String> reqMap = new HashMap<String, String>();
-//		reqMap.put("mode", "");
-//		reqMap.put("type", type + "");
-//		jsonHelper.updateParams(getString(R.string.base_url), reqMap, "com.dns.taxchina.service.model.StudyRecordModel");
-//		asyncTask = new DataJsonAsyncTask(TAG, dataServiceHelper, jsonHelper);
-//		dataPool.execute(asyncTask);
-		// TODO 从数据库拿取数据
+	public void initDBData() {
+		//  数据库拿取数据
 		unDoneList.clear();
 		doneList.clear();
 		VideoDAO videoDAO = new VideoDAO(this);
@@ -145,7 +118,7 @@ public class StudyRecordActivity extends BaseActivity {
 			public void onClick(View v) {
 				updateBtn(v);
 				type = ALREADOVER_TYEP;
-				doNet();
+				adapter.refresh(doneList);
 			}
 		});
 
@@ -155,11 +128,11 @@ public class StudyRecordActivity extends BaseActivity {
 			public void onClick(View v) {
 				updateBtn(v);
 				type = NOTOVER_TYPE;
-				doNet();
+				adapter.refresh(unDoneList);
 			}
 		});
 
-		doNet();
+		initDBData();
 	}
 
 	private void updateBtn(View v) {
@@ -168,39 +141,19 @@ public class StudyRecordActivity extends BaseActivity {
 		v.setSelected(true);
 	}
 
-//	protected void updateView(Object object) {
-//		if (loadingDialog != null) {
-//			if (loadingDialog.isShowing()) {
-//				loadingDialog.dismiss();
-//			}
-//		}
-////		if (mode == LOAD_MODE || mode == REFRESH_MODE) {
-////		} else if (mode == MORE_MODE) {
-////		}
-//
-//		if (object == null) {
-////			errorData(mode);
-//			return;
-//		}
-//		if (object instanceof ErrorModel) {// 网络连接失败
-//			ErrorModel errorModel = (ErrorModel) object;
-////			errorData(mode);
-//			// TODO 提示出网络错误
-//			Toast.makeText(StudyRecordActivity.this, ErrorCodeUtil.convertErrorCode(StudyRecordActivity.this, errorModel.getErrorCode()), Toast.LENGTH_SHORT)
-//					.show();
-//			return;
-//		}
-//		BaseModel m = (BaseModel) object;// 服务器返回错误
-//		if (m.getResult() > 0) {
-//			// TODO 提示出服务器端错误。
-////			errorData(mode);
-//			Toast.makeText(StudyRecordActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
-//			return;
-//		}
-//
-//		StudyRecordModel studyRecordModel = (StudyRecordModel) object;
-//		adapter.refresh(studyRecordModel.getDataList());
-//	}
+	private class DownLoadBroadcastReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent != null) {
+				int type = intent.getIntExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, -1);
+				if (type == DownloadTaskContact.DOWNLOADING_TYPE_PERCENT_VALUE
+						|| type == DownloadTaskContact.DOWNLOADING_TYPE_END_VALUE) {
+					initDBData();
+				}
+			}
+		}
+	}
 
 	@Override
 	public void onDestroy() {
@@ -211,5 +164,7 @@ public class StudyRecordActivity extends BaseActivity {
 		if (loadingDialog != null) {
 			loadingDialog = null;
 		}
+		
+		unregisterReceiver(broadcastReceiver);
 	}
 }
