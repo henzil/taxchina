@@ -84,7 +84,6 @@ public class SplashScreenActivity extends BaseActivity {
 	}
 
 	protected void updateView(Object object) {
-		LoadingModel model = (LoadingModel) object;
 		mHandler.postDelayed(new Runnable() {
 
 			@Override
