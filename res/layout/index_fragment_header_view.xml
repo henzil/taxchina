@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="155dp" >
+    android:layout_height="175dp" >
 
     <RelativeLayout
         android:id="@+id/head_layout"
         android:layout_width="fill_parent"
-        android:layout_height="155dp" >
+        android:layout_height="175dp" >
 
         <com.dns.taxchina.ui.widget.IndexViewPager
             android:id="@+id/view_pager"
             android:layout_width="fill_parent"
-            android:layout_height="155dp" />
+            android:layout_height="175dp" />
 
         <com.dns.taxchina.ui.widget.CirclePageIndicator
             android:id="@+id/indicator"

@@ -101,7 +101,7 @@ public class IndexListViewAdapter extends BaseAdapter {
 		public void update(final BaseItemModel model) {
 			this.model = model;
 			title.setText(model.getTitle());
-			pic.setImageResource(R.drawable.default_103x66);
+			pic.setImageResource(R.drawable.default_116x75);
 			if (model.getImage() != null && !model.getImage().equals("")) {
 				AsyncTaskLoaderImage.getInstance(context).loadAsync(TAG, model.getImage(), pic, new BitmapImageCallback() {
 					@Override
@@ -120,7 +120,7 @@ public class IndexListViewAdapter extends BaseAdapter {
 										bitmap.recycle();
 									}
 								} else {
-									pic.setImageResource(R.drawable.default_103x66);
+									pic.setImageResource(R.drawable.default_116x75);
 								}
 							}
 						});

@@ -101,7 +101,7 @@ public class CourseListAdapter extends BaseAdapter {
 			title.setText(model.getTitle());
 			text.setText(model.getInfo());
 
-			icon.setImageResource(R.drawable.default_103x66);
+			icon.setImageResource(R.drawable.default_116x75);
 			if (model.getImage() != null && !model.getImage().equals("")) {
 				AsyncTaskLoaderImage.getInstance(context).loadAsync(TAG, model.getImage(), icon, new BitmapImageCallback() {
 					@Override
@@ -120,7 +120,7 @@ public class CourseListAdapter extends BaseAdapter {
 										bitmap.recycle();
 									}
 								} else {
-									icon.setImageResource(R.drawable.default_103x66);
+									icon.setImageResource(R.drawable.default_116x75);
 								}
 							}
 						});
