@@ -83,14 +83,14 @@
 
             <View style="@style/line_style" />
 
-            <Button
-                android:id="@+id/wifi_btn"
+            <CheckBox
+                android:id="@+id/wifi_checkBox"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:drawablePadding="5dp"
-                android:drawableRight="@drawable/wifi_on"
-                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:button="@null"
+                android:checked="true"
+                android:drawableRight="@drawable/wifi_btn"
                 android:paddingBottom="5dp"
                 android:paddingLeft="25dp"
                 android:paddingRight="25dp"
