@@ -79,6 +79,17 @@
                     android:paddingTop="15dp"
                     android:text="退出登录"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/user_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="55dp"
+                    android:text="小明"
+                    android:textColor="#727272"
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <View style="@style/line_style" />

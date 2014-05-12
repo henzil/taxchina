@@ -53,17 +53,24 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
-        
+
         <!-- 课程收藏 -->
         <activity
             android:name="com.dns.taxchina.ui.CourseCollectionActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
-        
+
         <!-- 学员中心web -->
         <activity
             android:name="com.dns.taxchina.ui.CenterDetailActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <!-- 播放视频 -->
+        <activity
+            android:name="com.dns.taxchina.ui.VideoActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
