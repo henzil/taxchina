@@ -66,7 +66,13 @@ public class WebViewPlug {
 		if (url == null) {
 			url = "";
 		}
-		url = url + "?userId=" + LoginUtil.getUserId(context) + "&from=Android" + "&docId="+model.getId();
+		url = url + "?from=Android&docId="+model.getId();
+		String userId = LoginUtil.getUserId(context);
+		if(userId != null && !userId.equals("") ){
+			url = url + "&userId=" + userId;
+		}
+		
+		Log.e("tag", "url = " + url);
 		mWebView.loadUrl(url);
 
 	}
