@@ -139,10 +139,10 @@ public class WebViewPlug {
 
 	final class VideoClickListener {
 		@JavascriptInterface
-		public void download(String url, String type, String id) {
+		public void download(String url, String id) {
 			// TODO 下载视频方法
 			Log.e("tag", "url = "+url);
-			Log.e("tag", "type = "+type);
+//			Log.e("tag", "type = "+type);
 			Log.e("tag", "id = "+id);
 			VideoDAO videoDAO = new VideoDAO(context);
 			
@@ -170,6 +170,8 @@ public class WebViewPlug {
 			}
 			
 		}
+		
+		
 	}
 
 	final class LoginClickListener {
