@@ -51,7 +51,7 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 
 	protected ModelHelper jsonHelper;
 
-	public static final int PAGE_SIZE = 20;
+	public static final int PAGE_SIZE = 10;
 	public static final String LIST_TITLE = "list_title";
 	public static final String LIST_ID = "list_id";
 
@@ -131,6 +131,7 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 					BaseItemModel model = ((ViewHolder) view.getTag()).model;
 					Intent intent = new Intent(CourseListActivity.this, DetailActivity.class);
 					intent.putExtra(DetailActivity.DETAIL_MODEL, model);
+					intent.putExtra(DetailActivity.DETAIL_TITLE, titleStr);
 					startActivity(intent);
 				}
 			}

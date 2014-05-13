@@ -48,7 +48,7 @@ public class IndexTitleLayout extends LinearLayout implements IndexListElement {
 	}
 
 	@Override
-	public void updateView(Object object, String TAG) {
+	public void updateView(Object object, String TAG, String titleStr) {
 		indexTitleModel = (IndexTitleModel) object;
 		title.setText(indexTitleModel.getTitle());
 		if (indexTitleModel.isHasMore()) {

@@ -11,5 +11,5 @@ public interface IndexListElement {
 
 	void initView(Context context);
 
-	public void updateView(Object object, String TAG);
+	public void updateView(Object object, String TAG, String titleStr);
 }

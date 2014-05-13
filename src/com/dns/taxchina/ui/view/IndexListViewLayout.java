@@ -26,6 +26,7 @@ public class IndexListViewLayout extends LinearLayout implements IndexListElemen
 
 	private View view;
 	private Context context;
+	private String titleStr;
 	private HorizontalVariableListView listView;
 	private IndexListViewAdapter indexListViewAdapter;
 
@@ -48,6 +49,7 @@ public class IndexListViewLayout extends LinearLayout implements IndexListElemen
 					BaseItemModel model = ((ViewHolder) arg1.getTag()).model;
 					Intent intent = new Intent(getContext(), DetailActivity.class);
 					intent.putExtra(DetailActivity.DETAIL_MODEL, model);
+					intent.putExtra(DetailActivity.DETAIL_TITLE, titleStr);
 					getContext().startActivity(intent);
 				}
 				return false;
@@ -57,7 +59,8 @@ public class IndexListViewLayout extends LinearLayout implements IndexListElemen
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void updateView(Object object, String TAG) {
+	public void updateView(Object object, String TAG, String titleStr) {
+		this.titleStr = titleStr;
 		List<BaseItemModel> list = (List<BaseItemModel>) object;
 		indexListViewAdapter = new IndexListViewAdapter(context, TAG);
 		listView.setAdapter(indexListViewAdapter);
