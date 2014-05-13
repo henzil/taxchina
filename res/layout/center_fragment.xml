@@ -77,7 +77,6 @@
                     android:paddingLeft="25dp"
                     android:paddingRight="25dp"
                     android:paddingTop="15dp"
-                    android:text="退出登录"
                     android:textSize="16sp" />
 
                 <TextView
@@ -87,7 +86,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingRight="55dp"
-                    android:text="小明"
                     android:textColor="#727272"
                     android:textSize="16sp" />
             </RelativeLayout>
