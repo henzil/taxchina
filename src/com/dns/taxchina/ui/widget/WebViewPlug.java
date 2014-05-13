@@ -113,6 +113,7 @@ public class WebViewPlug {
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			if (view != null) {
+				Log.e("tag", "shouldOverrideUrlLoading-------url = " + url);
 				view.loadUrl(url);
 			}
 			return true;
