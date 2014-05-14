@@ -13,7 +13,9 @@
     <string name="cancel_collect_success">取消收藏成功</string>
     
     <!-- 详情页 -->
+    <string name="this_video_do_download">已加入下载队列，请稍后</string>
     <string name="this_video_downloading">该视频正在下载中，请稍后</string>
+    <string name="this_video_downloaded">该视频已下载，请去学习记录播放查看</string>
     
     <!-- 视频 -->
     <string name="play_error">播放错误</string>

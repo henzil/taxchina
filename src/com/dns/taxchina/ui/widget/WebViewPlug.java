@@ -23,7 +23,7 @@ import com.dns.taxchina.ui.util.LoginUtil;
 @SuppressWarnings("deprecation")
 public class WebViewPlug {
 	private Activity context;
-	
+
 	private String title;
 
 	public WebViewPlug(Activity context) {
@@ -49,7 +49,7 @@ public class WebViewPlug {
 		}
 		mWebView.loadUrl(url);
 	}
-	
+
 	public void webViewPlug(String url, WebView mWebView, BaseItemModel model) {
 		this.title = model.getTitle();
 		mWebView.setWebViewClient(mWebViewClient);
@@ -66,19 +66,18 @@ public class WebViewPlug {
 		if (url == null) {
 			url = "";
 		}
-		url = url + "?from=Android&docId="+model.getId();
+		url = url + "?from=Android&docId=" + model.getId();
 		String userId = LoginUtil.getUserId(context);
-		if(userId != null && !userId.equals("") ){
+		if (userId != null && !userId.equals("")) {
 			url = url + "&userId=" + userId;
 		}
-		
-		Log.e("tag", "url = " + url);
+//		Log.e("tag", "url = " + url);
 		mWebView.loadUrl(url);
 
 	}
 
 	private WebViewClient mWebViewClient = new WebViewClient() {
-		
+
 		@Override
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 			super.onReceivedError(view, errorCode, description, failingUrl);
@@ -113,7 +112,7 @@ public class WebViewPlug {
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			if (view != null) {
-				Log.e("tag", "shouldOverrideUrlLoading-------url = " + url);
+//				Log.e("tag", "shouldOverrideUrlLoading-------url = " + url);
 				view.loadUrl(url);
 			}
 			return true;
@@ -136,18 +135,15 @@ public class WebViewPlug {
 		this.loadWebViewListener = loadWebViewListener;
 	}
 
-
 	final class VideoClickListener {
 		@JavascriptInterface
 		public void download(String url, String id) {
-			// TODO 下载视频方法
-			Log.e("tag", "url = "+url);
-//			Log.e("tag", "type = "+type);
-			Log.e("tag", "id = "+id);
+			// 下载视频方法
+			Log.e("tag", "url = " + url);
+			Log.e("tag", "id = " + id);
 			VideoDAO videoDAO = new VideoDAO(context);
-			
 			VideoModel videoModel = videoDAO.findById(id);
-			if(videoModel == null){
+			if (videoModel == null) {
 				// 去下载
 				videoModel = new VideoModel();
 				videoModel.setId(id);
@@ -155,23 +151,20 @@ public class WebViewPlug {
 				videoModel.setTitle(title);
 				videoDAO.add(videoModel);
 				DownloadTask downloadTask = new DownloadTask();
-	        	downloadTask.setFileId(id);
-		        downloadTask.setVideo(videoModel);
+				downloadTask.setFileId(id);
+				downloadTask.setVideo(videoModel);
 				DownloadTaskManager.getInstance(context).addTask(downloadTask, videoModel);
+				Toast.makeText(context, R.string.this_video_do_download, Toast.LENGTH_LONG).show();
 			} else {
-				if(videoModel.getDownloadPercent() < 100){
+				if (videoModel.getDownloadPercent() < 100) {
 					// 正在下载中，弹出提示。
 					Toast.makeText(context, R.string.this_video_downloading, Toast.LENGTH_LONG).show();
-					
 				} else {
 					// TODO 去播放页面
-					
+					Toast.makeText(context, R.string.this_video_downloaded, Toast.LENGTH_LONG).show();
 				}
 			}
-			
 		}
-		
-		
 	}
 
 	final class LoginClickListener {
