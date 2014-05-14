@@ -133,6 +133,8 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 				}
 			}
 		});
+		
+		listView.setPullLoadEnable(false);
 
 		onLoadEvent();
 	}
@@ -224,14 +226,17 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 		if (result.isEmpty()) {
 //			listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_NO_DATA);
 //			emptyView(mode);
+			listView.setPullLoadEnable(false);
 			adapter.refresh(result);
 		} else {
 			adapter.refresh(result);
 			result.clear();
 			result = null;
 			if (hasNext) {
+				listView.setPullLoadEnable(true);
 //				listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_MORE);
 			} else {
+				listView.setPullLoadEnable(false);
 //				listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_FINISH);
 			}
 
@@ -240,14 +245,17 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 
 	protected void onMorePostExecute(List<BaseItemModel> result, int mode, boolean hasNext) {
 		if (result.isEmpty()) {
+			listView.setPullLoadEnable(false);
 //			listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_FINISH);
 		} else {
 			adapter.addData(result);
 			result.clear();
 			result = null;
 			if (hasNext) {
+				listView.setPullLoadEnable(true);
 //				listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_MORE);
 			} else {
+				listView.setPullLoadEnable(false);
 //				listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_FINISH);
 			}
 		}

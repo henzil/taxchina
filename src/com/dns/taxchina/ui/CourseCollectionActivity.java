@@ -48,7 +48,7 @@ public class CourseCollectionActivity extends BaseActivity {
 				}
 			}
 			if (courseModels == null || courseModels.size() == 0) {
-//				emptyFailView(getString(R.string.collect_empty));
+				emptyFailView(getString(R.string.collect_empty));
 				adapter.refresh(courseModels);
 			} else {
 				adapter.refresh(courseModels);
@@ -73,6 +73,7 @@ public class CourseCollectionActivity extends BaseActivity {
 	@Override
 	protected void initViews() {
 		setContentView(R.layout.course_collection_activity);
+		initFailView(findViewById(R.id.no_data_box));
 		back = (TextView) findViewById(R.id.back_text);
 		edit = (TextView) findViewById(R.id.edit_btn);
 
@@ -118,9 +119,9 @@ public class CourseCollectionActivity extends BaseActivity {
 				}
 			}
 		});
-		
+
 		adapter.setCollectionDeleteListener(new CollectionDeleteListener() {
-			
+
 			@Override
 			public void delete(String id) {
 				db.removeCourse(id);
@@ -128,7 +129,7 @@ public class CourseCollectionActivity extends BaseActivity {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
