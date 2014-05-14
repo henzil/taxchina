@@ -3,7 +3,6 @@ package com.dns.taxchina.ui.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -99,8 +98,6 @@ public class StudyRecordAdapter extends BaseAdapter {
 			} else {
 				studyRecordBtn.setVisibility(View.VISIBLE);
 				String currentVideoId = DownloadTaskManager.getInstance(context).downloadingId();
-				Log.e("tag", "~~~~~~!!!!!~~~~ + currentVideoId" + currentVideoId);
-				Log.e("tag", "~~~~~~!!!!!!!~~~~" + model.toString());
 				if(currentVideoId != null && currentVideoId.equals(model.getId())){
 					studyRecordBtn.setText("暂停");
 					studyRecordBtn.setOnClickListener(new OnClickListener() {

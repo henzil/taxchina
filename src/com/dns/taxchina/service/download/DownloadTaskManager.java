@@ -103,14 +103,19 @@ public class DownloadTaskManager {
 	public void stopOneTask(VideoModel videoModel) {
 		Log.e("tag", "~~~~~执行到这里~~~~~videoModel =" + videoModel.toString());
 		if (videoId.equals(videoModel.getId())) {
-			// TODO 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
-			executorService.shutdownNow();
+			// 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
+			List<Runnable> list = executorService.shutdownNow();
+			if(list.size() > 0){
+				Log.e("tag", "list.get(0) = " + list.get(0));
+				DownLoadBytes downLoadBytes = (DownLoadBytes) list.get(0);
+				downLoadBytes.stop();
+			}
 			executorService = Executors.newFixedThreadPool(1);
 			if (queue.size() > 0) {
 				// 将新任务加入线程池
 				DownloadTask downloadTask = queue.poll();
 				VideoDAO videoDAO = new VideoDAO(context);
-				VideoModel model = videoDAO.findById(downloadTask.getVideo().getId()); 
+				VideoModel model = videoDAO.findById(downloadTask.getVideo().getId());
 				executorService.submit(new DownLoadBytes(context, downloadTask, model));
 			}
 			videoId = null;
@@ -162,6 +167,7 @@ public class DownloadTaskManager {
 		}
 	}
 
+	// TODO 算法有问题。
 	public HashSet<VideoModel> getCurrentDownLoadSet() {
 		HashSet<VideoModel> set = new HashSet<VideoModel>();
 		Iterator<DownloadTask> iterator = queue.iterator();
@@ -204,6 +210,12 @@ public class DownloadTaskManager {
 		private DownloadTask downloadTask;
 
 		private VideoModel video;
+		
+		private DefaultHttpClient httpClient;
+		
+		private InputStream inputStream;
+		
+		private FileOutputStream fileOutputStream;
 
 		public DownLoadBytes(Activity context, DownloadTask downloadTask, VideoModel videoModel) {
 			this.context = context;
@@ -220,26 +232,39 @@ public class DownloadTaskManager {
 				total = downloadFile.length();
 			}
 		}
+		
+		public void stop(){
+			try{
+				fileOutputStream.close();
+				httpClient.getConnectionManager().shutdown();
+				inputStream.close();
+			} catch(Exception exception){
+				Log.e("tag", exception.toString(), exception);
+			}
+		}
 
 		@Override
 		public void run() {
 			VideoDAO videoDAO = new VideoDAO(context);
-//			dataMode = DownloadMode.START;
-			DefaultHttpClient httpClient = new DefaultHttpClient();
+			httpClient = new DefaultHttpClient();
 			String url = video.getUrl();
 			Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ url = " + url);
 			HttpGet httpGet = new HttpGet(url);
 			videoId = video.getId();
-
+			// 开始下载广播
+			Intent intent = new Intent(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
+			intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, DownloadTaskContact.DOWNLOADING_TYPE_START_VALUE);
+			intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT_ID, video.getId());
+			context.sendBroadcast(intent);
 			try {
-				// TODO 状态处理 500 200
+				// 状态处理 500 200
 				int res = 0;
 				HttpResponse httpResponse = httpClient.execute(httpGet);
 				res = httpResponse.getStatusLine().getStatusCode();
 				Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ res = " + res);
 				if (res == 200) {
 					Header headerLength = httpResponse.getFirstHeader("Content-Length");
-					Header headerDisposition = httpResponse.getFirstHeader("Content-Disposition");
+//					Header headerDisposition = httpResponse.getFirstHeader("Content-Disposition");
 					String lengthStr = headerLength.getValue();
 					for (Header header : httpResponse.getAllHeaders()) {
 						Log.i("DownloadTaskManager", "###############header.toString() = " + header.toString());
@@ -247,8 +272,7 @@ public class DownloadTaskManager {
 
 					String path = AsyncTaskLoaderImage.getHash(url);
 					fileLength = Long.parseLong(lengthStr);
-					Log.i("DownloadTaskManager", "###############" + fileLength);
-					Log.i("DownloadTaskManager", "###############" + path);
+					Log.i("DownloadTaskManager", "############total = " + total);
 					httpGet.addHeader("Range", "bytes=" + total + "-");
 					httpResponse = httpClient.execute(httpGet);
 					res = httpResponse.getStatusLine().getStatusCode();
@@ -257,7 +281,7 @@ public class DownloadTaskManager {
 						/*
 						 * 当返回码为200时，做处理 得到服务器端返回json数据，并做处理
 						 */
-						InputStream inputStream = httpResponse.getEntity().getContent();
+						inputStream = httpResponse.getEntity().getContent();
 						if (downloadFile == null) {
 							downloadFile = new File(LibIOUtil.getDownloadPath(context) + path);
 							if (!downloadFile.exists()) {
@@ -270,7 +294,7 @@ public class DownloadTaskManager {
 							video.setVideoPath(LibIOUtil.getDownloadPath(context) + path);
 							videoDAO.update(video);
 						}
-						FileOutputStream fileOutputStream = new FileOutputStream(downloadFile, true);
+						fileOutputStream = new FileOutputStream(downloadFile, true);
 						byte[] b = new byte[1024 * 8];
 						int count = 0;
 						int oldCount = 0;
@@ -301,8 +325,6 @@ public class DownloadTaskManager {
 										Log.v("DownloadTaskManager", "total = " + total);
 										Log.v("DownloadTaskManager", "fileId = " + fileId);
 										// 广播进度
-										Intent intent = new Intent(
-												DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
 										intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
 												DownloadTaskContact.DOWNLOADING_TYPE_PERCENT_VALUE);
 										intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT, progressBarState);
@@ -321,8 +343,7 @@ public class DownloadTaskManager {
 						fileOutputStream.close();
 						httpClient.getConnectionManager().shutdown();
 						inputStream.close();
-						// 下载完成通知
-						Intent intent = new Intent(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
+						// 下载完成广播
 						intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
 								DownloadTaskContact.DOWNLOADING_TYPE_END_VALUE);
 						intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT_ID, video.getId());
@@ -335,6 +356,10 @@ public class DownloadTaskManager {
 			} catch (Exception e) {
 				Log.e("DownloadTaskManager", e.getMessage(), e);
 				videoId = null;
+				// 下载完成广播
+				intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
+						DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
+				context.sendBroadcast(intent);
 				startNext();
 				throw new RuntimeException(e);
 			}

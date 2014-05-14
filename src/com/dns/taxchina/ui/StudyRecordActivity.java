@@ -166,6 +166,8 @@ public class StudyRecordActivity extends BaseActivity {
 				int type = intent.getIntExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, -1);
 				if (type == DownloadTaskContact.DOWNLOADING_TYPE_PERCENT_VALUE || type == DownloadTaskContact.DOWNLOADING_TYPE_END_VALUE) {
 					initDBData();
+				} else if(type == DownloadTaskContact.DOWNLOADING_TYPE_START_VALUE || type == DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE){
+					adapter.notifyDataSetChanged();
 				}
 			}
 		}
@@ -180,7 +182,6 @@ public class StudyRecordActivity extends BaseActivity {
 		if (loadingDialog != null) {
 			loadingDialog = null;
 		}
-
 		unregisterReceiver(broadcastReceiver);
 	}
 }
