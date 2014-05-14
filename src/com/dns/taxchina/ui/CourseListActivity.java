@@ -136,6 +136,7 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 				}
 			}
 		});
+		listView.setPullLoadEnable(false);
 
 		onLoadEvent();
 	}
@@ -225,7 +226,8 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 
 	protected void onRefreshPostExecute(List<BaseItemModel> result, int mode, boolean hasNext) {
 		if (result.isEmpty()) {
-//			listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_NO_DATA);
+//			listView.setPullRefreshEnable(true);
+			listView.setPullLoadEnable(false);
 //			emptyView(mode);
 			adapter.refresh(result);
 		} else {
@@ -233,8 +235,10 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 			result.clear();
 			result = null;
 			if (hasNext) {
+				listView.setPullLoadEnable(true);
 //				listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_MORE);
 			} else {
+				listView.setPullLoadEnable(false);
 //				listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_FINISH);
 			}
 
@@ -243,14 +247,17 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 
 	protected void onMorePostExecute(List<BaseItemModel> result, int mode, boolean hasNext) {
 		if (result.isEmpty()) {
+			listView.setPullLoadEnable(false);
 //			listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_FINISH);
 		} else {
 			adapter.addData(result);
 			result.clear();
 			result = null;
 			if (hasNext) {
+				listView.setPullLoadEnable(true);
 //				listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_MORE);
 			} else {
+				listView.setPullLoadEnable(false);
 //				listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_LOAD_FINISH);
 			}
 		}
