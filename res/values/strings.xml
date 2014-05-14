@@ -22,4 +22,8 @@
     <string name="play_please_waiting">正在缓冲，请稍后\u2026</string>
     <string name="play_not_enable">您当前的系统版本暂不支持播放</string>
     <string name="play_please_wait">请稍后\u2026</string>
+    
+    <string name="no_content">暂无数据</string>
+    <string name="cache_load_more">加载失败，点击重试</string>
+    <string name="collect_empty">您还没有收藏，快去收藏吧！</string>
 </resources>

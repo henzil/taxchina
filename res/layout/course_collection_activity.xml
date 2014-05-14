@@ -51,11 +51,18 @@
             android:textColor="@color/white" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/list_view"
-        style="@style/listview_style"
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/top_bar_box" />
+        android:layout_below="@+id/top_bar_box" >
+
+        <ListView
+            android:id="@+id/list_view"
+            style="@style/listview_style"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <include layout="@layout/no_data_box" />
+    </FrameLayout>
 
 </RelativeLayout>
