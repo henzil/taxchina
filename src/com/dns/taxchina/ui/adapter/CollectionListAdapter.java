@@ -36,11 +36,18 @@ public class CollectionListAdapter extends BaseAdapter {
 	private Handler mHandler = new Handler();
 	private Map<String, String> urlMap;
 	private List<BaseItemModel> list = new ArrayList<BaseItemModel>();
+	public static final int DISMISS_DELETE = 0;
+	public static final int SHOW_DELETE = 1;
+	public int type;
 
 	public CollectionListAdapter(Context context, String TAG) {
 		this.context = context;
 		this.TAG = TAG;
 		urlMap = new HashMap<String, String>();
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public void refresh(List<BaseItemModel> arg0) {
@@ -84,7 +91,7 @@ public class CollectionListAdapter extends BaseAdapter {
 	}
 
 	public class ViewHolder {
-		private ImageView icon;
+		private ImageView icon, delete;
 		private TextView title, text;
 		private View line;
 		public BaseItemModel model;
@@ -93,6 +100,7 @@ public class CollectionListAdapter extends BaseAdapter {
 			icon = (ImageView) view.findViewById(R.id.collection_item_img);
 			title = (TextView) view.findViewById(R.id.collection_item_title_text);
 			text = (TextView) view.findViewById(R.id.collection_item_info_text);
+			delete = (ImageView) view.findViewById(R.id.delete_img);
 			line = view.findViewById(R.id.collection_item_line);
 		}
 
@@ -100,6 +108,13 @@ public class CollectionListAdapter extends BaseAdapter {
 			model = baseItemModel;
 			title.setText(model.getTitle());
 			text.setText(model.getInfo());
+			if (type == DISMISS_DELETE) {
+				delete.setVisibility(View.GONE);
+				delete.setClickable(false);
+			} else {
+				delete.setVisibility(View.VISIBLE);
+				delete.setClickable(true);
+			}
 
 			icon.setImageResource(R.drawable.default_116x75);
 			if (model.getImage() != null && !model.getImage().equals("")) {
@@ -128,12 +143,32 @@ public class CollectionListAdapter extends BaseAdapter {
 				});
 			}
 
+			delete.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (collectionDeleteListener != null) {
+						collectionDeleteListener.delete(model.getId());
+					}
+				}
+			});
+
 			if (positon == getCount() - 1) {
 				line.setVisibility(View.INVISIBLE);
 			} else {
 				line.setVisibility(View.VISIBLE);
 			}
 		}
+	}
+
+	private CollectionDeleteListener collectionDeleteListener;
+
+	public void setCollectionDeleteListener(CollectionDeleteListener collectionDeleteListener) {
+		this.collectionDeleteListener = collectionDeleteListener;
+	}
+
+	public interface CollectionDeleteListener {
+		public void delete(String id);
 	}
 
 	public void recycleBitmaps() {

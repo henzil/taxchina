@@ -18,7 +18,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	private BaseFragment currentFragment;
 
-	private int currentTag = -1;
+	private int currentTag = -1, index;
 
 	private long exitTime = 0;
 
@@ -94,6 +94,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 	}
 
 	private void clickBut(int index) {
+		if (this.index == index) {
+			return;
+		}
+		this.index = index;
 		changeFragment(index);
 
 	}

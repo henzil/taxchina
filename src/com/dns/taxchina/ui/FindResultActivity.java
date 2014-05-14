@@ -51,7 +51,7 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 
 	protected ModelHelper jsonHelper;
 
-	public static final int PAGE_SIZE = 20;
+	public static final int PAGE_SIZE = 10;
 	public static final String LIST_TITLE = "list_title";
 
 	@Override

@@ -23,10 +23,11 @@
         android:src="@drawable/default_116x75" />
 
     <LinearLayout
+        android:id="@+id/info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/collection_item_img"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="15dp"
         android:layout_toRightOf="@+id/collection_item_img"
         android:orientation="vertical" >
@@ -38,6 +39,7 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:singleLine="true"
+            android:layout_marginRight="10dp"
             android:textColor="@color/index_title_text_color"
             android:textSize="16sp" />
 
@@ -48,9 +50,20 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="2"
+            android:layout_marginRight="20dp"
             android:textColor="@color/index_listview_item_text_color"
             android:textSize="12sp" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/delete_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/delete_btn" 
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:visibility="gone"/>
 
     <View
         android:id="@+id/collection_item_line"
