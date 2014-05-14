@@ -35,7 +35,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	@Override
 	protected void initData() {
-		DownloadTaskManager.getInstance(this).start();
+		DownloadTaskManager.getInstance(this);
 	}
 
 	@Override

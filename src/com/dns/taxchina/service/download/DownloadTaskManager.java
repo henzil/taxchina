@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,7 +39,11 @@ public class DownloadTaskManager {
 	// 正在下载的 videoId；
 	private String videoId = null;
 
-	private DownloadMode dataMode = DownloadMode.DOWNLOAD_END;
+//	private DownloadMode dataMode = DownloadMode.DOWNLOAD_END;
+
+	private List<DownloadTask> taskList = new ArrayList<DownloadTask>();
+
+	private Queue<DownloadTask> queue = new LinkedList<DownloadTask>();
 
 	public static DownloadTaskManager getInstance(Activity context) {
 		if (downloadTaskManager == null) {
@@ -45,79 +54,124 @@ public class DownloadTaskManager {
 
 	private DownloadTaskManager(Activity context) {
 		this.context = context;
+		init();
 	}
 
-	// 添加下载任务
+	// 线程管理器开始工作 初始化
+	public void init() {
+		// 创建线程池
+		executorService = Executors.newFixedThreadPool(1);
+		// 开始数据库中未完成的任务
+		initTasks();
+	}
+
+	// 将数据库中未完成的任务 放在taskList中
+	private void initTasks() {
+		DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
+		// 获取数据库中的所有未完成的任务
+		taskList = downloadTaskDAO.findAll();
+		// 将所有未完成的任务一一加入线程池
+		Log.d("DownloadTaskManager", "unfinished task=" + taskList.size());
+
+	}
+
+	// 添加下载任务并存储在数据库中
 	public void addTask(DownloadTask downloadTask, VideoModel videoModel) {
 		DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
 		// 向数据库中写入任务信息
 		downloadTaskDAO.add(downloadTask);
-		// 将新任务加入线程池
-		executorService.submit(new DownLoadBytes(context, downloadTask, videoModel));
+		taskList.add(downloadTask);
+		queue.add(downloadTask);
+		if (queue.size() == 1) {
+			// 将新任务加入线程池
+			executorService.submit(new DownLoadBytes(context, queue.poll(), videoModel));
+		}
+	}
+
+	// 开始一个下载任务，放在队列中
+	public void startOneTask(VideoModel videoModel) {
+		DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
+		DownloadTask downloadTask = downloadTaskDAO.findById(videoModel.getId());
+		queue.add(downloadTask);
+		Log.e("tag", "startOneTask  ---------队列的size = " + queue.size());
+		if (videoId == null) {
+			// 将新任务加入线程池
+			executorService.submit(new DownLoadBytes(context, queue.poll(), videoModel));
+		}
+	}
+
+	public void stopOneTask(VideoModel videoModel) {
+		Log.e("tag", "~~~~~执行到这里~~~~~videoModel =" + videoModel.toString());
+		if (videoId.equals(videoModel.getId())) {
+			// TODO 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
+			executorService.shutdownNow();
+			executorService = Executors.newFixedThreadPool(1);
+			if (queue.size() > 0) {
+				// 将新任务加入线程池
+				DownloadTask downloadTask = queue.poll();
+				VideoDAO videoDAO = new VideoDAO(context);
+				VideoModel model = videoDAO.findById(downloadTask.getVideo().getId()); 
+				executorService.submit(new DownLoadBytes(context, downloadTask, model));
+			}
+			videoId = null;
+		} else {
+			for (int i = 0; i < taskList.size(); i++) {
+				DownloadTask downloadTask = taskList.get(i);
+				if (downloadTask.getFileId().equals(videoModel.getId())) {
+					queue.remove(downloadTask);
+					return;
+				}
+			}
+		}
 	}
 
 	// 删除数据库中的任务
 	public void deleteTask(String fileId) {
 		DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
 		downloadTaskDAO.remove(fileId);
+		for (int i = 0; i < taskList.size(); i++) {
+			DownloadTask downloadTask = taskList.get(i);
+			if (downloadTask.getFileId().equals(fileId)) {
+				taskList.remove(i);
+				return;
+			}
+		}
 	}
 
-	// 开始数据库中未完成的任务
-	private void startTasks() {
+	// 手动删除数据库中的数据
+	public void deleteTask(VideoModel videoModel) {
 		DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
-		VideoDAO videoDAO = new VideoDAO(context);
-		// 获取数据库中的所有未完成的任务
-		ArrayList<DownloadTask> arrayList = downloadTaskDAO.findAll();
-		// 将所有未完成的任务一一加入线程池
-		Log.d("DownloadTaskManager", "unfinished task=" + arrayList.size());
-		for (int i = 0; i < arrayList.size(); i++) {
-			DownloadTask downloadTask = arrayList.get(i);
-			Log.v("DownloadTaskManager", "downloadTask.toString() = " + downloadTask.toString());
-			VideoModel video = videoDAO.findById(downloadTask.getVideo().getId());
-			executorService.submit(new DownLoadBytes(context, downloadTask, video));
+		downloadTaskDAO.remove(videoModel.getId());
+		for (int i = 0; i < taskList.size(); i++) {
+			DownloadTask downloadTask = taskList.get(i);
+			if (downloadTask.getFileId().equals(videoModel.getId())) {
+				taskList.remove(i);
+				return;
+			}
 		}
+		// 如果在正在下载的队列中，则删除掉。
+		stopOneTask(videoModel);
 	}
 
-	// 执行暂停某一个
-	public void pauseCurrentTask(VideoModel model) {
-		executorService.shutdownNow();
-		dataMode = DownloadMode.PAUSE;
-		if (model != null) {
-			Log.e("tag", "isStop () = " + isStop());
-			executorService = Executors.newFixedThreadPool(1);
-			DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
+	private void startNext() {
+		DownloadTask downloadTask = queue.poll();
+		if (downloadTask != null) {
 			VideoDAO videoDAO = new VideoDAO(context);
-			// 获取数据库中的所有未完成的任务
-			ArrayList<DownloadTask> arrayList = downloadTaskDAO.findAll();
-			for (int i = 0; i < arrayList.size(); i++) {
-				DownloadTask t = arrayList.get(i);
-				if (model.getId().equals(t.getVideo().getId())) {
-					arrayList.remove(i);
-					arrayList.add(0, t);
-				}
-			}
-			// 将所有未完成的任务一一加入线程池
-			Log.d("DownloadTaskManager", "unfinished task=" + arrayList.size());
-			for (int i = 0; i < arrayList.size(); i++) {
-				DownloadTask downloadTask = arrayList.get(i);
-				Log.v("DownloadTaskManager", "downloadTask.toString() = " + downloadTask.toString());
-				VideoModel video = videoDAO.findById(downloadTask.getVideo().getId());
-				executorService.submit(new DownLoadBytes(context, downloadTask, video));
-			}
+			VideoModel videoModel = videoDAO.findById(downloadTask.getVideo().getId());
+			executorService.submit(new DownLoadBytes(context, downloadTask, videoModel));
 		}
 	}
 
-	// 执行暂停某一个
-	public void pauseCurrentTask() {
-		dataMode = DownloadMode.PAUSE;
-	}
-
-	// 线程管理器开始工作
-	public void start() {
-		// 创建线程池
-		executorService = Executors.newFixedThreadPool(1);
-		// 开始数据库中未完成的任务
-		startTasks();
+	public HashSet<VideoModel> getCurrentDownLoadSet() {
+		HashSet<VideoModel> set = new HashSet<VideoModel>();
+		Iterator<DownloadTask> iterator = queue.iterator();
+		Log.e("tag", "getCurrentDownLoadSet   --------- 队列的size = " + queue.size());
+		while (iterator.hasNext()) {
+			VideoModel videoModel = iterator.next().getVideo();
+			Log.e("tag", "videoModel.toString() = " + videoModel.toString());
+			set.add(videoModel);
+		}
+		return set;
 	}
 
 	public void stop() {
@@ -170,7 +224,7 @@ public class DownloadTaskManager {
 		@Override
 		public void run() {
 			VideoDAO videoDAO = new VideoDAO(context);
-			dataMode = DownloadMode.START;
+//			dataMode = DownloadMode.START;
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			String url = video.getUrl();
 			Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ url = " + url);
@@ -223,15 +277,7 @@ public class DownloadTaskManager {
 
 						for (; total < fileLength;) {
 							// 如何停止线程？
-							if (dataMode == DownloadMode.PAUSE || !videoId.equals(video.getId())) {
-								dataMode = DownloadMode.DOWNLOAD_END;
-								fileOutputStream.close();
-								httpClient.getConnectionManager().shutdown();
-								inputStream.close();
-								return;
-							}
 							if (isStop()) {
-								dataMode = DownloadMode.DOWNLOAD_END;
 								fileOutputStream.close();
 								httpClient.getConnectionManager().shutdown();
 								inputStream.close();
@@ -271,7 +317,6 @@ public class DownloadTaskManager {
 						video.setIsDownloadComplete(1);
 						video.setDownloadPercent(100);
 						videoDAO.update(video);
-						dataMode = DownloadMode.DOWNLOAD_END;
 						// 读取下载完毕
 						fileOutputStream.close();
 						httpClient.getConnectionManager().shutdown();
@@ -283,11 +328,14 @@ public class DownloadTaskManager {
 						intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT_ID, video.getId());
 						context.sendBroadcast(intent);
 						videoId = null;
+						startNext();
 					}
 				}
 
 			} catch (Exception e) {
 				Log.e("DownloadTaskManager", e.getMessage(), e);
+				videoId = null;
+				startNext();
 				throw new RuntimeException(e);
 			}
 		}

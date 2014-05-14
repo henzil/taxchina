@@ -3,6 +3,7 @@ package com.dns.taxchina.ui.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,11 +27,8 @@ public class StudyRecordAdapter extends BaseAdapter {
 	private StudyRecordActivity context;
 	private List<VideoModel> list = new ArrayList<VideoModel>();
 	
-	private String currentVideoId = null;
-
 	public StudyRecordAdapter(StudyRecordActivity context, String TAG) {
 		this.context = context;
-		currentVideoId = DownloadTaskManager.getInstance(context).downloadingId();
 	}
 
 	public void refresh(List<VideoModel> arg0) {
@@ -100,6 +98,9 @@ public class StudyRecordAdapter extends BaseAdapter {
 				studyRecordBtn.setVisibility(View.GONE);
 			} else {
 				studyRecordBtn.setVisibility(View.VISIBLE);
+				String currentVideoId = DownloadTaskManager.getInstance(context).downloadingId();
+				Log.e("tag", "~~~~~~!!!!!~~~~ + currentVideoId" + currentVideoId);
+				Log.e("tag", "~~~~~~!!!!!!!~~~~" + model.toString());
 				if(currentVideoId != null && currentVideoId.equals(model.getId())){
 					studyRecordBtn.setText("暂停");
 					studyRecordBtn.setOnClickListener(new OnClickListener() {
@@ -107,7 +108,16 @@ public class StudyRecordAdapter extends BaseAdapter {
 						@Override
 						public void onClick(View v) {
 							// TODO 暂停一个下载
-							DownloadTaskManager.getInstance(context).pauseCurrentTask();
+							DownloadTaskManager.getInstance(context).stopOneTask(model);
+						}
+					});
+				} else if(DownloadTaskManager.getInstance(context).getCurrentDownLoadSet().contains(model)){
+					studyRecordBtn.setText("等待");
+					studyRecordBtn.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO 
 						}
 					});
 				} else {
@@ -117,7 +127,7 @@ public class StudyRecordAdapter extends BaseAdapter {
 						@Override
 						public void onClick(View v) {
 							// TODO 暂停一个下载并去下载一个新的。
-							DownloadTaskManager.getInstance(context).pauseCurrentTask(model);
+							DownloadTaskManager.getInstance(context).startOneTask(model);
 						}
 					});
 				}
