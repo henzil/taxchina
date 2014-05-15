@@ -26,4 +26,6 @@
     <string name="no_content">暂无数据</string>
     <string name="cache_load_more">加载失败，点击重试</string>
     <string name="collect_empty">您还没有收藏，快去收藏吧！</string>
+    
+    <string name="sd_info">总空间%1$s/剩余空间%2$s  （%3$s）</string>
 </resources>

@@ -57,12 +57,10 @@ public class CenterDetailActivity extends BaseActivity {
 			plug.webViewPlug(url, webView);
 		} else if (type == ABOUT_US_TYPE) {
 			title.setText("关于我们");
-			// TODO
-			plug.webViewPlug(url, webView);
+			plug.webViewPlug("http://tz1.taxchina.com/wcm/cswsp/app/GuanYuWoMen.aspx", webView);
 		} else if (type == CONTANCT_US_TYPE) {
 			title.setText("联系我们");
-			// TODO
-			plug.webViewPlug(url, webView);
+			plug.webViewPlug("http://tz1.taxchina.com/wcm/cswsp/app/LianXiWoMen.aspx", webView);
 		}
 	}
 
