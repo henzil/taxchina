@@ -71,7 +71,7 @@ public class WebViewPlug {
 		if (userId != null && !userId.equals("")) {
 			url = url + "&userId=" + userId;
 		}
-//		Log.e("tag", "url = " + url);
+		Log.e("tag", "url = " + url);
 		mWebView.loadUrl(url);
 
 	}
@@ -112,7 +112,7 @@ public class WebViewPlug {
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			if (view != null) {
-//				Log.e("tag", "shouldOverrideUrlLoading-------url = " + url);
+				Log.e("tag", "shouldOverrideUrlLoading-------url = " + url);
 				view.loadUrl(url);
 			}
 			return true;

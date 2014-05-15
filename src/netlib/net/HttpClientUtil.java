@@ -18,7 +18,6 @@ import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import netlib.constant.BaseApiConstant;
@@ -582,7 +581,7 @@ public class HttpClientUtil {
 			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			Log.e("tag", "wifiManager.isWifiEnabled() = " + wifiManager.isWifiEnabled());
 			if (!wifiManager.isWifiEnabled()) {
-				if (SettingUtil.getWifiImage(context)) {
+				if (SettingUtil.getWifiDoSomeThing(context)) {
 					// 设置非wifi下不下载图片之后，返回null。
 					return null;
 				} else {

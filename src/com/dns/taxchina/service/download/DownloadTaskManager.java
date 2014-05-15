@@ -4,16 +4,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import netlib.net.AsyncTaskLoaderImage;
 import netlib.util.LibIOUtil;
+import netlib.util.SettingUtil;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -21,7 +24,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.dns.taxchina.service.model.DownloadTask;
@@ -39,7 +44,7 @@ public class DownloadTaskManager {
 	// 正在下载的 videoId；
 	private String videoId = null;
 
-//	private DownloadMode dataMode = DownloadMode.DOWNLOAD_END;
+	private Map<String, DownLoadBytes> currentMap = new HashMap<String, DownloadTaskManager.DownLoadBytes>();
 
 	private List<DownloadTask> taskList = new ArrayList<DownloadTask>();
 
@@ -72,7 +77,6 @@ public class DownloadTaskManager {
 		taskList = downloadTaskDAO.findAll();
 		// 将所有未完成的任务一一加入线程池
 		Log.d("DownloadTaskManager", "unfinished task=" + taskList.size());
-
 	}
 
 	// 添加下载任务并存储在数据库中
@@ -84,7 +88,9 @@ public class DownloadTaskManager {
 		queue.add(downloadTask);
 		if (queue.size() == 1) {
 			// 将新任务加入线程池
-			executorService.submit(new DownLoadBytes(context, queue.poll(), videoModel));
+			DownLoadBytes downLoadBytes = new DownLoadBytes(context, queue.poll(), videoModel);
+			currentMap.put(videoModel.getId(), downLoadBytes);
+			executorService.submit(downLoadBytes);
 		}
 	}
 
@@ -96,7 +102,9 @@ public class DownloadTaskManager {
 		Log.e("tag", "startOneTask  ---------队列的size = " + queue.size());
 		if (videoId == null) {
 			// 将新任务加入线程池
-			executorService.submit(new DownLoadBytes(context, queue.poll(), videoModel));
+			DownLoadBytes downLoadBytes = new DownLoadBytes(context, queue.poll(), videoModel);
+			currentMap.put(videoModel.getId(), downLoadBytes);
+			executorService.submit(downLoadBytes);
 		}
 	}
 
@@ -104,11 +112,11 @@ public class DownloadTaskManager {
 		Log.e("tag", "~~~~~执行到这里~~~~~videoModel =" + videoModel.toString());
 		if (videoId.equals(videoModel.getId())) {
 			// 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
-			List<Runnable> list = executorService.shutdownNow();
-			if(list.size() > 0){
-				Log.e("tag", "list.get(0) = " + list.get(0));
-				DownLoadBytes downLoadBytes = (DownLoadBytes) list.get(0);
+			executorService.shutdownNow();
+			if(currentMap.containsKey(videoModel.getId())){
+				DownLoadBytes downLoadBytes = currentMap.get(videoModel.getId());
 				downLoadBytes.stop();
+				currentMap.remove(videoModel.getId());
 			}
 			executorService = Executors.newFixedThreadPool(1);
 			if (queue.size() > 0) {
@@ -116,7 +124,9 @@ public class DownloadTaskManager {
 				DownloadTask downloadTask = queue.poll();
 				VideoDAO videoDAO = new VideoDAO(context);
 				VideoModel model = videoDAO.findById(downloadTask.getVideo().getId());
-				executorService.submit(new DownLoadBytes(context, downloadTask, model));
+				DownLoadBytes downLoadBytes = new DownLoadBytes(context, downloadTask, model);
+				currentMap.put(videoModel.getId(), downLoadBytes);
+				executorService.submit(downLoadBytes);
 			}
 			videoId = null;
 		} else {
@@ -141,6 +151,7 @@ public class DownloadTaskManager {
 				return;
 			}
 		}
+		currentMap.clear();
 	}
 
 	// 手动删除数据库中的数据
@@ -163,7 +174,9 @@ public class DownloadTaskManager {
 		if (downloadTask != null) {
 			VideoDAO videoDAO = new VideoDAO(context);
 			VideoModel videoModel = videoDAO.findById(downloadTask.getVideo().getId());
-			executorService.submit(new DownLoadBytes(context, downloadTask, videoModel));
+			DownLoadBytes downLoadBytes = new DownLoadBytes(context, downloadTask, videoModel);
+			currentMap.put(videoModel.getId(), downLoadBytes);
+			executorService.submit(downLoadBytes);
 		}
 	}
 
@@ -182,7 +195,9 @@ public class DownloadTaskManager {
 
 	public void stop() {
 		// 关闭线程池
+		queue.clear();
 		executorService.shutdownNow();
+		currentMap.clear();
 	}
 
 	// 判断线程池是否停止
@@ -247,6 +262,9 @@ public class DownloadTaskManager {
 		public void run() {
 			VideoDAO videoDAO = new VideoDAO(context);
 			httpClient = new DefaultHttpClient();
+			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			Log.e("tag", "wifiManager.isWifiEnabled() = " + wifiManager.isWifiEnabled());
+			
 			String url = video.getUrl();
 			Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ url = " + url);
 			HttpGet httpGet = new HttpGet(url);
@@ -305,8 +323,18 @@ public class DownloadTaskManager {
 								fileOutputStream.close();
 								httpClient.getConnectionManager().shutdown();
 								inputStream.close();
+								startNext();
 								return;
 							} else {
+								if (!wifiManager.isWifiEnabled()) {
+									if (SettingUtil.getWifiDoSomeThing(context)) {
+										fileOutputStream.close();
+										httpClient.getConnectionManager().shutdown();
+										inputStream.close();
+										startNext();
+										return;
+									}
+								}
 								count = inputStream.read(b);
 								if (count != -1) {
 									total += count;
