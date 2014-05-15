@@ -102,10 +102,12 @@
             android:id="@+id/available_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:singleLine="true"
             android:text="总空间300MB/剩余空间150MB  （50%）"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="13sp" />
     </RelativeLayout>
 
 </RelativeLayout>

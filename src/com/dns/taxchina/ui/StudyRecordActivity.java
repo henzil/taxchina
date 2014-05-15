@@ -27,6 +27,7 @@ import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.service.model.VideoModel;
 import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
+import com.dns.taxchina.ui.util.SdCardUtil;
 
 /**
  * @author fubiao
@@ -35,13 +36,15 @@ import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
  */
 public class StudyRecordActivity extends BaseActivity {
 
-	private TextView back;
+	private TextView back, sd;
 	private Button alreadOver, notOver;
 
 	public static final int ALREADOVER_TYEP = 0;
 	public static final int NOTOVER_TYPE = 1;
 
 	public int type = 0;
+
+	private SdCardUtil sdCardUtil;
 
 	private ListView listView;
 	private StudyRecordAdapter adapter;
@@ -70,21 +73,32 @@ public class StudyRecordActivity extends BaseActivity {
 			}
 		});
 
+		sdCardUtil = new SdCardUtil(StudyRecordActivity.this);
 		broadcastReceiver = new DownLoadBroadcastReceiver();
 		registerReceiver(broadcastReceiver, new IntentFilter(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER));
 
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	protected void initViews() {
 		setContentView(R.layout.study_record_activity);
 		back = (TextView) findViewById(R.id.back_text);
 		alreadOver = (Button) findViewById(R.id.already_over_btn);
 		notOver = (Button) findViewById(R.id.not_over_btn);
+		sd = (TextView) findViewById(R.id.available_text);
 
 		listView = (ListView) findViewById(R.id.list_view);
 		adapter = new StudyRecordAdapter(StudyRecordActivity.this, TAG);
 		listView.setAdapter(adapter);
+
+		if (sdCardUtil.isSDCardExist()) {
+			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getSDTotalSize(), sdCardUtil.getSDAvailableSize(),
+					sdCardUtil.getSDAvailableFormat()));
+		} else {
+			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getRomTotalSize(), sdCardUtil.getRomAvailableSize(),
+					sdCardUtil.getRomAvailableSizeFormat()));
+		}
 
 		alreadOver.setSelected(true);
 	}
@@ -166,7 +180,7 @@ public class StudyRecordActivity extends BaseActivity {
 				int type = intent.getIntExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, -1);
 				if (type == DownloadTaskContact.DOWNLOADING_TYPE_PERCENT_VALUE || type == DownloadTaskContact.DOWNLOADING_TYPE_END_VALUE) {
 					initDBData();
-				} else if(type == DownloadTaskContact.DOWNLOADING_TYPE_START_VALUE || type == DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE){
+				} else if (type == DownloadTaskContact.DOWNLOADING_TYPE_START_VALUE || type == DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE) {
 					adapter.notifyDataSetChanged();
 				}
 			}
