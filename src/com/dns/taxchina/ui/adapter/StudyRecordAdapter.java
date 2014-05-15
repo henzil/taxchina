@@ -1,5 +1,6 @@
 package com.dns.taxchina.ui.adapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.download.DownloadTaskManager;
+import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.model.VideoModel;
 import com.dns.taxchina.ui.StudyRecordActivity;
 
@@ -46,11 +48,6 @@ public class StudyRecordAdapter extends BaseAdapter {
 
 	public void refresh(List<VideoModel> arg0) {
 		list.clear();
-		list.addAll(arg0);
-		notifyDataSetChanged();
-	}
-
-	public void addData(List<VideoModel> arg0) {
 		list.addAll(arg0);
 		notifyDataSetChanged();
 	}
@@ -174,8 +171,30 @@ public class StudyRecordAdapter extends BaseAdapter {
 
 				@Override
 				public void onClick(View v) {
-					list.remove(positon);
-					notifyDataSetChanged();
+					new AlertDialog.Builder(context).setTitle("提示").setMessage("是否删除此视频？")
+					.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							DownloadTaskManager.getInstance(context).deleteTask(model);
+							VideoDAO videoDAO = new VideoDAO(context);
+							videoDAO.remove(model.getId());
+							if(model.getVideoPath() != null){
+								File file = new File(model.getVideoPath());
+								if(file != null && file.exists()){
+									file.delete();
+								}
+							}
+							context.initDBData();
+						}
+					}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+
+						}
+					}).create().show();
+					
 				}
 			});
 			

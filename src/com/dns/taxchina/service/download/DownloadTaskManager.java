@@ -110,10 +110,10 @@ public class DownloadTaskManager {
 
 	public void stopOneTask(VideoModel videoModel) {
 		Log.e("tag", "~~~~~执行到这里~~~~~videoModel =" + videoModel.toString());
-		if (videoId.equals(videoModel.getId())) {
+		if (videoId != null && videoId.equals(videoModel.getId())) {
 			// 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
 			executorService.shutdownNow();
-			if(currentMap.containsKey(videoModel.getId())){
+			if (currentMap.containsKey(videoModel.getId())) {
 				DownLoadBytes downLoadBytes = currentMap.get(videoModel.getId());
 				downLoadBytes.stop();
 				currentMap.remove(videoModel.getId());
@@ -225,11 +225,11 @@ public class DownloadTaskManager {
 		private DownloadTask downloadTask;
 
 		private VideoModel video;
-		
+
 		private DefaultHttpClient httpClient;
-		
+
 		private InputStream inputStream;
-		
+
 		private FileOutputStream fileOutputStream;
 
 		public DownLoadBytes(Activity context, DownloadTask downloadTask, VideoModel videoModel) {
@@ -247,15 +247,22 @@ public class DownloadTaskManager {
 				total = downloadFile.length();
 			}
 		}
-		
-		public void stop(){
-			try{
-				fileOutputStream.close();
-				httpClient.getConnectionManager().shutdown();
-				inputStream.close();
-			} catch(Exception exception){
-				Log.e("tag", exception.toString(), exception);
-			}
+
+		public void stop() {
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						videoId = null;
+						fileOutputStream.close();
+						httpClient.getConnectionManager().shutdown();
+						inputStream.close();
+					} catch (Exception exception) {
+						Log.e("tag", exception.toString(), exception);
+					}
+				}
+			}).start();
 		}
 
 		@Override
@@ -264,7 +271,7 @@ public class DownloadTaskManager {
 			httpClient = new DefaultHttpClient();
 			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			Log.e("tag", "wifiManager.isWifiEnabled() = " + wifiManager.isWifiEnabled());
-			
+
 			String url = video.getUrl();
 			Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ url = " + url);
 			HttpGet httpGet = new HttpGet(url);

@@ -130,10 +130,10 @@ public class LoginActivity extends BaseActivity {
 					Toast.makeText(LoginActivity.this, "请输入您的密码！", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				if (!LoginUtil.validatorString(userName)) {
-					Toast.makeText(LoginActivity.this, "您的用户名格式不正确！", Toast.LENGTH_SHORT).show();
-					return;
-				}
+//				if (!LoginUtil.validatorString(userName)) {
+//					Toast.makeText(LoginActivity.this, "您的用户名格式不正确！", Toast.LENGTH_SHORT).show();
+//					return;
+//				}
 				doNet();
 			}
 		});

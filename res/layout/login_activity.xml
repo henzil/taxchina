@@ -44,7 +44,6 @@
                     android:layout_toRightOf="@+id/user_name_img"
                     android:background="@drawable/white_content_bg"
                     android:hint="请输入您的用户名"
-                    android:maxLength="20"
                     android:paddingLeft="15dp"
                     android:singleLine="true"
                     android:textColorHint="@color/input_hint_color"
