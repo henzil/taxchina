@@ -15,6 +15,7 @@ import android.content.IntentFilter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import com.dns.taxchina.service.download.DownloadTaskContact;
 import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.service.model.VideoModel;
+import com.dns.taxchina.ui.adapter.CollectionListAdapter;
 import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
 import com.dns.taxchina.ui.util.SdCardUtil;
 
@@ -36,7 +38,7 @@ import com.dns.taxchina.ui.util.SdCardUtil;
  */
 public class StudyRecordActivity extends BaseActivity {
 
-	private TextView back, sd;
+	private TextView back, sd, edit;
 	private Button alreadOver, notOver;
 
 	public static final int ALREADOVER_TYEP = 0;
@@ -54,6 +56,8 @@ public class StudyRecordActivity extends BaseActivity {
 	protected DataServiceHelper dataServiceHelper;
 
 	protected ModelHelper jsonHelper;
+	
+	private boolean isClick;
 
 	private List<VideoModel> doneList = new ArrayList<VideoModel>();
 	private List<VideoModel> unDoneList = new ArrayList<VideoModel>();
@@ -87,6 +91,7 @@ public class StudyRecordActivity extends BaseActivity {
 		alreadOver = (Button) findViewById(R.id.already_over_btn);
 		notOver = (Button) findViewById(R.id.not_over_btn);
 		sd = (TextView) findViewById(R.id.available_text);
+		edit = (TextView) findViewById(R.id.edit_btn);
 
 		listView = (ListView) findViewById(R.id.list_view);
 		adapter = new StudyRecordAdapter(StudyRecordActivity.this, TAG);
@@ -126,6 +131,20 @@ public class StudyRecordActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				finish();
+			}
+		});
+		
+		edit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				isClick = isClick ? false : true;
+				if (isClick) {
+					adapter.setType(CollectionListAdapter.SHOW_DELETE);
+				} else {
+					adapter.setType(CollectionListAdapter.DISMISS_DELETE);
+				}
+				isClick = isClick ? true : false;
 			}
 		});
 

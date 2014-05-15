@@ -48,6 +48,7 @@ public class CollectionListAdapter extends BaseAdapter {
 
 	public void setType(int type) {
 		this.type = type;
+		notifyDataSetChanged();
 	}
 
 	public void refresh(List<BaseItemModel> arg0) {

@@ -14,5 +14,7 @@ public interface GetDataModeCostant {
 	int MORE_MODE = 2;
 	
 	int UPDATE_MODE = 3;
+	
+	int ONLY_LOAD_MODE = 4;
 
 }

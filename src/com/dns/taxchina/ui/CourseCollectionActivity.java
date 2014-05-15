@@ -102,7 +102,6 @@ public class CourseCollectionActivity extends BaseActivity {
 				} else {
 					adapter.setType(CollectionListAdapter.DISMISS_DELETE);
 				}
-				queryCollect();
 				isClick = isClick ? true : false;
 			}
 		});
