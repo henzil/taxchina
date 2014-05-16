@@ -5,11 +5,10 @@
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <ListView
+    <com.dns.taxchina.ui.widget.XListView
         android:id="@+id/list_view"
         style="@style/listview_style"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </ListView>
+        android:layout_height="fill_parent" />
 
 </LinearLayout>
