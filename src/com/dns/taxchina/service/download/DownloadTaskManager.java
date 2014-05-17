@@ -315,7 +315,8 @@ public class DownloadTaskManager {
 							downloadTask.setFilePath(LibIOUtil.getDownloadPath(context) + path);
 							DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
 							downloadTaskDAO.update(downloadTask);
-
+							video.setDownloadedSize("" + total);
+							video.setVideoSize(lengthStr);
 							video.setVideoPath(LibIOUtil.getDownloadPath(context) + path);
 							videoDAO.update(video);
 						}
@@ -351,9 +352,10 @@ public class DownloadTaskManager {
 											.toString(fileLength))) > 0.01) {
 										oldCount = 0;
 										// 广播通知主线程重新绘制相应的进度条
-										int progressBarState = (int) ((Float.parseFloat(Long.toString(total)) / Float
-												.parseFloat(Long.toString(fileLength))) * 100);
-
+										int progressBarState = (int) (Float.parseFloat(Long.toString(total))
+												/ Float.parseFloat(Long.toString(fileLength)) * 100);
+										video.setDownloadedSize("" + total);
+										video.setVideoSize(lengthStr);
 										video.setDownloadPercent(progressBarState);
 										videoDAO.update(video);
 										Log.d("DownloadTaskManager", "pregressBarState=" + progressBarState);
@@ -373,7 +375,10 @@ public class DownloadTaskManager {
 						DownloadTaskManager.this.deleteTask(fileId);
 						video.setIsDownloadComplete(1);
 						video.setDownloadPercent(100);
+						video.setDownloadedSize(lengthStr);
+						video.setVideoSize(lengthStr);
 						videoDAO.update(video);
+						Log.e("tag", "下载完毕 ~~~  ");
 						// 读取下载完毕
 						fileOutputStream.close();
 						httpClient.getConnectionManager().shutdown();

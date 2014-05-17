@@ -99,7 +99,8 @@ public class StudyRecordAdapter extends BaseAdapter {
 		public void update(final VideoModel baseItemModel, final int positon) {
 			model = baseItemModel;
 			title.setText(model.getTitle());
-			text.setText("" + model.getDownloadPercent() + "%");
+			text.setText(changeMB(model.getDownloadedSize()) + "/" + changeMB(model.getVideoSize()) + "  ("
+					+ model.getDownloadPercent() + "%）");
 			if (type == DISMISS_DELETE) {
 				studyRecordBtn.setVisibility(View.VISIBLE);
 				studyRecordBtn.setClickable(true);
@@ -172,37 +173,49 @@ public class StudyRecordAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					new AlertDialog.Builder(context).setTitle("提示").setMessage("是否删除此视频？")
-					.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+							.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							DownloadTaskManager.getInstance(context).deleteTask(model);
-							VideoDAO videoDAO = new VideoDAO(context);
-							videoDAO.remove(model.getId());
-							if(model.getVideoPath() != null){
-								File file = new File(model.getVideoPath());
-								if(file != null && file.exists()){
-									file.delete();
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									DownloadTaskManager.getInstance(context).deleteTask(model);
+									VideoDAO videoDAO = new VideoDAO(context);
+									videoDAO.remove(model.getId());
+									if (model.getVideoPath() != null) {
+										File file = new File(model.getVideoPath());
+										if (file != null && file.exists()) {
+											file.delete();
+										}
+									}
+									context.initDBData();
 								}
-							}
-							context.initDBData();
-						}
-					}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+							}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
 
-						}
-					}).create().show();
-					
+								}
+							}).create().show();
+
 				}
 			});
-			
+
 			if (positon == getCount() - 1) {
 				line.setVisibility(View.INVISIBLE);
 			} else {
 				line.setVisibility(View.VISIBLE);
 			}
 		}
+
+	}
+
+	private String changeMB(String size) {
+		long l = 0;
+		if (size != null && !size.equals("")) {
+			l = Long.parseLong(size);
+		}
+
+		size = (l / 1000 / 1000) + "MB";
+
+		return size;
 	}
 }
