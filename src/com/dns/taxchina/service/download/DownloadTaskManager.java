@@ -27,6 +27,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.dns.taxchina.service.model.DownloadTask;
@@ -49,6 +51,21 @@ public class DownloadTaskManager {
 	private List<DownloadTask> taskList = new ArrayList<DownloadTask>();
 
 	private Queue<DownloadTask> queue = new LinkedList<DownloadTask>();
+	
+	private Handler findHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case 0:
+				startNext();
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
 
 	public static DownloadTaskManager getInstance(Activity context) {
 		if (downloadTaskManager == null) {
@@ -252,12 +269,12 @@ public class DownloadTaskManager {
 		}
 
 		public void stop() {
+			videoId = null;
 			new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 					try {
-						videoId = null;
 						fileOutputStream.close();
 						httpClient.getConnectionManager().shutdown();
 						inputStream.close();
@@ -324,7 +341,7 @@ public class DownloadTaskManager {
 							videoDAO.update(video);
 						}
 						fileOutputStream = new FileOutputStream(downloadFile, true);
-						byte[] b = new byte[1024 * 8];
+						byte[] b = new byte[1024 * 2];
 						int count = 0;
 						int oldCount = 0;
 
@@ -334,7 +351,7 @@ public class DownloadTaskManager {
 								fileOutputStream.close();
 								httpClient.getConnectionManager().shutdown();
 								inputStream.close();
-								startNext();
+								findHandler.sendEmptyMessage(0);
 								return;
 							} else {
 								if (!wifiManager.isWifiEnabled()) {
@@ -342,7 +359,7 @@ public class DownloadTaskManager {
 										fileOutputStream.close();
 										httpClient.getConnectionManager().shutdown();
 										inputStream.close();
-										startNext();
+										findHandler.sendEmptyMessage(0);
 										return;
 									}
 								}
@@ -391,18 +408,23 @@ public class DownloadTaskManager {
 						intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT_ID, video.getId());
 						context.sendBroadcast(intent);
 						videoId = null;
-						startNext();
+						findHandler.sendEmptyMessage(0);
+						
 					}
 				}
 
 			} catch (Exception e) {
 				Log.e("DownloadTaskManager", e.getMessage(), e);
-				videoId = null;
+				if(videoId != null && video.equals(video.getId()) ){
+					videoId = null;
+				}
 				// 下载完成广播
 				intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
 						DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
 				context.sendBroadcast(intent);
-				startNext();
+				if(videoId != null){
+					findHandler.sendEmptyMessage(0);
+				}
 				throw new RuntimeException(e);
 			}
 		}
