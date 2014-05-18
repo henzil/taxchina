@@ -11,6 +11,8 @@
     <string name="share_cancel_btn">取消</string>
     <string name="collect_success">收藏成功</string>
     <string name="cancel_collect_success">取消收藏成功</string>
+    <string name="wifi_tip">提示</string>
+    <string name="wifi_tip_string">您已允许非wifi网络下下载，下载时可能会产生流量费用！</string>
     
     <!-- 详情页 -->
     <string name="this_video_do_download">已加入下载队列，请稍后</string>
