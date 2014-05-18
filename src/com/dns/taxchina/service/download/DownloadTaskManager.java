@@ -86,7 +86,7 @@ public class DownloadTaskManager {
 		downloadTaskDAO.add(downloadTask);
 		taskList.add(downloadTask);
 		queue.add(downloadTask);
-		if (queue.size() == 1) {
+		if (videoId == null) {
 			// 将新任务加入线程池
 			DownLoadBytes downLoadBytes = new DownLoadBytes(context, queue.poll(), videoModel);
 			currentMap.put(videoModel.getId(), downLoadBytes);
@@ -109,26 +109,29 @@ public class DownloadTaskManager {
 	}
 
 	public void stopOneTask(VideoModel videoModel) {
-		Log.e("tag", "~~~~~执行到这里~~~~~videoModel =" + videoModel.toString());
+		Log.e("tag", "~~~~!!!~执行到这里~~~~~videoModel =" + videoModel.toString());
+		Log.e("tag", "~~~~!!!~执行到这里~~~~~videoId =" + videoId);
 		if (videoId != null && videoId.equals(videoModel.getId())) {
 			// 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
 			executorService.shutdownNow();
+			Log.e("tag", "currentMap.toString() = " +currentMap.toString());
 			if (currentMap.containsKey(videoModel.getId())) {
 				DownLoadBytes downLoadBytes = currentMap.get(videoModel.getId());
 				downLoadBytes.stop();
 				currentMap.remove(videoModel.getId());
 			}
 			executorService = Executors.newFixedThreadPool(1);
+			videoId = null;
+			
 			if (queue.size() > 0) {
 				// 将新任务加入线程池
 				DownloadTask downloadTask = queue.poll();
 				VideoDAO videoDAO = new VideoDAO(context);
 				VideoModel model = videoDAO.findById(downloadTask.getVideo().getId());
 				DownLoadBytes downLoadBytes = new DownLoadBytes(context, downloadTask, model);
-				currentMap.put(videoModel.getId(), downLoadBytes);
+				currentMap.put(model.getId(), downLoadBytes);
 				executorService.submit(downLoadBytes);
 			}
-			videoId = null;
 		} else {
 			for (int i = 0; i < taskList.size(); i++) {
 				DownloadTask downloadTask = taskList.get(i);
@@ -162,7 +165,7 @@ public class DownloadTaskManager {
 			DownloadTask downloadTask = taskList.get(i);
 			if (downloadTask.getFileId().equals(videoModel.getId())) {
 				taskList.remove(i);
-				return;
+				break;
 			}
 		}
 		// 如果在正在下载的队列中，则删除掉。
@@ -367,7 +370,6 @@ public class DownloadTaskManager {
 										intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT, progressBarState);
 										intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT_ID, video.getId());
 										context.sendBroadcast(intent);
-
 									}
 								}
 							}

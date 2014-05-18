@@ -120,6 +120,7 @@ public class StudyRecordAdapter extends BaseAdapter {
 							public void onClick(View v) {
 								// 暂停一个下载，并移除当前下载队列中。
 								DownloadTaskManager.getInstance(context).stopOneTask(model);
+								studyRecordBtn.setText("下载");
 							}
 						});
 					} else if (DownloadTaskManager.getInstance(context).getCurrentDownLoadSet().contains(model)) {
