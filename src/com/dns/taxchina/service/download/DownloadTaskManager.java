@@ -23,6 +23,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import android.util.Log;
 import com.dns.taxchina.service.model.DownloadTask;
 import com.dns.taxchina.service.model.VideoModel;
 
+@SuppressLint("HandlerLeak")
 public class DownloadTaskManager {
 
 	private static DownloadTaskManager downloadTaskManager;
@@ -397,7 +399,6 @@ public class DownloadTaskManager {
 						video.setDownloadedSize(lengthStr);
 						video.setVideoSize(lengthStr);
 						videoDAO.update(video);
-						Log.e("tag", "下载完毕 ~~~  ");
 						// 读取下载完毕
 						fileOutputStream.close();
 						httpClient.getConnectionManager().shutdown();

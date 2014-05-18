@@ -1,24 +1,15 @@
 package com.dns.taxchina.ui;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
+import netlib.util.AppUtil;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.download.DownloadTaskManager;
-import com.dns.taxchina.service.util.NetChangeFilter;
 import com.dns.taxchina.ui.fragment.BaseFragment;
 import com.dns.taxchina.ui.util.FragmentUtil;
 
@@ -32,9 +23,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	private long exitTime = 0;
 
-	private NetStatReceiver netStatReceiver;
-
-	private Dialog netDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,25 +38,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 	@Override
 	protected void initData() {
 		DownloadTaskManager.getInstance(this);
-		IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-		netStatReceiver = new NetStatReceiver(this);
-		registerReceiver(netStatReceiver, intentFilter);
-		netDialog = new AlertDialog.Builder(this).setTitle("提示").setMessage("已切换到3G状态，是否继续下载？")
-				.setPositiveButton("继续", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				}).setNegativeButton("停止", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO 停止下载。
-						// 如果还有下载队列中还有正在进行的任务时。
-						DownloadTaskManager.getInstance(HomeActivity.this).stop();
-						
-					}
-				}).create();
+		super.initData();
 	}
 
 	@Override
@@ -202,7 +172,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 	@Override
 	protected void onDestroy() {
 		DownloadTaskManager.getInstance(this).stop();
-		unregisterReceiver(netStatReceiver);
 		super.onDestroy();
 	}
 
@@ -221,43 +190,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 		return super.onKeyDown(keyCode, event);
 	}
 
-	public class NetStatReceiver extends BroadcastReceiver {
-
-		private NetChangeFilter netChangeFilter = null;
-
-		public NetStatReceiver(Context context) {
-			netChangeFilter = new NetChangeFilter(context);
-		}
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// Intent中ConnectivityManager.EXTRA_NO_CONNECTIVITY这个关键字表示着当前是否连接上了网络
-			Log.d("tag", "收到一次网络改变请求。。。。。。。。");
-//			Bundle bundle = intent.getExtras();
-//			for (String key : bundle.keySet()) {
-//				Log.e("tag", "!!!!!!@@@@@~~~~~~~~~~~~key = " + key);
-//				Log.e("tag", "!!!!!!@@@@@~~~~~~~~~~~~bundle.get(" + key + ").toString() = "
-//						+ bundle.get(key).toString());
-//			}
-//			if (bundle.containsKey(ConnectivityManager.EXTRA_NETWORK_INFO)) {
-//				NetworkInfo networkInfo = (NetworkInfo) bundle.get(ConnectivityManager.EXTRA_NETWORK_INFO);
-//				int type = networkInfo.getType();
-//				Log.e("tag", "!!!!!~~~~~~~~~~~~networkInfo.getType() = " + type);
-//				Log.e("tag", "!!!!!~~~~~~~~~~~~networkInfo.getTypeName() = " + networkInfo.getTypeName());
-//			}
-//			if (bundle.containsKey(ConnectivityManager.EXTRA_EXTRA_INFO)) {
-//				String extraInfo = bundle.getString(ConnectivityManager.EXTRA_EXTRA_INFO);
-//				Log.e("tag", "!!!!!~~~~~~~~~~~~extraInfo = " + extraInfo);
-//			}
-			boolean b = netChangeFilter.netChangeMobile(context);
-			if (b && !netDialog.isShowing()) {
-				DownloadTaskManager downloadTaskManager = DownloadTaskManager.getInstance(HomeActivity.this);
-				Log.e("tag", "!!!!!~~~~~~(downloadTaskManager.downloadingId() != null) = " + (downloadTaskManager.downloadingId() != null));
-				Log.e("tag", "!!!!!~~~~~~downloadTaskManager.getCurrentDownLoadSet().size() = " + downloadTaskManager.getCurrentDownLoadSet().size());
-				if(downloadTaskManager.downloadingId() != null || downloadTaskManager.getCurrentDownLoadSet().size() > 0){
-					netDialog.show();
-				}
-			}
+	@Override
+	protected void showNetDialog() {
+		if (AppUtil.isActivityTopStartThisProgram(HomeActivity.this, HomeActivity.class.getName())) {
+			netDialog.show();
 		}
 	}
+
 }

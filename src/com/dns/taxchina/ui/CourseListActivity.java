@@ -9,6 +9,7 @@ import netlib.model.ErrorModel;
 import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
 import netlib.net.DataMode;
+import netlib.util.AppUtil;
 import netlib.util.ErrorCodeUtil;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
@@ -97,6 +98,7 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 				return null;
 			}
 		};
+		super.initData();
 	}
 
 	@Override
@@ -281,6 +283,13 @@ public class CourseListActivity extends BaseActivity implements XListView.IXList
 		}
 		if (loadingDialog != null) {
 			loadingDialog = null;
+		}
+	}
+	
+	@Override
+	protected void showNetDialog() {
+		if (AppUtil.isActivityTopStartThisProgram(this, CourseListActivity.class.getName())) {
+			netDialog.show();
 		}
 	}
 }

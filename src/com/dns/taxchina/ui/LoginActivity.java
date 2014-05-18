@@ -93,6 +93,7 @@ public class LoginActivity extends BaseActivity {
 				return null;
 			}
 		};
+		super.initData();
 	}
 
 	@Override
@@ -201,6 +202,13 @@ public class LoginActivity extends BaseActivity {
 		}
 		if (loadingDialog != null) {
 			loadingDialog = null;
+		}
+	}
+	
+	@Override
+	protected void showNetDialog() {
+		if (AppUtil.isActivityTopStartThisProgram(this, LoginActivity.class.getName())) {
+			netDialog.show();
 		}
 	}
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -91,5 +92,23 @@ public class AppUtil {
 			return null;
 		}
 	}
+	
+	// 判断本程序 最顶部activity 是否是 此activity
+	public static boolean isActivityTopStartThisProgram(Context context, String activityName) {
+		ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningTaskInfo> list = activityManager.getRunningTasks(100);
+		if (list != null && list.size() > 0) {
+			for(RunningTaskInfo runningTaskInfo : list){
+				Log.e("tag", "runningTaskInfo.topActivity.getClassName() = " + runningTaskInfo.topActivity.getClassName());
+				Log.e("tag", "activityName = " + activityName);
+				if (context.getPackageName().equals(runningTaskInfo.baseActivity.getPackageName())) {
+					if(runningTaskInfo.topActivity.getClassName().equals(activityName)){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	} 
 
 }

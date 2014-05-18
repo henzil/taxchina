@@ -2,6 +2,7 @@ package com.dns.taxchina.ui;
 
 import java.util.List;
 
+import netlib.util.AppUtil;
 import netlib.util.PhoneUtil;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -68,6 +69,7 @@ public class CourseCollectionActivity extends BaseActivity {
 				return true;
 			}
 		});
+		super.initData();
 	}
 
 	@Override
@@ -155,6 +157,13 @@ public class CourseCollectionActivity extends BaseActivity {
 		super.onDestroy();
 		if (loadingDialog != null) {
 			loadingDialog = null;
+		}
+	}
+	
+	@Override
+	protected void showNetDialog() {
+		if (AppUtil.isActivityTopStartThisProgram(this, CourseCollectionActivity.class.getName())) {
+			netDialog.show();
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package com.dns.taxchina.ui;
 
+import netlib.util.AppUtil;
 import android.content.Intent;
 import android.view.View;
 import android.webkit.WebView;
@@ -37,7 +38,7 @@ public class CenterDetailActivity extends BaseActivity {
 
 		type = intent.getIntExtra(DETAIL_TYPE, -1);
 		plug = new WebViewPlug(this);
-		// url = model.getUrl();
+		super.initData();
 	}
 
 	@Override
@@ -85,5 +86,12 @@ public class CenterDetailActivity extends BaseActivity {
 
 			}
 		});
+	}
+	
+	@Override
+	protected void showNetDialog() {
+		if (AppUtil.isActivityTopStartThisProgram(this, CenterDetailActivity.class.getName())) {
+			netDialog.show();
+		}
 	}
 }

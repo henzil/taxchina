@@ -6,6 +6,7 @@ import netlib.constant.BaseApiConstant;
 import netlib.helper.DataServiceHelper;
 import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
+import netlib.util.AppUtil;
 import android.content.Intent;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -61,6 +62,7 @@ public class SplashScreenActivity extends BaseActivity {
 				return null;
 			}
 		};
+		super.initData();
 	}
 
 	@Override
@@ -101,5 +103,10 @@ public class SplashScreenActivity extends BaseActivity {
 		}
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	protected void showNetDialog() {
+		
 	}
 }

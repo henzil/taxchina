@@ -6,6 +6,7 @@ import java.util.List;
 import netlib.helper.DataServiceHelper;
 import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
+import netlib.util.AppUtil;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -80,7 +81,7 @@ public class StudyRecordActivity extends BaseActivity {
 		sdCardUtil = new SdCardUtil(StudyRecordActivity.this);
 		broadcastReceiver = new DownLoadBroadcastReceiver();
 		registerReceiver(broadcastReceiver, new IntentFilter(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER));
-
+		super.initData();
 	}
 
 	@SuppressWarnings("static-access")
@@ -216,5 +217,12 @@ public class StudyRecordActivity extends BaseActivity {
 			loadingDialog = null;
 		}
 		unregisterReceiver(broadcastReceiver);
+	}
+
+	@Override
+	protected void showNetDialog() {
+		if (AppUtil.isActivityTopStartThisProgram(this, StudyRecordActivity.class.getName())) {
+			netDialog.show();
+		}
 	}
 }

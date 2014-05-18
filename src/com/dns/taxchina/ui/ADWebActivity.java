@@ -1,5 +1,6 @@
 package com.dns.taxchina.ui;
 
+import netlib.util.AppUtil;
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,6 +23,7 @@ public class ADWebActivity extends BaseActivity {
 	protected void initData() {
 		url = getIntent().getStringExtra(AD_WEB_URL);
 		Log.d(TAG, "laoding website url : " + url);
+		super.initData();
 	}
 
 	@Override
@@ -53,5 +55,12 @@ public class ADWebActivity extends BaseActivity {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	protected void showNetDialog() {
+		if (AppUtil.isActivityTopStartThisProgram(this, ADWebActivity.class.getName())) {
+			netDialog.show();
+		}
 	}
 }
