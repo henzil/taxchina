@@ -57,7 +57,7 @@ public class StudyRecordActivity extends BaseActivity {
 	protected DataServiceHelper dataServiceHelper;
 
 	protected ModelHelper jsonHelper;
-	
+
 	private boolean isClick;
 
 	private List<VideoModel> doneList = new ArrayList<VideoModel>();
@@ -84,7 +84,6 @@ public class StudyRecordActivity extends BaseActivity {
 		super.initData();
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	protected void initViews() {
 		setContentView(R.layout.study_record_activity);
@@ -98,13 +97,7 @@ public class StudyRecordActivity extends BaseActivity {
 		adapter = new StudyRecordAdapter(StudyRecordActivity.this, TAG);
 		listView.setAdapter(adapter);
 
-		if (sdCardUtil.isSDCardExist()) {
-			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getSDTotalSize(), sdCardUtil.getSDAvailableSize(),
-					sdCardUtil.getSDAvailableFormat()));
-		} else {
-			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getRomTotalSize(), sdCardUtil.getRomAvailableSize(),
-					sdCardUtil.getRomAvailableSizeFormat()));
-		}
+		getSDCard();
 
 		alreadOver.setSelected(true);
 	}
@@ -125,6 +118,17 @@ public class StudyRecordActivity extends BaseActivity {
 		adapter.refresh(type == ALREADOVER_TYEP ? doneList : unDoneList);
 	}
 
+	@SuppressWarnings("static-access")
+	public void getSDCard() {
+		if (sdCardUtil.isSDCardExist()) {
+			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getSDTotalSize(), sdCardUtil.getSDAvailableSize(),
+					sdCardUtil.getSDAvailableFormat()));
+		} else {
+			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getRomTotalSize(), sdCardUtil.getRomAvailableSize(),
+					sdCardUtil.getRomAvailableSizeFormat()));
+		}
+	}
+
 	@Override
 	protected void initWidgetActions() {
 		back.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +138,7 @@ public class StudyRecordActivity extends BaseActivity {
 				finish();
 			}
 		});
-		
+
 		edit.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -200,6 +204,7 @@ public class StudyRecordActivity extends BaseActivity {
 				int type = intent.getIntExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, -1);
 				if (type == DownloadTaskContact.DOWNLOADING_TYPE_PERCENT_VALUE || type == DownloadTaskContact.DOWNLOADING_TYPE_END_VALUE) {
 					initDBData();
+					getSDCard();
 				} else if (type == DownloadTaskContact.DOWNLOADING_TYPE_START_VALUE || type == DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE) {
 					adapter.notifyDataSetChanged();
 				}

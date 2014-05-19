@@ -100,8 +100,7 @@ public class StudyRecordAdapter extends BaseAdapter {
 		public void update(final VideoModel baseItemModel, final int positon) {
 			model = baseItemModel;
 			title.setText(model.getTitle());
-			text.setText(changeMB(model.getDownloadedSize()) + "/" + changeMB(model.getVideoSize()) + "  ("
-					+ model.getDownloadPercent() + "%）");
+			text.setText(changeMB(model.getDownloadedSize()) + "/" + changeMB(model.getVideoSize()) + "  (" + model.getDownloadPercent() + "%）");
 			if (type == DISMISS_DELETE) {
 				studyRecordBtn.setVisibility(View.VISIBLE);
 				studyRecordBtn.setClickable(true);
@@ -116,18 +115,18 @@ public class StudyRecordAdapter extends BaseAdapter {
 					Log.e("tag", "~~currentVideoId = " + currentVideoId);
 					Log.e("tag", "~~model.getId() = " + model.getId());
 					if (currentVideoId != null && currentVideoId.equals(model.getId())) {
-						studyRecordBtn.setText("暂停");
+						studyRecordBtn.setText(context.getResources().getString(R.string.pause));
 						studyRecordBtn.setOnClickListener(new OnClickListener() {
 
 							@Override
 							public void onClick(View v) {
 								// 暂停一个下载，并移除当前下载队列中。
 								DownloadTaskManager.getInstance(context).stopOneTask(model);
-								studyRecordBtn.setText("下载");
+								studyRecordBtn.setText(context.getResources().getString(R.string.downlaod));
 							}
 						});
 					} else if (DownloadTaskManager.getInstance(context).getCurrentDownLoadSet().contains(model)) {
-						studyRecordBtn.setText("等待");
+						studyRecordBtn.setText(context.getResources().getString(R.string.wait));
 						studyRecordBtn.setOnClickListener(new OnClickListener() {
 
 							@Override
@@ -136,7 +135,7 @@ public class StudyRecordAdapter extends BaseAdapter {
 							}
 						});
 					} else {
-						studyRecordBtn.setText("下载");
+						studyRecordBtn.setText(context.getResources().getString(R.string.downlaod));
 						studyRecordBtn.setOnClickListener(new OnClickListener() {
 
 							@Override
@@ -144,14 +143,15 @@ public class StudyRecordAdapter extends BaseAdapter {
 								// 将一个下载加载到下载队列中。
 								WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 								if (SettingUtil.getWifiDoSomeThing(context) && !wifiManager.isWifiEnabled()) {
-									new AlertDialog.Builder(context).setTitle("提示").setMessage("当前在非wfi下，确认是否要下载")
-											.setPositiveButton("下载", new DialogInterface.OnClickListener() {
+									new AlertDialog.Builder(context).setTitle(context.getString(R.string.wifi_tip))
+											.setMessage(context.getResources().getString(R.string.study_record_3G_tip))
+											.setPositiveButton(context.getResources().getString(R.string.downlaod), new DialogInterface.OnClickListener() {
 
 												@Override
 												public void onClick(DialogInterface dialog, int which) {
 													DownloadTaskManager.getInstance(context).startOneTask(model);
 												}
-											}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+											}).setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
 
 												@Override
 												public void onClick(DialogInterface dialog, int which) {
@@ -176,29 +176,28 @@ public class StudyRecordAdapter extends BaseAdapter {
 
 				@Override
 				public void onClick(View v) {
-					new AlertDialog.Builder(context).setTitle("提示").setMessage("是否删除此视频？")
-							.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					new AlertDialog.Builder(context).setTitle(context.getString(R.string.wifi_tip)).setMessage(context.getString(R.string.study_record_delete_tip)).setPositiveButton(context.getString(R.string.sure), new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									DownloadTaskManager.getInstance(context).deleteTask(model);
-									VideoDAO videoDAO = new VideoDAO(context);
-									videoDAO.remove(model.getId());
-									if (model.getVideoPath() != null) {
-										File file = new File(model.getVideoPath());
-										if (file != null && file.exists()) {
-											file.delete();
-										}
-									}
-									context.initDBData();
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							DownloadTaskManager.getInstance(context).deleteTask(model);
+							VideoDAO videoDAO = new VideoDAO(context);
+							videoDAO.remove(model.getId());
+							if (model.getVideoPath() != null) {
+								File file = new File(model.getVideoPath());
+								if (file != null && file.exists()) {
+									file.delete();
 								}
-							}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+							}
+							context.initDBData();
+						}
+					}).setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
 
-								}
-							}).create().show();
+						}
+					}).create().show();
 
 				}
 			});
