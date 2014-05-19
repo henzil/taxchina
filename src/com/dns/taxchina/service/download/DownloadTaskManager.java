@@ -412,8 +412,14 @@ public class DownloadTaskManager {
 						findHandler.sendEmptyMessage(0);
 						
 					}
+				} else {
+					videoId = null;
+					// 下载完成广播
+					intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
+							DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
+					context.sendBroadcast(intent);
+					findHandler.sendEmptyMessage(0);
 				}
-
 			} catch (Exception e) {
 				Log.e("DownloadTaskManager", e.getMessage(), e);
 				if(videoId != null && video.equals(video.getId()) ){
@@ -423,7 +429,7 @@ public class DownloadTaskManager {
 				intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
 						DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
 				context.sendBroadcast(intent);
-				if(videoId != null){
+				if(videoId == null){
 					findHandler.sendEmptyMessage(0);
 				}
 				throw new RuntimeException(e);

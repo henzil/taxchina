@@ -1,8 +1,11 @@
 package com.dns.taxchina.ui.widget;
 
+import netlib.util.SettingUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.view.View;
 import android.webkit.HttpAuthHandler;
@@ -144,6 +147,14 @@ public class WebViewPlug {
 			VideoDAO videoDAO = new VideoDAO(context);
 			VideoModel videoModel = videoDAO.findById(id);
 			if (videoModel == null) {
+				if(!SettingUtil.getWifiDoSomeThing(context)){
+					WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+					if(!wifiManager.isWifiEnabled()){
+						Toast.makeText(context, R.string.this_video_not_to_download, Toast.LENGTH_SHORT).show();
+						return;
+					}
+				}
+				
 				// 去下载
 				videoModel = new VideoModel();
 				videoModel.setId(id);
