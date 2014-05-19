@@ -53,6 +53,7 @@ public class CollectDBUtil extends BaseCollectDBUtil {
 		cv.put(DATA_INFO, courseModel.getInfo());
 		cv.put(DATA_IMAGE, courseModel.getImage());
 		cv.put(DATA_ISVIDEO, courseModel.isVideo() + "");
+		cv.put(DATA_DETAIL_TITLE, courseModel.getDetailTitle());
 		cv.put(DATA_URL, courseModel.getUrl());
 		cv.put(DATA_TIME, System.currentTimeMillis());
 		if (!isRowExisted(writableDatabase, T_DATA, DATA_ID + "=?", new String[] { courseModel.getId() })) {
@@ -146,6 +147,7 @@ public class CollectDBUtil extends BaseCollectDBUtil {
 				} else {
 					course.setVideo(false);
 				}
+				course.setDetailTitle(c.getString(c.getColumnIndex(DATA_DETAIL_TITLE)));
 				course.setUrl(c.getString(c.getColumnIndex(DATA_URL)));
 				courses.add(course);
 			}

@@ -20,6 +20,7 @@ public interface MyCollectDBConstant {
 	String DATA_IMAGE = "image";
 	String DATA_ISVIDEO = "isVideo";
 	String DATA_URL = "url";
+	String DATA_DETAIL_TITLE = "detailTitle";
 	String DATA_TIME = "time";
 	String DATA_HISTORY = "history";
 	
@@ -31,6 +32,7 @@ public interface MyCollectDBConstant {
 			+ DATA_INFO + " TEXT,"
 			+ DATA_IMAGE + " TEXT,"
 			+ DATA_ISVIDEO +" TEXT,"
+			+ DATA_DETAIL_TITLE +" TEXT,"
 			+ DATA_URL + " TEXT,"
 			+ DATA_TIME + " LONG);";
 	
