@@ -30,6 +30,7 @@ import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.service.model.VideoModel;
 import com.dns.taxchina.ui.adapter.CollectionListAdapter;
 import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
+import com.dns.taxchina.ui.adapter.StudyRecordAdapter.DeleteListener;
 import com.dns.taxchina.ui.util.SdCardUtil;
 
 /**
@@ -188,6 +189,14 @@ public class StudyRecordActivity extends BaseActivity {
 		});
 
 		initDBData();
+		
+		adapter.setDeleteListener(new DeleteListener() {
+			
+			@Override
+			public void doDelete() {
+				getSDCard();
+			}
+		});
 	}
 
 	private void updateBtn(View v) {

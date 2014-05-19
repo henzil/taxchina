@@ -190,6 +190,9 @@ public class StudyRecordAdapter extends BaseAdapter {
 								}
 							}
 							context.initDBData();
+							if(deleteListener != null){
+								deleteListener.doDelete();
+							}
 						}
 					}).setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
 
@@ -220,5 +223,15 @@ public class StudyRecordAdapter extends BaseAdapter {
 		size = (l / 1000 / 1000) + "MB";
 
 		return size;
+	}
+	
+	public DeleteListener deleteListener;
+	
+	public void setDeleteListener(DeleteListener deleteListener) {
+		this.deleteListener = deleteListener;
+	}
+	
+	public interface DeleteListener{
+		public void doDelete();
 	}
 }
