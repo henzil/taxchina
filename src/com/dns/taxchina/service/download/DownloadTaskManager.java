@@ -357,10 +357,11 @@ public class DownloadTaskManager {
 								return;
 							} else {
 								if (!wifiManager.isWifiEnabled()) {
-									if (SettingUtil.getWifiDoSomeThing(context)) {
+									if (!SettingUtil.getWifiDoSomeThing(context)) {
 										fileOutputStream.close();
 										httpClient.getConnectionManager().shutdown();
 										inputStream.close();
+										videoId = null;
 										findHandler.sendEmptyMessage(0);
 										return;
 									}
@@ -422,7 +423,7 @@ public class DownloadTaskManager {
 				}
 			} catch (Exception e) {
 				Log.e("DownloadTaskManager", e.getMessage(), e);
-				if(videoId != null && video.equals(video.getId()) ){
+				if(videoId != null && videoId.equals(video.getId()) ){
 					videoId = null;
 				}
 				// 下载完成广播
