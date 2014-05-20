@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
+
 import com.dns.taxchina.R;
 import com.dns.taxchina.ui.widget.WebViewPlug;
 import com.dns.taxchina.ui.widget.WebViewPlug.LoadWebViewListener;
@@ -50,12 +51,10 @@ public class CenterDetailActivity extends BaseActivity {
 
 		if (type == ACTIVATION_TYPE) {
 			title.setText("会员卡激活");
-			// TODO
-			plug.webViewPlug(url, webView);
+			plug.webViewPlug("http://tz1.taxchina.com/wcm/cswsp/login/loginpage.aspx", webView);
 		} else if (type == SUGGESTION_TYPE) {
 			title.setText("意见反馈");
-			// TODO
-			plug.webViewPlug(url, webView);
+			plug.webViewPlug("http://tz1.taxchina.com/wcm/cswsp/app/yijian.aspx", webView);
 		} else if (type == ABOUT_US_TYPE) {
 			title.setText("关于我们");
 			plug.webViewPlug("http://tz1.taxchina.com/wcm/cswsp/app/GuanYuWoMen.aspx", webView);
