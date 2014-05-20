@@ -6,7 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="back">返回</string>
     <string name="tip">更新</string>
-    <string name="sure_to_update">%1$s，是否更新？</string>
     <string name="sure">确定</string>
     <string name="cancel">取消</string>
     <string name="collect_success">收藏成功</string>
