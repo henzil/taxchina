@@ -100,7 +100,7 @@ public class StudyRecordAdapter extends BaseAdapter {
 		public void update(final VideoModel baseItemModel, final int positon) {
 			model = baseItemModel;
 			title.setText(model.getTitle());
-			text.setText(changeMB(model.getDownloadedSize()) + "/" + changeMB(model.getVideoSize()) + "  (" + model.getDownloadPercent() + "%）");
+			text.setText(changeMB(model.getDownloadedSize()) + "/" + changeMB(model.getVideoSize()) + "  (" + model.getDownloadPercent() + "%)");
 			if (type == DISMISS_DELETE) {
 				studyRecordBtn.setVisibility(View.VISIBLE);
 				studyRecordBtn.setClickable(true);
