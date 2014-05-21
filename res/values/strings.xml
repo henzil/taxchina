@@ -20,6 +20,7 @@
     <string name="pause">暂停</string>
     <string name="login_out_tip">温馨提示</string>
     <string name="login_out_string">您确定要退出登录吗？</string>
+    <string name="find_result_is_null">没有搜到相关内容</string>
     
     <!-- 详情页 -->
    <string name="this_video_not_to_download"> 3G网络下禁止下载,请去学员中心设置！</string>

@@ -135,7 +135,7 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 				}
 			}
 		});
-		
+
 		listView.setPullLoadEnable(false);
 
 		onLoadEvent();
@@ -215,6 +215,11 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 		}
 
 		FindResultModel model = (FindResultModel) object;
+		if (model.getDataList() != null && model.getDataList().isEmpty()) {
+			Toast.makeText(FindResultActivity.this, getResources().getString(R.string.find_result_is_null), Toast.LENGTH_SHORT).show();
+			finish();
+			return;
+		}
 		if (mode == REFRESH_MODE || mode == LOAD_MODE) {
 			onRefreshPostExecute(model.getDataList(), mode, model.isHasNext());
 			pageNum = 1;
@@ -283,7 +288,7 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 			loadingDialog = null;
 		}
 	}
-	
+
 	@Override
 	protected void showNetDialog() {
 		if (AppUtil.isActivityTopStartThisProgram(this, FindResultActivity.class.getName())) {

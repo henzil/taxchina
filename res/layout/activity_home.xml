@@ -56,7 +56,7 @@
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:text="咨询" />
+            android:text="资讯" />
 
         <Button
             android:id="@+id/findBut"
