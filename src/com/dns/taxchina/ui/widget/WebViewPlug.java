@@ -64,13 +64,13 @@ public class WebViewPlug {
 		mWebView.requestFocus(View.FOCUSABLES_TOUCH_MODE);
 		mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true); // 支持通过js打开新的窗口
 		mWebView.setHorizontalScrollBarEnabled(false);
-		mWebView.setWebChromeClient(new WebChromeClient() {
-			@Override
-			public boolean onJsAlert(WebView view, String url, String message, android.webkit.JsResult result) {
-				// Required functionality here
-				return super.onJsAlert(view, url, message, result);
-			}
-		});
+//		mWebView.setWebChromeClient(new WebChromeClient() {
+//			@Override
+//			public boolean onJsAlert(WebView view, String url, String message, android.webkit.JsResult result) {
+//				// Required functionality here
+//				return super.onJsAlert(view, url, message, result);
+//			}
+//		});
 		mWebView.addJavascriptInterface(new VideoClickListener(), "video");
 		mWebView.addJavascriptInterface(new LoginClickListener(), "user");
 		if (url == null) {
