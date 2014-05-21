@@ -6,14 +6,12 @@ import netlib.constant.BaseApiConstant;
 import netlib.helper.DataServiceHelper;
 import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
-import netlib.util.AppUtil;
 import android.content.Intent;
 import android.os.Handler;
 import android.view.KeyEvent;
 
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.helper.ModelHelper;
-import com.dns.taxchina.service.model.LoadingModel;
 
 /**
  * @author fubiao
