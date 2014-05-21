@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA"
-    android:orientation="vertical" >
+    android:background="#EAEAEA" >
 
     <include layout="@layout/top_bar_box" />
 
     <RelativeLayout
+        android:id="@+id/search_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_bar_box" >
 
         <EditText
             android:id="@+id/find_course_edit"
@@ -20,9 +23,9 @@
             android:layout_toLeftOf="@+id/find_course_btn"
             android:background="@drawable/white_content_bg"
             android:hint="搜  索"
+            android:paddingLeft="15dp"
             android:singleLine="true"
             android:textColorHint="@color/input_hint_color"
-            android:paddingLeft="15dp"
             android:textSize="14sp" />
 
         <Button
@@ -34,28 +37,42 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/search_btn" />
     </RelativeLayout>
-    
-    <ScrollView
-        android:id="@+id/scroll_view"
+
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="15dip" >
+        android:layout_below="@id/search_layout" >
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:layout_marginTop="15dip" >
 
             <LinearLayout
-                android:id="@+id/attr_content_box"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
+
+                <LinearLayout
+                    android:id="@+id/attr_content_box"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </LinearLayout>
             </LinearLayout>
+        </ScrollView>
 
-        </LinearLayout>
-    </ScrollView>
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_marginTop="1dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/white" />
+    </FrameLayout>
 
-</LinearLayout>
+</RelativeLayout>
