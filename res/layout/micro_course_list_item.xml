@@ -19,7 +19,7 @@
         android:layout_toRightOf="@+id/micro_course_item_tip_img"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="15dp"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:src="@drawable/default_116x75" />
 
     <TextView

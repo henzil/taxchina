@@ -101,8 +101,10 @@ public class CourseCollectionActivity extends BaseActivity {
 				isClick = isClick ? false : true;
 				if (isClick) {
 					adapter.setType(CollectionListAdapter.SHOW_DELETE);
+					edit.setText("完成");
 				} else {
 					adapter.setType(CollectionListAdapter.DISMISS_DELETE);
+					edit.setText("编辑");
 				}
 				isClick = isClick ? true : false;
 			}
