@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.HttpAuthHandler;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -63,7 +64,13 @@ public class WebViewPlug {
 		mWebView.requestFocus(View.FOCUSABLES_TOUCH_MODE);
 		mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true); // 支持通过js打开新的窗口
 		mWebView.setHorizontalScrollBarEnabled(false);
-
+		mWebView.setWebChromeClient(new WebChromeClient() {
+			@Override
+			public boolean onJsAlert(WebView view, String url, String message, android.webkit.JsResult result) {
+				// Required functionality here
+				return super.onJsAlert(view, url, message, result);
+			}
+		});
 		mWebView.addJavascriptInterface(new VideoClickListener(), "video");
 		mWebView.addJavascriptInterface(new LoginClickListener(), "user");
 		if (url == null) {
@@ -147,14 +154,14 @@ public class WebViewPlug {
 			VideoDAO videoDAO = new VideoDAO(context);
 			VideoModel videoModel = videoDAO.findById(id);
 			if (videoModel == null) {
-				if(!SettingUtil.getWifiDoSomeThing(context)){
+				if (!SettingUtil.getWifiDoSomeThing(context)) {
 					WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-					if(!wifiManager.isWifiEnabled()){
+					if (!wifiManager.isWifiEnabled()) {
 						Toast.makeText(context, R.string.this_video_not_to_download, Toast.LENGTH_SHORT).show();
 						return;
 					}
 				}
-				
+
 				// 去下载
 				videoModel = new VideoModel();
 				videoModel.setId(id);
