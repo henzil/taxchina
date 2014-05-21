@@ -7,6 +7,7 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
+import com.dns.taxchina.ui.util.LoginUtil;
 import com.dns.taxchina.ui.widget.WebViewPlug;
 import com.dns.taxchina.ui.widget.WebViewPlug.LoadWebViewListener;
 
@@ -24,8 +25,6 @@ public class CenterDetailActivity extends BaseActivity {
 	private int type = -1;
 
 	private TextView title, back;
-
-	private String url = "file:///android_asset/index.html";
 
 	public static final String DETAIL_TYPE = "detail_type";
 	public static final int ACTIVATION_TYPE = 0;
@@ -51,10 +50,16 @@ public class CenterDetailActivity extends BaseActivity {
 
 		if (type == ACTIVATION_TYPE) {
 			title.setText("会员卡激活");
-			plug.webViewPlug("http://tz1.taxchina.com/wcm/cswsp/login/loginpage.aspx", webView);
+			String url = "http://tz1.taxchina.com/wcm/cswsp/login/loginpage.aspx";
+			url = url + "?from=Android&userId=" + LoginUtil.getUserId(CenterDetailActivity.this);
+			plug.webViewPlug(url, webView);
 		} else if (type == SUGGESTION_TYPE) {
 			title.setText("意见反馈");
-			plug.webViewPlug("http://tz1.taxchina.com/wcm/cswsp/app/yijian.aspx", webView);
+			String url = "http://tz1.taxchina.com/wcm/cswsp/app/yijian.aspx";
+			if (LoginUtil.isLogin(CenterDetailActivity.this)) {
+				url = url + "?userId=" + LoginUtil.getUserId(CenterDetailActivity.this);
+			}
+			plug.webViewPlug(url, webView);
 		} else if (type == ABOUT_US_TYPE) {
 			title.setText("关于我们");
 			plug.webViewPlug("http://tz1.taxchina.com/wcm/cswsp/app/GuanYuWoMen.aspx", webView);
@@ -86,7 +91,7 @@ public class CenterDetailActivity extends BaseActivity {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void showNetDialog() {
 		if (AppUtil.isActivityTopStartThisProgram(this, CenterDetailActivity.class.getName())) {
