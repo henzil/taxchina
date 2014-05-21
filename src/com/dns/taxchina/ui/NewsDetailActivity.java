@@ -39,7 +39,7 @@ public class NewsDetailActivity extends BaseActivity {
 		touchLinearLayout = (TouchLinearLayout) findViewById(R.id.touchLinearLayout);
 		webView = (WebView) findViewById(R.id.web_view);
 		
-		title.setText(baseItemModel.getTitle());
+		title.setText(baseItemModel.getDetailTitle());
 	}
 
 	@SuppressLint("SetJavaScriptEnabled")
