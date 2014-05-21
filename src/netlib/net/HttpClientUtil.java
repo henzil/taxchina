@@ -71,7 +71,7 @@ public class HttpClientUtil {
 	private final static String TAG = "HttpClientUtil";
 
 	private static final int SET_CONNECTION_TIMEOUT = 10000;
-	private static final int SET_SOCKET_TIMEOUT = 20000;
+	private static final int SET_SOCKET_TIMEOUT = 10000;
 
 	// HttpClient以post方式请求数据
 	public static String doPostRequest(String urlString, HashMap<String, String> params, Context context) {
