@@ -51,6 +51,7 @@ public class WebViewPlug {
 		if (url == null) {
 			url = "";
 		}
+		Log.e("tag", "url = " + url);
 		mWebView.loadUrl(url);
 	}
 

@@ -50,7 +50,7 @@ public class CenterDetailActivity extends BaseActivity {
 
 		if (type == ACTIVATION_TYPE) {
 			title.setText("会员卡激活");
-			String url = "http://tz1.taxchina.com/wcm/cswsp/login/loginpage.aspx";
+			String url = "http://tz1.taxchina.com/wcm/cswsp/app/appCard/CardActivate.aspx";
 			url = url + "?from=Android&userId=" + LoginUtil.getUserId(CenterDetailActivity.this);
 			plug.webViewPlug(url, webView);
 		} else if (type == SUGGESTION_TYPE) {
