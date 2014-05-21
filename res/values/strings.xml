@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">taxchina</string>
-    <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="back">返回</string>
     <string name="tip">更新</string>
@@ -38,4 +37,7 @@
     <string name="collect_empty">您还没有收藏，快去收藏吧！</string>
     
     <string name="sd_info">总空间%1$s/剩余空间%2$s  （%3$s）</string>
+    
+    <string name="all_video_deleted">所有视频已删除</string>
+    
 </resources>
