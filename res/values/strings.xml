@@ -14,6 +14,7 @@
     <string name="wifi_tip_string">使用3G网络下载可能会产生比较多的流量费用！</string>
     <string name="study_record_3G_tip">正在使用3G网络,是否继续当前下载任务！</string>
     <string name="study_record_delete_tip">是否删除此视频？</string>
+    <string name="delete_all_tip">确定要删除所有视频吗？</string>
     <string name="downlaod">下载</string>
     <string name="wait">等待</string>
     <string name="pause">暂停</string>
