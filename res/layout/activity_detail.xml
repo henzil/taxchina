@@ -48,7 +48,7 @@
             android:background="@drawable/collection_n"
             android:textColor="@color/white" />
     </RelativeLayout>
-
+    
     <RelativeLayout
         android:id="@+id/content_box"
         android:layout_width="fill_parent"

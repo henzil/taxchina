@@ -4,7 +4,7 @@
     <!-- webview进度条 -->
     <color name="white">#FFFFFF</color>
     <color name="progress_bar_bg_color">#CCCCCC</color> <!-- webview背景 -->
-    <color name="progress_bar_color">#00ff00</color> <!-- webview进度 -->
+    <color name="progress_bar_color">#FF6cc7ff</color> <!-- webview进度 -->
     <color name="index_title_text_color">#015b7e</color>
     <color name="micro_course_title_text_color">#8A8A8A</color>
     <color name="index_title_more_color">#005C7C</color>

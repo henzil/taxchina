@@ -2,8 +2,11 @@ package com.dns.taxchina.ui;
 
 import netlib.util.AppUtil;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
@@ -21,6 +24,10 @@ public class CenterDetailActivity extends BaseActivity {
 	private WebView webView;
 
 	protected WebViewPlug plug;
+	
+	protected ProgressBar progressBar;
+	
+	protected Handler mHandler = new Handler();
 
 	private int type = -1;
 
@@ -47,6 +54,24 @@ public class CenterDetailActivity extends BaseActivity {
 		title = (TextView) findViewById(R.id.title_text);
 		back = (TextView) findViewById(R.id.back_text);
 		webView = (WebView) findViewById(R.id.web_view);
+		progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+		
+		webView.setWebChromeClient(new WebChromeClient() {
+			public void onProgressChanged(WebView view, int progress) {
+				progressBar.setProgress(progress);
+				if (progress == 100) {
+					mHandler.postDelayed(new Runnable() {
+
+						@Override
+						public void run() {
+							progressBar.setVisibility(View.GONE);
+						}
+					}, 300);
+				} else {
+					progressBar.setVisibility(View.VISIBLE);
+				}
+			}
+		});
 
 		if (type == ACTIVATION_TYPE) {
 			title.setText("会员卡激活");

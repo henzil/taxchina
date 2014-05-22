@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">taxchina</string>
+    <string name="app_name">中税网</string>
     <string name="hello_world">Hello world!</string>
     <string name="back">返回</string>
     <string name="tip">更新</string>

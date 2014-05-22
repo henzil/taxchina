@@ -2,10 +2,13 @@ package com.dns.taxchina.ui;
 
 import netlib.util.AppUtil;
 import android.annotation.SuppressLint;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
@@ -22,7 +25,9 @@ public class NewsDetailActivity extends BaseActivity {
 	private TextView back, title;
 	private BaseItemModel baseItemModel;
 	private WebView webView;
+	protected ProgressBar progressBar;
 	private TouchLinearLayout touchLinearLayout;
+	protected Handler mHandler = new Handler();
 	public static final String NEWS_DETAIL_MODEL = "news_detail_model";
 
 	@Override
@@ -38,8 +43,9 @@ public class NewsDetailActivity extends BaseActivity {
 		title = (TextView) findViewById(R.id.title_text);
 		touchLinearLayout = (TouchLinearLayout) findViewById(R.id.touchLinearLayout);
 		webView = (WebView) findViewById(R.id.web_view);
-		
+		progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 		title.setText(baseItemModel.getDetailTitle());
+		
 	}
 
 	@SuppressLint("SetJavaScriptEnabled")
@@ -61,8 +67,29 @@ public class NewsDetailActivity extends BaseActivity {
 				return true;
 			}
 		});
+		
+		webView.setWebChromeClient(new WebChromeClient() {
+			public void onProgressChanged(WebView view, int progress) {
+				progressBar.setProgress(progress);
+				if (progress == 100) {
+					mHandler.postDelayed(new Runnable() {
+
+						@Override
+						public void run() {
+							progressBar.setVisibility(View.GONE);
+						}
+					}, 300);
+				} else {
+					progressBar.setVisibility(View.VISIBLE);
+				}
+			}
+		});
+		
 		webView.getSettings().setJavaScriptEnabled(true);
-		webView.loadUrl(baseItemModel.getUrl());
+		webView.setInitialScale(100);
+		String url = baseItemModel.getUrl();
+		url = url + "?from=Android&docId=" + baseItemModel.getId();
+		webView.loadUrl(url);
 		
 		touchLinearLayout.OnLayoutGestureListener(new TouchLinearLayout.OnLayoutGestureListener() {
 
