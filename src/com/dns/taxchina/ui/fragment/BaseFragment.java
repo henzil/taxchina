@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,7 +43,7 @@ public abstract class BaseFragment extends Fragment {
 		initBaseData();
 		initBaseViews();
 	}
-
+	
 	protected void initBaseData() {
 		context = getActivity();
 		initDialog();
@@ -50,6 +51,12 @@ public abstract class BaseFragment extends Fragment {
 
 	protected void initBaseViews() {
 		((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+	
+	@Override
+	public void startActivity(Intent intent) {
+		super.startActivity(intent);
+		getActivity().overridePendingTransition(R.anim.push_right_in, R.anim.no_anim);
 	}
 
 	@SuppressLint("NewApi")

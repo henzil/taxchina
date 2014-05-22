@@ -4,6 +4,7 @@ import it.sephiroth.android.library.widget.HorizontalVariableListView;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -51,6 +52,7 @@ public class IndexListViewLayout extends LinearLayout implements IndexListElemen
 					intent.putExtra(DetailActivity.DETAIL_MODEL, model);
 					intent.putExtra(DetailActivity.DETAIL_TITLE, titleStr);
 					getContext().startActivity(intent);
+					((Activity) getContext()).overridePendingTransition(R.anim.push_right_in, R.anim.no_anim);
 				}
 				return false;
 			}

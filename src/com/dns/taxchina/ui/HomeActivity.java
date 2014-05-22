@@ -174,7 +174,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 		DownloadTaskManager.getInstance(this).stop();
 		super.onDestroy();
 	}
-
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {

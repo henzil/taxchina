@@ -1,5 +1,6 @@
 package com.dns.taxchina.ui.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ public class IndexTitleLayout extends LinearLayout implements IndexListElement {
 				intent.putExtra(CourseListActivity.LIST_ID, indexTitleModel.getId());
 				intent.putExtra(CourseListActivity.LIST_TITLE, indexTitleModel.getTitle());
 				getContext().startActivity(intent);
+				((Activity) getContext()).overridePendingTransition(R.anim.push_right_in, R.anim.no_anim);
 			}
 		});
 	}
