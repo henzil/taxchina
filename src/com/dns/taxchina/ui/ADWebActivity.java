@@ -38,6 +38,8 @@ public class ADWebActivity extends BaseActivity {
 		setContentView(R.layout.activity_ad_website_activity);
 		webView = (WebView) findViewById(R.id.wv_ad_website);
 		progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+		webView.getSettings().setSupportZoom(true);
+		webView.getSettings().setBuiltInZoomControls(true);
 	}
 
 	@SuppressLint("SetJavaScriptEnabled")
