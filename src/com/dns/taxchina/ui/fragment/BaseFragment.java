@@ -46,6 +46,7 @@ public abstract class BaseFragment extends Fragment {
 	
 	protected void initBaseData() {
 		context = getActivity();
+		TAG = toString();
 		initDialog();
 	}
 

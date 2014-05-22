@@ -116,9 +116,7 @@ public class IndexListViewAdapter extends BaseAdapter {
 												new BitmapDrawable(context.getResources(), bitmap) });
 										pic.setImageDrawable(td);
 										td.startTransition(200);
-									} else {
-										bitmap.recycle();
-									}
+									} 
 								} else {
 									pic.setImageResource(R.drawable.default_116x75);
 								}
