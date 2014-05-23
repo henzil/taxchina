@@ -14,6 +14,8 @@ import netlib.util.ErrorCodeUtil;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -217,7 +219,7 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 		FindResultModel model = (FindResultModel) object;
 		if (model.getDataList() != null && model.getDataList().isEmpty()) {
 			Toast.makeText(FindResultActivity.this, getResources().getString(R.string.find_result_is_null), Toast.LENGTH_SHORT).show();
-			finish();
+			handler.sendEmptyMessageDelayed(0, 1000);
 			return;
 		}
 		if (mode == REFRESH_MODE || mode == LOAD_MODE) {
@@ -229,6 +231,21 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 		}
 	}
 
+	private Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case 0:
+				finish();
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
+	
 	protected void onRefreshPostExecute(List<BaseItemModel> result, int mode, boolean hasNext) {
 		if (result.isEmpty()) {
 //			listView.onBottomRefreshComplete(PullToRefreshListView.BOTTOM_NO_DATA);
