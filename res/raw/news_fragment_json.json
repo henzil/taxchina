@@ -4,52 +4,118 @@
     "nowPage": "1",
     "category": [
         {
-            "id": "1001",
-            "title": "皇马"
+            "id": "42332",
+            "title": "各地丑丑"
         },
         {
-            "id": "1001",
-            "title": "巴萨"
+            "id": "42331",
+            "title": "独家新闻"
         },
         {
-            "id": "1001",
-            "title": "马竞"
+            "id": "42330",
+            "title": "国际毒师"
+        },
+        {
+            "id": "42329",
+            "title": "评论啦啦"
+        },
+        {
+            "id": "42328",
+            "title": "公司"
+        },
+        {
+            "id": "42327",
+            "title": "财税评论"
+        },
+        {
+            "id": "42326",
+            "title": "综合毒师"
         }
     ],
     "head": [
         {
-            "id": "标示",
-            "title": "精品西餐牛排价值800元套餐券1",
-            "info": "副标题",
-            "image": "http://photocdn.sohu.com/20131028/Img389027106.jpg",
+            "id": "829104",
+            "title": "中国社科院：重点城市或开征存量房持有税",
+            "detailTitle": "财税",
+            "bigImage": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/aafa3c88bc2946779e7386f813340daf.jpg",
+            "info": "中国社科院：重点城市或开征存量房持有税",
+            "image": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/aafa3c88bc2946779e7386f813340daf.jpg",
             "isVideo": "true",
-            "url": "http://www.baidu.com"
-        },
-        {
-            "id": "标示",
-            "title": "精品西餐牛排价值800元套餐券1",
-            "info": "副标题",
-            "image": "http://www.cnncw.cn/pdf/ncrbnew/res/1/20110819/70891313688364203.jpg",
-            "isVideo": "true",
-            "url": "http://www.baidu.com"
+            "url": "http://tz1.taxchina.com/wcm/cswsp/app/docDetails.aspx"
         }
     ],
     "dataList": [
         {
-            "id": "ID",
-            "title": "标题",
-            "info": "副标题",
-            "image": "图片",
+            "id": "829103",
+            "title": "今年首季税收收入增长9.9%第三产业税收占比稳步提升",
+            "detailTitle": "财税",
+            "info": "今年首季税收收入增长9.9%第三产业税收占比稳步提升",
+            "image": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/xin_55205052311162502500510_706a7dfc36b84da6aa54cda6cc6cc7ed.jpg",
             "isVideo": "true",
-            "url": "http://www.baidu.com"
+            "url": "http://tz1.taxchina.com/wcm/cswsp/app/docDetails.aspx"
         },
         {
-            "id": "ID",
-            "title": "标题",
-            "info": "副标题",
-            "image": "图片",
+            "id": "829102",
+            "title": "中瑞自贸协定7月生效 汽车零部件将降税",
+            "detailTitle": "财税",
+            "info": "中瑞自贸协定7月生效 汽车零部件将降税",
+            "image": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/zflc20120918-1-s_2bc6536b0ebf488388771a37a349f163.jpg",
             "isVideo": "true",
-            "url": "http://www.baidu.com"
+            "url": "http://tz1.taxchina.com/wcm/cswsp/app/docDetails.aspx"
+        },
+        {
+            "id": "829095",
+            "title": "黑龙江省4家国家大学科技园享税收优惠",
+            "detailTitle": "各地",
+            "info": "黑龙江省4家国家大学科技园享税收优惠",
+            "image": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/5bc2ca2e40dd41598e9401c034565589.jpg",
+            "isVideo": "true",
+            "url": "http://tz1.taxchina.com/wcm/cswsp/app/docDetails.aspx"
+        },
+        {
+            "id": "829094",
+            "title": "浙江杭州政府2013年减免淘宝及天猫税收4.25亿",
+            "detailTitle": "各地",
+            "info": "浙江杭州政府2013年减免淘宝及天猫税收4.25亿",
+            "image": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/5cf46733064246a4b77dd1d3a5d9743a.jpg",
+            "isVideo": "true",
+            "url": "http://tz1.taxchina.com/wcm/cswsp/app/docDetails.aspx"
+        },
+        {
+            "id": "829093",
+            "title": "江苏6.4万小微企业受惠税收新政 减免金2.31亿元",
+            "detailTitle": "各地",
+            "info": "江苏6.4万小微企业受惠税收新政 减免金2.31亿元",
+            "image": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/f267fbbfb7dc4c11ac8e0e9bcb2d132c.jpg",
+            "isVideo": "true",
+            "url": "http://tz1.taxchina.com/wcm/cswsp/app/docDetails.aspx"
+        },
+        {
+            "id": "829092",
+            "title": "【独家】汇算清缴中资产税务处理要把握细节\r\n",
+            "detailTitle": "独家",
+            "info": "【独家】汇算清缴中资产税务处理要把握细节\r\n",
+            "image": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/5dbd53cbca98465db1a25a894f6876e6.jpg",
+            "isVideo": "true",
+            "url": "http://tz1.taxchina.com/wcm/cswsp/app/docDetails.aspx"
+        },
+        {
+            "id": "829091",
+            "title": "【独家】房地产企业应缴纳土地增值税的几种主要情形\r\n\r\n",
+            "detailTitle": "独家",
+            "info": "【独家】房地产企业应缴纳土地增值税的几种主要情形\r\n\r\n",
+            "image": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/ba7e4ff8440c481d88b39101163b1969.jpg",
+            "isVideo": "true",
+            "url": "http://tz1.taxchina.com/wcm/cswsp/app/docDetails.aspx"
+        },
+        {
+            "id": "829090",
+            "title": "【独家】开征遗产税之要务：先建立财产公开制度\r\n\r\n",
+            "detailTitle": "独家",
+            "info": "【独家】开征遗产税之要务：先建立财产公开制度\r\n\r\n",
+            "image": "http://admin.cctae.com/wcm/resource/images/www1/2014-05/21/f04d9e00ec35483d8b19609fad83a77d.jpg",
+            "isVideo": "true",
+            "url": "http://tz1.taxchina.com/wcm/cswsp/app/docDetails.aspx"
         }
     ]
 }

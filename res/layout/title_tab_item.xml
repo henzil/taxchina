@@ -5,19 +5,17 @@
 
     <View
         android:id="@+id/line"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="2dp"
         android:layout_gravity="bottom"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/item_text"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="30dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textSize="17sp" />
