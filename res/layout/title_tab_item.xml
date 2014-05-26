@@ -19,6 +19,8 @@
         android:ellipsize="end"
         android:gravity="center"
         android:singleLine="true"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:textColor="@android:color/white"
         android:textSize="17sp" />
 

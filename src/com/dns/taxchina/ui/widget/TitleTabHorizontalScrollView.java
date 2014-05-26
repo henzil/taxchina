@@ -33,7 +33,7 @@ public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 	private ViewPager viewPager;
 
 	private int left;
-	
+
 	private String viewId = null;
 
 	// 选择某个标签时，viewpager切换是否有动画
@@ -88,12 +88,12 @@ public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 
 	public void packConflictViewId(String viewId) {
 		this.viewId = viewId;
-		if(viewId != null && !viewId.equals("")){
+		if (viewId != null && !viewId.equals("")) {
 			ResourceUtil resourceUtil = ResourceUtil.getInstance(getContext());
 			int id = resourceUtil.getViewId(viewId);
-			if(id > 0){
+			if (id > 0) {
 				View v = getRootView().findViewById(id);
-				if(v instanceof ViewGroup){
+				if (v instanceof ViewGroup) {
 					parentView = (ViewGroup) v;
 					return;
 				}
@@ -111,7 +111,7 @@ public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 //				Log.e("tag", "left = "+left );
 				// 左中点
 				int tempLeft = 0;
-				for(int i=0;i < arg0;i++){
+				for (int i = 0; i < arg0; i++) {
 					tempLeft = tempLeft + horizontalLayout.getChildAt(i).getWidth();
 				}
 //				Log.e("tag", "left = "+left );
@@ -171,11 +171,7 @@ public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 			View view = mContext.getLayoutInflater().inflate(R.layout.title_tab_item, null);
 			TextView textView = (TextView) view.findViewById(R.id.item_text);
 			view.setTag(i);
-			if(i % 2 ==0){
-				textView.setText(list.get(i));
-			} else {
-				textView.setText("四个字时");
-			}
+			textView.setText(list.get(i));
 			
 			view.setOnClickListener(new View.OnClickListener() {
 
@@ -226,11 +222,11 @@ public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 	 * 
 	 * */
 	private void postParentMoveViewNotification(boolean flage) {
-		if(parentView == null && viewId != null){
-			//有可能初始化时没找到view，再去找一遍。
+		if (parentView == null && viewId != null) {
+			// 有可能初始化时没找到view，再去找一遍。
 			packConflictViewId(viewId);
 		}
-		if(parentView != null){
+		if (parentView != null) {
 			parentView.requestDisallowInterceptTouchEvent(flage);
 		}
 	}
