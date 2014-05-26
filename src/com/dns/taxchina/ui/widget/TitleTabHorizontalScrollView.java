@@ -30,13 +30,7 @@ import com.dns.taxchina.R;
 @SuppressLint("ResourceAsColor")
 public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 
-	private int displayWidth;
-
 	private ViewPager viewPager;
-
-	private int width;
-
-//	private int scrollViewWidth;
 
 	private int left;
 	
@@ -74,7 +68,6 @@ public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 	private void initView(Activity context) {
 		DisplayMetrics metric = new DisplayMetrics();
 		context.getWindowManager().getDefaultDisplay().getMetrics(metric);
-		displayWidth = metric.widthPixels;
 		getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
 			@SuppressWarnings("deprecation")
@@ -84,7 +77,7 @@ public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 					horizontalLayout = (LinearLayout) getChildAt(0);
 				}
 				if (horizontalLayout.getChildCount() > 0) {
-					width = horizontalLayout.getChildAt(0).getWidth();
+//					width = horizontalLayout.getChildAt(0).getWidth();
 //					scrollViewWidth = getWidth();
 //					Log.e("tag", "width = " + width);
 					getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -117,11 +110,17 @@ public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 			public void onPageSelected(int arg0) {
 //				Log.e("tag", "left = "+left );
 				// 左中点
-				int leftCenterX = arg0 * width + (width / 2) - left;
+				int tempLeft = 0;
+				for(int i=0;i < arg0;i++){
+					tempLeft = tempLeft + horizontalLayout.getChildAt(i).getWidth();
+				}
+//				Log.e("tag", "left = "+left );
+				int leftCenterX = tempLeft + (horizontalLayout.getChildAt(arg0).getWidth() / 2) - left;
+//				int leftCenterX = arg0 * width + (width / 2) - left;
 //				Log.e("tag", "leftCenterX = "+leftCenterX );
 //				int rightCenterX = right - (arg0 * width + (width/2));
 //				Log.e("tag", "rightCenterX = "+rightCenterX );
-				int center = displayWidth / 2;
+				int center = getWidth() / 2;
 //				Log.e("tag", "center = "+center );
 				int scollX = leftCenterX - center;
 //				Log.e("tag", "scollX = "+scollX );
@@ -172,7 +171,12 @@ public class TitleTabHorizontalScrollView extends HorizontalScrollView {
 			View view = mContext.getLayoutInflater().inflate(R.layout.title_tab_item, null);
 			TextView textView = (TextView) view.findViewById(R.id.item_text);
 			view.setTag(i);
-			textView.setText(list.get(i));
+			if(i % 2 ==0){
+				textView.setText(list.get(i));
+			} else {
+				textView.setText("四个字时");
+			}
+			
 			view.setOnClickListener(new View.OnClickListener() {
 
 				@Override
