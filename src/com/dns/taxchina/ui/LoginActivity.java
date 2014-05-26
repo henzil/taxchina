@@ -9,6 +9,7 @@ import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
 import netlib.util.AppUtil;
 import netlib.util.ErrorCodeUtil;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -105,6 +107,7 @@ public class LoginActivity extends BaseActivity {
 		pswdEdit = (EditText) findViewById(R.id.pswd_edit);
 		login = (Button) findViewById(R.id.login_btn);
 		title.setText("登录");
+		
 	}
 
 	@Override

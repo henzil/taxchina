@@ -23,7 +23,7 @@
     
     <!-- 详情页 -->
    <string name="this_video_not_to_download"> 3G网络下禁止下载,请去学员中心设置！</string>
-    <string name="this_video_do_download">该视频成功添加到下载列表中！</string>
+    <string name="this_video_do_download">已添加到下载列表，请到学习记录中查看！</string>
     <string name="this_video_downloading">该视频已在您下载列表中！</string>
     <string name="this_video_downloaded">该视频已下载，请去学习记录播放查看</string>
     
