@@ -3,6 +3,7 @@ package com.dns.taxchina.ui;
 import netlib.util.AppUtil;
 import android.annotation.SuppressLint;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -89,6 +90,8 @@ public class NewsDetailActivity extends BaseActivity {
 		webView.setInitialScale(100);
 		String url = baseItemModel.getUrl();
 		url = url + "?from=Android&docId=" + baseItemModel.getId();
+		
+		Log.d("tag", "url = " + url);
 		webView.loadUrl(url);
 		
 		touchLinearLayout.OnLayoutGestureListener(new TouchLinearLayout.OnLayoutGestureListener() {
