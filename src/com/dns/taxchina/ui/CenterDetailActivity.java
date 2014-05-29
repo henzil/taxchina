@@ -1,6 +1,7 @@
 package com.dns.taxchina.ui;
 
 import netlib.util.AppUtil;
+import netlib.util.TouchUtil;
 import android.content.Intent;
 import android.os.Handler;
 import android.view.View;
@@ -53,6 +54,7 @@ public class CenterDetailActivity extends BaseActivity {
 		setContentView(R.layout.center_detail_activity);
 		title = (TextView) findViewById(R.id.title_text);
 		back = (TextView) findViewById(R.id.back_text);
+		TouchUtil.createTouchDelegate(back, 30);
 		webView = (WebView) findViewById(R.id.web_view);
 		progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 		

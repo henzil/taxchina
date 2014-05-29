@@ -4,6 +4,7 @@ import java.util.List;
 
 import netlib.util.AppUtil;
 import netlib.util.PhoneUtil;
+import netlib.util.TouchUtil;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
@@ -77,6 +78,7 @@ public class CourseCollectionActivity extends BaseActivity {
 		setContentView(R.layout.course_collection_activity);
 		initFailView(findViewById(R.id.no_data_box));
 		back = (TextView) findViewById(R.id.back_text);
+		TouchUtil.createTouchDelegate(back, 30);
 		edit = (TextView) findViewById(R.id.edit_btn);
 
 		listView = (ListView) findViewById(R.id.list_view);

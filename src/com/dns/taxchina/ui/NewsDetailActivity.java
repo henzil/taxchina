@@ -1,6 +1,7 @@
 package com.dns.taxchina.ui;
 
 import netlib.util.AppUtil;
+import netlib.util.TouchUtil;
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.util.Log;
@@ -41,6 +42,7 @@ public class NewsDetailActivity extends BaseActivity {
 	protected void initViews() {
 		setContentView(R.layout.news_detail_activity);
 		back = (TextView) findViewById(R.id.back_text);
+		TouchUtil.createTouchDelegate(back, 30);
 		title = (TextView) findViewById(R.id.title_text);
 		touchLinearLayout = (TouchLinearLayout) findViewById(R.id.touchLinearLayout);
 		webView = (WebView) findViewById(R.id.web_view);

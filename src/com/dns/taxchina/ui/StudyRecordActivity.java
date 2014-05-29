@@ -7,6 +7,7 @@ import netlib.helper.DataServiceHelper;
 import netlib.net.DataAsyncTaskPool;
 import netlib.net.DataJsonAsyncTask;
 import netlib.util.AppUtil;
+import netlib.util.TouchUtil;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -89,6 +90,7 @@ public class StudyRecordActivity extends BaseActivity {
 	protected void initViews() {
 		setContentView(R.layout.study_record_activity);
 		back = (TextView) findViewById(R.id.back_text);
+		TouchUtil.createTouchDelegate(back, 30);
 		alreadOver = (Button) findViewById(R.id.already_over_btn);
 		notOver = (Button) findViewById(R.id.not_over_btn);
 		sd = (TextView) findViewById(R.id.available_text);
