@@ -50,5 +50,4 @@
         style="@style/line_style"
         android:layout_below="@+id/column_item_img"
         android:layout_marginTop="15dip" />
-
 </RelativeLayout>

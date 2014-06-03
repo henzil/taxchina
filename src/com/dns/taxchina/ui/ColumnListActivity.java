@@ -44,7 +44,7 @@ public class ColumnListActivity extends BaseActivity {
 				}
 			}
 			if (columnModels == null || columnModels.size() == 0) {
-//				emptyFailView(getString(R.string.collect_empty));
+				// emptyFailView(getString(R.string.collect_empty));
 				adapter.refresh(columnModels);
 			} else {
 				adapter.refresh(columnModels);
@@ -107,20 +107,21 @@ public class ColumnListActivity extends BaseActivity {
 
 	}
 
-//	private void queryCollect() {
-//		db = CollectDBUtil.getInstance(CourseCollectionActivity.this, PhoneUtil.getIMEI(CourseCollectionActivity.this));
-//		if (loadingDialog != null && !loadingDialog.isShowing()) {
-//			loadingDialog.show();
-//		}
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				courseModels = db.getCourses();
-//				handler.sendEmptyMessage(0);
-//			}
-//		}).start();
-//	}
+	// private void queryCollect() {
+	// db = CollectDBUtil.getInstance(CourseCollectionActivity.this,
+	// PhoneUtil.getIMEI(CourseCollectionActivity.this));
+	// if (loadingDialog != null && !loadingDialog.isShowing()) {
+	// loadingDialog.show();
+	// }
+	// new Thread(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// courseModels = db.getCourses();
+	// handler.sendEmptyMessage(0);
+	// }
+	// }).start();
+	// }
 
 	@Override
 	public void onDestroy() {
@@ -129,7 +130,7 @@ public class ColumnListActivity extends BaseActivity {
 			loadingDialog = null;
 		}
 	}
-	
+
 	@Override
 	protected void showNetDialog() {
 		if (AppUtil.isActivityTopStartThisProgram(this, CourseCollectionActivity.class.getName())) {

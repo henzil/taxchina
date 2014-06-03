@@ -65,5 +65,4 @@
             android:textColor="@color/white"
             android:textSize="13sp" />
     </RelativeLayout>
-
 </RelativeLayout>

@@ -2,7 +2,6 @@ package com.dns.taxchina.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import netlib.util.AppUtil;
 import netlib.util.TouchUtil;
 import android.content.DialogInterface;

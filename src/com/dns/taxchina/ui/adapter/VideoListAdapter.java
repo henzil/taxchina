@@ -2,7 +2,6 @@ package com.dns.taxchina.ui.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
