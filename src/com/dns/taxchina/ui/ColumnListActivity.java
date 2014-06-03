@@ -24,7 +24,7 @@ import com.dns.taxchina.ui.adapter.ColumnListAdapter.ViewHolder;
 /**
  * @author fubiao
  * @version create time:2014-5-6_下午1:39:04
- * @Description 栏目列表  Activity
+ * @Description 栏目列表 Activity
  */
 public class ColumnListActivity extends BaseActivity {
 

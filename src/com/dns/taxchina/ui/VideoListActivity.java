@@ -31,7 +31,7 @@ import com.dns.taxchina.ui.util.SdCardUtil;
 public class VideoListActivity extends BaseActivity {
 
 	private TextView back, sd, title;
-	
+
 	private String titleStr;
 
 	private SdCardUtil sdCardUtil;
@@ -40,7 +40,7 @@ public class VideoListActivity extends BaseActivity {
 	private VideoListAdapter adapter;
 
 	private List<VideoModel> doneList = new ArrayList<VideoModel>();
-	
+
 	public static final String LIST_ID = "list_id";
 	public static final String LIST_TITLE = "list_title";
 
@@ -128,9 +128,8 @@ public class VideoListActivity extends BaseActivity {
 		});
 
 		initDBData();
-		
-	}
 
+	}
 
 	@Override
 	public void onDestroy() {
