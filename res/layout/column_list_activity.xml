@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top_bar_box" 
+        android:id="@+id/top_bar_box"/>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/top_bar_box" >
+
+        <ListView
+            android:id="@+id/list_view"
+            style="@style/listview_style"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <include layout="@layout/no_data_box" />
+    </FrameLayout>
+
+</LinearLayout>
