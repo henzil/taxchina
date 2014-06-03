@@ -5,6 +5,7 @@
     android:background="#EAEAEA"
     android:orientation="vertical" >
 
+    
     <include layout="@layout/top_bar_box" />
 
     <ScrollView
