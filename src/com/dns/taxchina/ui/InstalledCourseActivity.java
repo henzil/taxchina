@@ -2,6 +2,7 @@ package com.dns.taxchina.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import netlib.util.AppUtil;
 import netlib.util.TouchUtil;
 import android.content.DialogInterface;
@@ -16,37 +17,34 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
-import com.dns.taxchina.service.download.VideoDAO;
+import com.dns.taxchina.service.model.BaseItemModel;
 import com.dns.taxchina.service.model.VideoModel;
-import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
+import com.dns.taxchina.ui.adapter.ColumnListAdapter;
 import com.dns.taxchina.ui.adapter.VideoListAdapter;
 import com.dns.taxchina.ui.util.SdCardUtil;
 
 /**
  * @author fubiao
  * @version create time:2014-5-9_下午1:36:57
- * @Description 视频列表Activity
+ * @Description 内置课程 Activity
  */
-public class VideoListActivity extends BaseActivity {
+public class InstalledCourseActivity extends BaseActivity {
 
-	private TextView back, sd, title;
-
-	private String titleStr;
+	private TextView back, sd;
 
 	private SdCardUtil sdCardUtil;
 
-	private ListView listView;
-	private VideoListAdapter adapter;
+	private ListView columnListView;
+	private ListView videoListView;
+	
+	private ColumnListAdapter columnListAdapter;
+	private VideoListAdapter videoListAdapter;
 
-	private List<VideoModel> doneList = new ArrayList<VideoModel>();
-
-	public static final String LIST_ID = "list_id";
-	public static final String LIST_TITLE = "list_title";
+	private List<BaseItemModel> columnModels = new ArrayList<BaseItemModel>();
+	private List<VideoModel> videoModels = new ArrayList<VideoModel>();
 
 	@Override
 	protected void initData() {
-		Intent intent = getIntent();
-		titleStr = intent.getStringExtra(LIST_TITLE);
 		loadingDialog.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -58,38 +56,40 @@ public class VideoListActivity extends BaseActivity {
 			}
 		});
 
-		sdCardUtil = new SdCardUtil(VideoListActivity.this);
+		sdCardUtil = new SdCardUtil(InstalledCourseActivity.this);
 		super.initData();
 	}
 
 	@Override
 	protected void initViews() {
-		setContentView(R.layout.video_list_activity);
-		title = (TextView) findViewById(R.id.title_text);
-		title.setText(titleStr);
+		setContentView(R.layout.installed_course_activity);
 		back = (TextView) findViewById(R.id.back_text);
 		TouchUtil.createTouchDelegate(back, 30);
 		sd = (TextView) findViewById(R.id.available_text);
 
-		listView = (ListView) findViewById(R.id.list_view);
-		adapter = new VideoListAdapter(VideoListActivity.this, TAG);
-		listView.setAdapter(adapter);
+		columnListView = (ListView) findViewById(R.id.column_list_view);
+		videoListView = (ListView) findViewById(R.id.video_list_view);
+		
+		columnListAdapter = new ColumnListAdapter(InstalledCourseActivity.this, TAG);
+		videoListAdapter = new VideoListAdapter(InstalledCourseActivity.this, TAG);
+		
+		columnListView.setAdapter(columnListAdapter);
+		videoListView.setAdapter(videoListAdapter);
 
 		getSDCard();
-
 	}
 
-	public void initDBData() {
-		doneList.clear();
-		VideoDAO videoDAO = new VideoDAO(this);
-		List<VideoModel> list = videoDAO.findAll();
-		for (VideoModel model : list) {
-			if (model.getDownloadPercent() < 100) {
-			} else {
-				doneList.add(model);
-			}
-		}
-	}
+//	public void initDBData() {
+//		doneList.clear();
+//		VideoDAO videoDAO = new VideoDAO(this);
+//		List<VideoModel> list = videoDAO.findAll();
+//		for (VideoModel model : list) {
+//			if (model.getDownloadPercent() < 100) {
+//			} else {
+//				doneList.add(model);
+//			}
+//		}
+//	}
 
 	@SuppressWarnings("static-access")
 	public void getSDCard() {
@@ -112,21 +112,28 @@ public class VideoListActivity extends BaseActivity {
 			}
 		});
 
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		
+		columnListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				if (arg1.getTag() instanceof VideoListAdapter.ViewHolder) {
-					VideoListAdapter.ViewHolder holder = (VideoListAdapter.ViewHolder) arg1.getTag();
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				
+			}
+		});
+		
+		videoListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				if (view.getTag() instanceof VideoListAdapter.ViewHolder) {
+					VideoListAdapter.ViewHolder holder = (VideoListAdapter.ViewHolder) view.getTag();
 					Log.e("tag", "holder.model.getVideoPath(); = " + holder.model.getVideoPath());
-					Intent intent = new Intent(VideoListActivity.this, VideoActivity.class);
+					Intent intent = new Intent(InstalledCourseActivity.this, VideoActivity.class);
 					intent.putExtra(VideoActivity.VIDEO_MODEL_KEY, holder.model);
 					startActivity(intent);
 				}
 			}
 		});
-
-		initDBData();
 
 	}
 
@@ -140,7 +147,7 @@ public class VideoListActivity extends BaseActivity {
 
 	@Override
 	protected void showNetDialog() {
-		if (AppUtil.isActivityTopStartThisProgram(this, VideoListActivity.class.getName())) {
+		if (AppUtil.isActivityTopStartThisProgram(this, InstalledCourseActivity.class.getName())) {
 			netDialog.show();
 		}
 	}
