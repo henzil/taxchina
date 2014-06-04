@@ -17,7 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
+import com.dns.taxchina.service.db.fileDB.ManagerSqliteDao;
 import com.dns.taxchina.service.model.BaseItemModel;
+import com.dns.taxchina.service.model.PVideoModel;
 import com.dns.taxchina.service.model.VideoModel;
 import com.dns.taxchina.ui.adapter.ColumnListAdapter;
 import com.dns.taxchina.ui.adapter.VideoListAdapter;
@@ -36,12 +38,11 @@ public class InstalledCourseActivity extends BaseActivity {
 
 	private ListView columnListView;
 	private ListView videoListView;
-	
+
 	private ColumnListAdapter columnListAdapter;
 	private VideoListAdapter videoListAdapter;
 
-	private List<BaseItemModel> columnModels = new ArrayList<BaseItemModel>();
-	private List<VideoModel> videoModels = new ArrayList<VideoModel>();
+	private ManagerSqliteDao managerSqliteDao;
 
 	@Override
 	protected void initData() {
@@ -55,7 +56,7 @@ public class InstalledCourseActivity extends BaseActivity {
 				return true;
 			}
 		});
-
+		managerSqliteDao = new ManagerSqliteDao(this);
 		sdCardUtil = new SdCardUtil(InstalledCourseActivity.this);
 		super.initData();
 	}
@@ -69,10 +70,13 @@ public class InstalledCourseActivity extends BaseActivity {
 
 		columnListView = (ListView) findViewById(R.id.column_list_view);
 		videoListView = (ListView) findViewById(R.id.video_list_view);
-		
-		columnListAdapter = new ColumnListAdapter(InstalledCourseActivity.this, TAG);
-		videoListAdapter = new VideoListAdapter(InstalledCourseActivity.this, TAG);
-		
+		List<PVideoModel> pVideoModels = managerSqliteDao.getPVideoModel();
+		columnListAdapter = new ColumnListAdapter(InstalledCourseActivity.this, TAG, pVideoModels);
+		if (pVideoModels != null && pVideoModels.size() > 1) {
+			videoListAdapter = new VideoListAdapter(InstalledCourseActivity.this, TAG,
+					managerSqliteDao.getInternalVideoListByPId(pVideoModels.get(0).getpId()));
+		}
+
 		columnListView.setAdapter(columnListAdapter);
 		videoListView.setAdapter(videoListAdapter);
 
@@ -94,11 +98,11 @@ public class InstalledCourseActivity extends BaseActivity {
 	@SuppressWarnings("static-access")
 	public void getSDCard() {
 		if (sdCardUtil.isSDCardExist()) {
-			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getSDTotalSize(), sdCardUtil.getSDAvailableSize(),
-					sdCardUtil.getSDAvailableFormat()));
+			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getSDTotalSize(),
+					sdCardUtil.getSDAvailableSize(), sdCardUtil.getSDAvailableFormat()));
 		} else {
-			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getRomTotalSize(), sdCardUtil.getRomAvailableSize(),
-					sdCardUtil.getRomAvailableSizeFormat()));
+			sd.setText(String.format(getString(R.string.sd_info), sdCardUtil.getRomTotalSize(),
+					sdCardUtil.getRomAvailableSize(), sdCardUtil.getRomAvailableSizeFormat()));
 		}
 	}
 
@@ -112,22 +116,21 @@ public class InstalledCourseActivity extends BaseActivity {
 			}
 		});
 
-		
 		columnListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				
+
 			}
 		});
-		
+
 		videoListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (view.getTag() instanceof VideoListAdapter.ViewHolder) {
 					VideoListAdapter.ViewHolder holder = (VideoListAdapter.ViewHolder) view.getTag();
-					Log.e("tag", "holder.model.getVideoPath(); = " + holder.model.getVideoPath());
+					Log.e("tag", "holder.model.getVideoPath(); = " + holder.model.getVideoName());
 					Intent intent = new Intent(InstalledCourseActivity.this, VideoActivity.class);
 					intent.putExtra(VideoActivity.VIDEO_MODEL_KEY, holder.model);
 					startActivity(intent);

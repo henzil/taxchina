@@ -26,7 +26,7 @@ public class LibIOUtil {
 	public static final String FS = File.separator;
 
 	// SD卡缓存
-	private static final String FORESTRY = "taxchina";
+	private static final String TAXCHINA = "taxchina";
 	// private static final String CACHE = "cache";
 	private static final String IMAGE = "image";
 	private static final String DOWNLOAD = "download";
@@ -42,9 +42,7 @@ public class LibIOUtil {
 	private static final String UPLOAD_ZIP_FILE = "update.zip";
 	private static final String PNG = ".png";
 
-	// private static final String UPLOAD_SELECTED_FILE = "select_file.png";
-	// private static final String UPLOAD_COMPRESS_FILE = "compress_file.png";
-	// private static final String UPLOAD_ZOOM_FILE = "zoom_file.png";
+	private static final String VIDEO = "video";
 
 	public static String unGzip(HttpEntity compressedEntity) throws IOException {
 		if (compressedEntity == null)
@@ -222,7 +220,7 @@ public class LibIOUtil {
 	public static String getImagePath(Context context) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS + IMAGE + FS;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS + IMAGE + FS;
 		return createFileDir(path);
 	}
 
@@ -230,7 +228,7 @@ public class LibIOUtil {
 	public static String getDefaultPath(Context context) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS;
 		return createFileDir(path);
 	}
 
@@ -238,7 +236,7 @@ public class LibIOUtil {
 	public static String getDefaultUploadZipPath(Context context) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS + UPLOAD_ZIP_FILE;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS + UPLOAD_ZIP_FILE;
 		if (!isParentDirExist(path)) {
 			makeParentDirs(path);
 		}
@@ -257,15 +255,23 @@ public class LibIOUtil {
 	public static String getDownloadPath(Context context) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS + DOWNLOAD + FS;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS + DOWNLOAD + FS;
 		return createFileDir(path);
 	}
 
+	// 视频路径
+	public static String getVideoPath(Context context) {
+		String basePath = getBaseLocalLocation(context);
+		String pkgName = AppUtil.getPackageName(context);
+		String path = basePath + FS + TAXCHINA  + FS + VIDEO + FS;
+		return createFileDir(path);
+	}
+	
 	// 获取上传照片地址
 	public static String getUploadPath(Context context) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS + UPLOAD + FS;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS + UPLOAD + FS;
 		return createFileDir(path);
 	}
 
@@ -273,7 +279,7 @@ public class LibIOUtil {
 	public static String getUploadOnlyPath(Context context) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS + UPLOAD + FS;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS + UPLOAD + FS;
 		return path;
 	}
 
@@ -289,7 +295,7 @@ public class LibIOUtil {
 	public static String getUploadCameraPath(Context context) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS + UPLOAD + FS + UPLOAD_CAMERA_FILE;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS + UPLOAD + FS + UPLOAD_CAMERA_FILE;
 		if (!isParentDirExist(path)) {
 			makeParentDirs(path);
 		}
@@ -300,7 +306,7 @@ public class LibIOUtil {
 	public static String getUploadCameraPath(Context context, String name) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS + UPLOAD + FS + name + PNG;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS + UPLOAD + FS + name + PNG;
 		if (!isParentDirExist(path)) {
 			makeParentDirs(path);
 		}
@@ -311,7 +317,7 @@ public class LibIOUtil {
 	public static String getUploadCameraPath(Context context, int index) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS + UPLOAD + FS + UPLOAD_IMAGE_FILE + index + PNG;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS + UPLOAD + FS + UPLOAD_IMAGE_FILE + index + PNG;
 		if (!isParentDirExist(path)) {
 			Log.e("tag", "执行添加文件夹操作");
 			makeParentDirs(path);
@@ -322,7 +328,7 @@ public class LibIOUtil {
 	public static String getUploadCameraAcatarPath(Context context) {
 		String basePath = getBaseLocalLocation(context);
 		String pkgName = AppUtil.getPackageName(context);
-		String path = basePath + FS + FORESTRY + FS + pkgName + FS + UPLOAD + FS + UPLOAD_IMAGE_AVATAR_FILE;
+		String path = basePath + FS + TAXCHINA + FS + pkgName + FS + UPLOAD + FS + UPLOAD_IMAGE_AVATAR_FILE;
 		if (!isParentDirExist(path)) {
 			makeParentDirs(path);
 		}

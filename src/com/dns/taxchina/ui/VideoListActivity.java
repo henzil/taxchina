@@ -1,7 +1,5 @@
 package com.dns.taxchina.ui;
 
-import java.util.ArrayList;
-import java.util.List;
 import netlib.util.AppUtil;
 import netlib.util.TouchUtil;
 import android.content.DialogInterface;
@@ -16,9 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
-import com.dns.taxchina.service.download.VideoDAO;
-import com.dns.taxchina.service.model.VideoModel;
-import com.dns.taxchina.ui.adapter.StudyRecordAdapter;
+import com.dns.taxchina.service.db.fileDB.ManagerSqliteDao;
 import com.dns.taxchina.ui.adapter.VideoListAdapter;
 import com.dns.taxchina.ui.util.SdCardUtil;
 
@@ -32,21 +28,24 @@ public class VideoListActivity extends BaseActivity {
 	private TextView back, sd, title;
 
 	private String titleStr;
+	
+	private String pId;
 
 	private SdCardUtil sdCardUtil;
 
 	private ListView listView;
 	private VideoListAdapter adapter;
 
-	private List<VideoModel> doneList = new ArrayList<VideoModel>();
-
 	public static final String LIST_ID = "list_id";
 	public static final String LIST_TITLE = "list_title";
 
+	private ManagerSqliteDao managerSqliteDao;
+	
 	@Override
 	protected void initData() {
 		Intent intent = getIntent();
 		titleStr = intent.getStringExtra(LIST_TITLE);
+		pId = intent.getStringExtra(LIST_ID);
 		loadingDialog.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -60,6 +59,7 @@ public class VideoListActivity extends BaseActivity {
 
 		sdCardUtil = new SdCardUtil(VideoListActivity.this);
 		super.initData();
+		managerSqliteDao = new ManagerSqliteDao(this);
 	}
 
 	@Override
@@ -72,23 +72,10 @@ public class VideoListActivity extends BaseActivity {
 		sd = (TextView) findViewById(R.id.available_text);
 
 		listView = (ListView) findViewById(R.id.list_view);
-		adapter = new VideoListAdapter(VideoListActivity.this, TAG);
+		adapter = new VideoListAdapter(VideoListActivity.this, TAG, managerSqliteDao.getInternalVideoListByPId(pId));
 		listView.setAdapter(adapter);
-
 		getSDCard();
 
-	}
-
-	public void initDBData() {
-		doneList.clear();
-		VideoDAO videoDAO = new VideoDAO(this);
-		List<VideoModel> list = videoDAO.findAll();
-		for (VideoModel model : list) {
-			if (model.getDownloadPercent() < 100) {
-			} else {
-				doneList.add(model);
-			}
-		}
 	}
 
 	@SuppressWarnings("static-access")
@@ -118,15 +105,13 @@ public class VideoListActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				if (arg1.getTag() instanceof VideoListAdapter.ViewHolder) {
 					VideoListAdapter.ViewHolder holder = (VideoListAdapter.ViewHolder) arg1.getTag();
-					Log.e("tag", "holder.model.getVideoPath(); = " + holder.model.getVideoPath());
+					Log.e("tag", "holder.model.getVideoPath(); = " + holder.model.getVideoName());
 					Intent intent = new Intent(VideoListActivity.this, VideoActivity.class);
 					intent.putExtra(VideoActivity.VIDEO_MODEL_KEY, holder.model);
 					startActivity(intent);
 				}
 			}
 		});
-
-		initDBData();
 
 	}
 

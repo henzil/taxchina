@@ -2,6 +2,7 @@ package com.dns.taxchina.ui.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
-import com.dns.taxchina.service.model.VideoModel;
+import com.dns.taxchina.service.model.InternalVideoModel;
 
 /**
  * @author fubiao
@@ -21,14 +22,15 @@ import com.dns.taxchina.service.model.VideoModel;
  */
 public class VideoListAdapter extends BaseAdapter {
 
-	private List<VideoModel> list = new ArrayList<VideoModel>();
+	private List<InternalVideoModel> list = new ArrayList<InternalVideoModel>();
 	private Context context;
 
-	public VideoListAdapter(Context context, String TAG) {
+	public VideoListAdapter(Context context, String TAG, List<InternalVideoModel> list) {
 		this.context = context;
+		this.list = list;
 	}
 
-	public void refresh(List<VideoModel> arg0) {
+	public void refresh(List<InternalVideoModel> arg0) {
 		list.clear();
 		list.addAll(arg0);
 		notifyDataSetChanged();
@@ -40,7 +42,7 @@ public class VideoListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public VideoModel getItem(int position) {
+	public InternalVideoModel getItem(int position) {
 		return list.get(position);
 	}
 
@@ -66,7 +68,7 @@ public class VideoListAdapter extends BaseAdapter {
 	public class ViewHolder {
 		private TextView title, text;
 		private View line;
-		public VideoModel model;
+		public InternalVideoModel model;
 		private ImageView delete;
 		private Button studyRecordBtn;
 
@@ -76,12 +78,14 @@ public class VideoListAdapter extends BaseAdapter {
 			line = view.findViewById(R.id.video_item_line);
 			delete = (ImageView) view.findViewById(R.id.delete_img);
 			studyRecordBtn = (Button) view.findViewById(R.id.video_item_btn);
+			delete.setVisibility(View.GONE);
+			studyRecordBtn.setVisibility(View.GONE);
 		}
 
-		public void update(final VideoModel baseItemModel, final int positon) {
+		public void update(final InternalVideoModel baseItemModel, final int positon) {
 			model = baseItemModel;
 			title.setText(model.getTitle());
-			text.setText(changeMB(model.getDownloadedSize()) + "/" + changeMB(model.getVideoSize()) + "  (" + model.getDownloadPercent() + "%)");
+			text.setText(changeMB(model.getSize()));
 
 			if (positon == getCount() - 1) {
 				line.setVisibility(View.INVISIBLE);
