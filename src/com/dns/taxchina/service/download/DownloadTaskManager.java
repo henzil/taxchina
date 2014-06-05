@@ -125,6 +125,9 @@ public class DownloadTaskManager {
 			currentMap.put(videoModel.getId(), downLoadBytes);
 			executorService.submit(downLoadBytes);
 		}
+		Intent intent = new Intent(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
+		intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, DownloadTaskContact.DOWNLOADING_TYPE_START_VALUE);
+		context.sendBroadcast(intent);
 	}
 
 	public void stopOneTask(VideoModel videoModel) {
@@ -132,14 +135,14 @@ public class DownloadTaskManager {
 		Log.e("tag", "~~~~!!!~执行到这里~~~~~videoId =" + videoId);
 		if (videoId != null && videoId.equals(videoModel.getId())) {
 			// 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
-			executorService.shutdownNow();
 			Log.e("tag", "currentMap.toString() = " +currentMap.toString());
+			executorService.shutdownNow();
+			executorService = Executors.newFixedThreadPool(1);
 			if (currentMap.containsKey(videoModel.getId())) {
 				DownLoadBytes downLoadBytes = currentMap.get(videoModel.getId());
 				downLoadBytes.stop();
 				currentMap.remove(videoModel.getId());
 			}
-			executorService = Executors.newFixedThreadPool(1);
 			videoId = null;
 			
 			if (queue.size() > 0) {
@@ -433,7 +436,7 @@ public class DownloadTaskManager {
 				if(videoId == null){
 					findHandler.sendEmptyMessage(0);
 				}
-				throw new RuntimeException(e);
+//				throw new RuntimeException(e);
 			}
 		}
 	}
