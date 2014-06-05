@@ -53,7 +53,7 @@ public class ColumnListActivity extends BaseActivity {
 		setContentView(R.layout.column_list_activity);
 		initFailView(findViewById(R.id.no_data_box));
 		title = (TextView) findViewById(R.id.title_text);
-		title.setText("内置课程");
+		title.setText("课程目录");
 		back = (TextView) findViewById(R.id.back_text);
 		TouchUtil.createTouchDelegate(back, 30);
 

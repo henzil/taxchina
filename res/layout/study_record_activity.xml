@@ -21,7 +21,7 @@
             android:layout_toRightOf="@+id/back_text"
             android:gravity="center"
             android:singleLine="true"
-            android:text="学习记录"
+            android:text="课程下载"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 

@@ -2,7 +2,6 @@ package com.dns.taxchina.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import netlib.util.AppUtil;
 import netlib.util.TouchUtil;
 import android.content.DialogInterface;
@@ -15,12 +14,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.db.fileDB.ManagerSqliteDao;
-import com.dns.taxchina.service.model.BaseItemModel;
 import com.dns.taxchina.service.model.PVideoModel;
-import com.dns.taxchina.service.model.VideoModel;
 import com.dns.taxchina.ui.adapter.ColumnListAdapter;
 import com.dns.taxchina.ui.adapter.VideoListAdapter;
 import com.dns.taxchina.ui.util.SdCardUtil;
@@ -38,6 +34,8 @@ public class InstalledCourseActivity extends BaseActivity {
 
 	private ListView columnListView;
 	private ListView videoListView;
+
+	private List<PVideoModel> pVideoModels = new ArrayList<PVideoModel>();
 
 	private ColumnListAdapter columnListAdapter;
 	private VideoListAdapter videoListAdapter;
@@ -70,7 +68,7 @@ public class InstalledCourseActivity extends BaseActivity {
 
 		columnListView = (ListView) findViewById(R.id.column_list_view);
 		videoListView = (ListView) findViewById(R.id.video_list_view);
-		List<PVideoModel> pVideoModels = managerSqliteDao.getPVideoModel();
+		pVideoModels = managerSqliteDao.getPVideoModel();
 		columnListAdapter = new ColumnListAdapter(InstalledCourseActivity.this, TAG, pVideoModels);
 		if (pVideoModels != null && pVideoModels.size() > 1) {
 			videoListAdapter = new VideoListAdapter(InstalledCourseActivity.this, TAG,
@@ -120,7 +118,8 @@ public class InstalledCourseActivity extends BaseActivity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+				videoListAdapter.refresh(managerSqliteDao
+						.getInternalVideoListByPId(pVideoModels.get(position).getpId()));
 			}
 		});
 
