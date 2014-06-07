@@ -191,6 +191,8 @@ public class WebViewPlug {
 			// 下载视频方法
 			Log.e("tag", "url = " + url);
 			Log.e("tag", "id = " + id);
+			Log.e("tag", "folder = " + folder);
+			Log.e("tag", "fileName = " + fileName);
 			VideoDAO videoDAO = new VideoDAO(context);
 			VideoModel videoModel = videoDAO.findById(id);
 			if (videoModel == null) {
