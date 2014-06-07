@@ -1,8 +1,13 @@
 package com.dns.taxchina.ui;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import netlib.util.AppUtil;
+import netlib.util.LibIOUtil;
 import netlib.util.TouchUtil;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
@@ -14,9 +19,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.dns.taxchina.R;
-import com.dns.taxchina.service.db.fileDB.ManagerSqliteDao;
-import com.dns.taxchina.service.model.PVideoModel;
+import com.dns.taxchina.service.model.InternalVideoModel;
 import com.dns.taxchina.ui.adapter.ColumnListAdapter;
 import com.dns.taxchina.ui.adapter.VideoListAdapter;
 import com.dns.taxchina.ui.util.SdCardUtil;
@@ -35,12 +40,14 @@ public class InstalledCourseActivity extends BaseActivity {
 	private ListView columnListView;
 	private ListView videoListView;
 
-	private List<PVideoModel> pVideoModels = new ArrayList<PVideoModel>();
+//	private List<PVideoModel> pVideoModels = new ArrayList<PVideoModel>();
+
+	private List<Map<String, Object>> pList = new ArrayList<Map<String, Object>>();
+
+	private List<InternalVideoModel> list = new ArrayList<InternalVideoModel>();
 
 	private ColumnListAdapter columnListAdapter;
 	private VideoListAdapter videoListAdapter;
-
-	private ManagerSqliteDao managerSqliteDao;
 
 	@Override
 	protected void initData() {
@@ -54,9 +61,70 @@ public class InstalledCourseActivity extends BaseActivity {
 				return true;
 			}
 		});
-		managerSqliteDao = new ManagerSqliteDao(this);
+//		managerSqliteDao = new ManagerSqliteDao(this);
+
 		sdCardUtil = new SdCardUtil(InstalledCourseActivity.this);
 		super.initData();
+		initFileData();
+		if (pList.size() > 0) {
+			Map<String, Object> map = pList.get(0);
+			getVideoData(map.get("name").toString());
+		}
+
+	}
+
+	private void initFileData() {
+		String videoPath = LibIOUtil.getVideoPath(this);
+		File filePath = new File(videoPath);
+		Log.e("tag", "filePath.getAbsolutePath() = " + filePath.getAbsolutePath());
+		Log.e("tag", "filePath.exists() = " + filePath.exists());
+		Log.e("tag", "filePath.isDirectory() = " + filePath.isDirectory());
+		String childs[] = filePath.list();
+		if (childs == null) {
+			return;
+		}
+		for (String str : childs) {
+			Log.e("tag", "str = " + str);
+			Map<String, Object> map = new HashMap<String, Object>();
+			String childName = str;
+			map.put("name", childName);
+			String childPath = filePath.getPath() + File.separator + childName;
+			File childFile = new File(childPath);
+			if (childFile.exists() && childFile.isDirectory()) {
+				String childs2[] = childFile.list();
+				int count = 0;
+				for (String str2 : childs2) {
+					Log.e("tag", "str2 = " + str2);
+					if (!str2.endsWith(".tmp")) {
+						count++;
+					}
+				}
+				map.put("count", count);
+			}
+			pList.add(map);
+		}
+	}
+
+	private void getVideoData(String parentPath) {
+		list.clear();
+		String videoPath = LibIOUtil.getVideoPath(this);
+		File filePath = new File(videoPath + parentPath);
+		String childs[] = filePath.list();
+		for (String str : childs) {
+			Log.e("tag", "str = " + str);
+			if (!str.endsWith(".tmp")) {
+				String childName = str;
+				String childPath = filePath.getPath() + File.separator + childName;
+				File childFile = new File(childPath);
+				if (childFile.exists() && childFile.isFile()) {
+					InternalVideoModel model = new InternalVideoModel();
+					model.setTitle(childName);
+					model.setVideoName(parentPath + File.separator + childName);
+					model.setSize(childFile.length() + "");
+					list.add(model);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -68,30 +136,14 @@ public class InstalledCourseActivity extends BaseActivity {
 
 		columnListView = (ListView) findViewById(R.id.column_list_view);
 		videoListView = (ListView) findViewById(R.id.video_list_view);
-		pVideoModels = managerSqliteDao.getPVideoModel();
-		columnListAdapter = new ColumnListAdapter(InstalledCourseActivity.this, TAG, pVideoModels);
-		if (pVideoModels != null && pVideoModels.size() > 1) {
-			videoListAdapter = new VideoListAdapter(InstalledCourseActivity.this, TAG,
-					managerSqliteDao.getInternalVideoListByPId(pVideoModels.get(0).getpId()));
-		}
+		columnListAdapter = new ColumnListAdapter(InstalledCourseActivity.this, TAG, pList);
+		videoListAdapter = new VideoListAdapter(InstalledCourseActivity.this, TAG, list);
 
 		columnListView.setAdapter(columnListAdapter);
 		videoListView.setAdapter(videoListAdapter);
 
 		getSDCard();
 	}
-
-//	public void initDBData() {
-//		doneList.clear();
-//		VideoDAO videoDAO = new VideoDAO(this);
-//		List<VideoModel> list = videoDAO.findAll();
-//		for (VideoModel model : list) {
-//			if (model.getDownloadPercent() < 100) {
-//			} else {
-//				doneList.add(model);
-//			}
-//		}
-//	}
 
 	@SuppressWarnings("static-access")
 	public void getSDCard() {
@@ -118,8 +170,9 @@ public class InstalledCourseActivity extends BaseActivity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				videoListAdapter.refresh(managerSqliteDao
-						.getInternalVideoListByPId(pVideoModels.get(position).getpId()));
+				Map<String, Object> map = pList.get(position);
+				getVideoData(map.get("name").toString());
+				videoListAdapter.refresh(list);
 			}
 		});
 

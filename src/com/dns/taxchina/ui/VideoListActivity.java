@@ -1,6 +1,11 @@
 package com.dns.taxchina.ui;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import netlib.util.AppUtil;
+import netlib.util.LibIOUtil;
 import netlib.util.TouchUtil;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
@@ -14,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
-import com.dns.taxchina.service.db.fileDB.ManagerSqliteDao;
+import com.dns.taxchina.service.model.InternalVideoModel;
 import com.dns.taxchina.ui.adapter.VideoListAdapter;
 import com.dns.taxchina.ui.util.SdCardUtil;
 
@@ -27,25 +32,21 @@ public class VideoListActivity extends BaseActivity {
 
 	private TextView back, sd, title;
 
-	private String titleStr;
+	private String parentPath;
 	
-	private String pId;
-
 	private SdCardUtil sdCardUtil;
 
 	private ListView listView;
 	private VideoListAdapter adapter;
 
-	public static final String LIST_ID = "list_id";
-	public static final String LIST_TITLE = "list_title";
+	public static final String PARENT_PATH = "parentPath";
 
-	private ManagerSqliteDao managerSqliteDao;
+	private List<InternalVideoModel> list = new ArrayList<InternalVideoModel>();
 	
 	@Override
 	protected void initData() {
 		Intent intent = getIntent();
-		titleStr = intent.getStringExtra(LIST_TITLE);
-		pId = intent.getStringExtra(LIST_ID);
+		parentPath = intent.getStringExtra(PARENT_PATH);
 		loadingDialog.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -59,20 +60,41 @@ public class VideoListActivity extends BaseActivity {
 
 		sdCardUtil = new SdCardUtil(VideoListActivity.this);
 		super.initData();
-		managerSqliteDao = new ManagerSqliteDao(this);
+		getVideoData(parentPath);
+	}
+	
+	private void getVideoData(String parentPath){
+		String videoPath = LibIOUtil.getVideoPath(this);
+		File filePath = new File(videoPath + parentPath);
+		String childs[] = filePath.list();
+		for(String str : childs){
+			Log.e("tag", "str = " + str);
+			if(!str.endsWith(".tmp")){
+				String childName = str;
+				String childPath = filePath.getPath() + File.separator + childName;
+				File childFile = new File(childPath);
+				if (childFile.exists() && childFile.isFile()) {
+					InternalVideoModel model = new InternalVideoModel();
+					model.setTitle(childName);
+					model.setVideoName(parentPath + File.separator + childName);
+					model.setSize(childFile.length() + "");
+					list.add(model);
+				}
+			}
+		}
 	}
 
 	@Override
 	protected void initViews() {
 		setContentView(R.layout.video_list_activity);
 		title = (TextView) findViewById(R.id.title_text);
-		title.setText(titleStr);
+		title.setText(parentPath);
 		back = (TextView) findViewById(R.id.back_text);
 		TouchUtil.createTouchDelegate(back, 30);
 		sd = (TextView) findViewById(R.id.available_text);
 
 		listView = (ListView) findViewById(R.id.list_view);
-		adapter = new VideoListAdapter(VideoListActivity.this, TAG, managerSqliteDao.getInternalVideoListByPId(pId));
+		adapter = new VideoListAdapter(VideoListActivity.this, TAG, list);
 		listView.setAdapter(adapter);
 		getSDCard();
 

@@ -27,7 +27,9 @@ public class VideoListAdapter extends BaseAdapter {
 
 	public VideoListAdapter(Context context, String TAG, List<InternalVideoModel> list) {
 		this.context = context;
-		this.list = list;
+		if(list != null){
+			this.list.addAll(list);
+		}
 	}
 
 	public void refresh(List<InternalVideoModel> arg0) {

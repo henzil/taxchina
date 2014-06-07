@@ -71,7 +71,12 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
-
+        <!-- pad版 内置视频 -->
+        <activity
+            android:name="com.dns.taxchina.ui.InstalledCourseActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
         <!-- 课程收藏 -->
         <activity
             android:name="com.dns.taxchina.ui.CourseCollectionActivity"

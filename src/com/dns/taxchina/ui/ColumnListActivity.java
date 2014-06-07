@@ -1,10 +1,18 @@
 package com.dns.taxchina.ui;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import netlib.util.AppUtil;
+import netlib.util.LibIOUtil;
 import netlib.util.TouchUtil;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,8 +21,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dns.taxchina.R;
-import com.dns.taxchina.service.db.fileDB.ManagerSqliteDao;
-import com.dns.taxchina.service.model.PVideoModel;
 import com.dns.taxchina.ui.adapter.ColumnListAdapter;
 import com.dns.taxchina.ui.adapter.ColumnListAdapter.ViewHolder;
 
@@ -30,7 +36,7 @@ public class ColumnListActivity extends BaseActivity {
 	private ListView listView;
 	private ColumnListAdapter adapter;
 
-	private ManagerSqliteDao managerSqliteDao;
+	private List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
 	@Override
 	protected void initData() {
@@ -45,7 +51,39 @@ public class ColumnListActivity extends BaseActivity {
 			}
 		});
 		super.initData();
-		managerSqliteDao = new ManagerSqliteDao(this);
+		initFileData();
+	}
+	
+	private void initFileData(){
+		String videoPath = LibIOUtil.getVideoPath(this);
+		File filePath = new File(videoPath);
+		Log.e("tag", "filePath.getAbsolutePath() = " + filePath.getAbsolutePath());
+		Log.e("tag", "filePath.exists() = " + filePath.exists());
+		Log.e("tag", "filePath.isDirectory() = " + filePath.isDirectory());
+		String childs[] = filePath.list();
+		if(childs == null){
+			return;
+		}
+		for(String str : childs){
+			Log.e("tag", "str = " + str);
+			Map<String, Object> map = new HashMap<String, Object>();
+			String childName = str;
+			map.put("name", childName);
+			String childPath = filePath.getPath() + File.separator + childName;
+			File childFile = new File(childPath);
+			if (childFile.exists() && childFile.isDirectory()) {
+				String childs2[] = childFile.list();
+				int count = 0;
+				for(String str2 : childs2){
+					Log.e("tag", "str2 = " + str2);
+					if(!str2.endsWith(".tmp")){
+						count ++ ;
+					}
+				}
+				map.put("count", count);
+			}
+			list.add(map);
+		}
 	}
 
 	@Override
@@ -58,7 +96,7 @@ public class ColumnListActivity extends BaseActivity {
 		TouchUtil.createTouchDelegate(back, 30);
 
 		listView = (ListView) findViewById(R.id.list_view);
-		adapter = new ColumnListAdapter(ColumnListActivity.this, TAG, managerSqliteDao.getPVideoModel());
+		adapter = new ColumnListAdapter(ColumnListActivity.this, TAG, list);
 		listView.setAdapter(adapter);
 	}
 
@@ -77,10 +115,9 @@ public class ColumnListActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				if (arg1.getTag() instanceof ViewHolder) {
-					PVideoModel model = ((ViewHolder) arg1.getTag()).model;
+					Map<String, Object> model = ((ViewHolder) arg1.getTag()).mapData;
 					Intent intent = new Intent(ColumnListActivity.this, VideoListActivity.class);
-					intent.putExtra(VideoListActivity.LIST_ID, model.getpId());
-					intent.putExtra(VideoListActivity.LIST_TITLE, model.getpTitle());
+					intent.putExtra(VideoListActivity.PARENT_PATH, model.get("name").toString());
 					startActivity(intent);
 				}
 			}
