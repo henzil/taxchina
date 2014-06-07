@@ -12,16 +12,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/tip_icon" />
 
-    <ImageView
-        android:id="@+id/column_item_img"
-        android:layout_width="116dp"
-        android:layout_height="75dp"
-        android:layout_toRightOf="@+id/column_item_tip_img"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/default_116x75" />
-
     <TextView
         android:id="@+id/column_item_title_text"
         android:layout_width="match_parent"
@@ -30,9 +20,10 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="25dp"
         android:layout_toLeftOf="@+id/column_arrow_img"
-        android:layout_toRightOf="@+id/column_item_img"
+        android:layout_toRightOf="@+id/column_item_tip_img"
         android:ellipsize="end"
         android:maxLines="2"
+        android:text="小明阿斯顿发生大发阿斯顿阿斯蒂芬"
         android:textColor="@color/micro_course_title_text_color"
         android:textSize="16sp" />
 
@@ -48,6 +39,6 @@
     <View
         android:id="@+id/column_item_line"
         style="@style/line_style"
-        android:layout_below="@+id/column_item_img"
+        android:layout_below="@+id/column_item_title_text"
         android:layout_marginTop="15dip" />
 </RelativeLayout>

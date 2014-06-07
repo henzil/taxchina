@@ -43,14 +43,16 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/top_bar_box" >
+        android:layout_below="@+id/top_bar_box" 
+        android:layout_above="@+id/sd_layout">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:orientation="vertical" >
-            <ListView
+
+            <ListView
                 android:id="@+id/column_list_view"
                 style="@style/listview_style"
                 android:layout_width="fill_parent"
@@ -70,25 +72,25 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_above="@+id/sd_layout" />
-
-            <RelativeLayout
-                android:id="@+id/sd_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="45dp"
-                android:layout_alignParentBottom="true"
-                android:background="#005C7E" >
-
-                <TextView
-                    android:id="@+id/available_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
-            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/sd_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="#005C7E" >
+
+        <TextView
+            android:id="@+id/available_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </RelativeLayout>
 
 </RelativeLayout>
