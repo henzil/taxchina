@@ -14,8 +14,6 @@ import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import netlib.net.AsyncTaskLoaderImage;
-import netlib.util.LibIOUtil;
 import netlib.util.SettingUtil;
 
 import org.apache.http.Header;
@@ -320,7 +318,8 @@ public class DownloadTaskManager {
 						Log.i("DownloadTaskManager", "###############header.toString() = " + header.toString());
 					}
 
-					String path = AsyncTaskLoaderImage.getHash(url);
+//					String path = AsyncTaskLoaderImage.getHash(url);
+					String path = video.getVideoPath();
 					fileLength = Long.parseLong(lengthStr);
 					Log.i("DownloadTaskManager", "############total = " + total);
 					httpGet.addHeader("Range", "bytes=" + total + "-");
@@ -333,16 +332,18 @@ public class DownloadTaskManager {
 						 */
 						inputStream = httpResponse.getEntity().getContent();
 						if (downloadFile == null) {
-							downloadFile = new File(LibIOUtil.getDownloadPath(context) + path);
+//							downloadFile = new File(LibIOUtil.getDownloadPath(context) + path);
+							downloadFile = new File(path);
 							if (!downloadFile.exists()) {
 								downloadFile.createNewFile();
 							}
-							downloadTask.setFilePath(LibIOUtil.getDownloadPath(context) + path);
+//							downloadTask.setFilePath(LibIOUtil.getDownloadPath(context) + path);
+							downloadTask.setFilePath(path);
 							DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
 							downloadTaskDAO.update(downloadTask);
 							video.setDownloadedSize("" + total);
 							video.setVideoSize(lengthStr);
-							video.setVideoPath(LibIOUtil.getDownloadPath(context) + path);
+//							video.setVideoPath(LibIOUtil.getDownloadPath(context) + path);
 							videoDAO.update(video);
 						}
 						fileOutputStream = new FileOutputStream(downloadFile, true);
@@ -397,11 +398,15 @@ public class DownloadTaskManager {
 								}
 							}
 						}
+						// 下载完成后，重命名。
+						String newPath = path.substring(0, path.indexOf(".tmp"));
+						downloadFile.renameTo(new File(newPath));
 						DownloadTaskManager.this.deleteTask(fileId);
 						video.setIsDownloadComplete(1);
 						video.setDownloadPercent(100);
 						video.setDownloadedSize(lengthStr);
 						video.setVideoSize(lengthStr);
+						video.setVideoPath(newPath);
 						videoDAO.update(video);
 						// 读取下载完毕
 						fileOutputStream.close();
@@ -418,7 +423,7 @@ public class DownloadTaskManager {
 					}
 				} else {
 					videoId = null;
-					// 下载完成广播
+					// 下载错误广播
 					intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
 							DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
 					context.sendBroadcast(intent);

@@ -1,5 +1,6 @@
 package com.dns.taxchina.ui.widget;
 
+import netlib.util.LibIOUtil;
 import netlib.util.SettingUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -174,6 +175,52 @@ public class WebViewPlug {
 				downloadTask.setVideo(videoModel);
 				DownloadTaskManager.getInstance(context).addTask(downloadTask, videoModel);
 				Toast.makeText(context, R.string.this_video_do_download, Toast.LENGTH_LONG).show();
+			} else {
+				if (videoModel.getDownloadPercent() < 100) {
+					// 正在下载中，弹出提示。
+					Toast.makeText(context, R.string.this_video_downloading, Toast.LENGTH_LONG).show();
+				} else {
+					// TODO 去播放页面
+					Toast.makeText(context, R.string.this_video_downloaded, Toast.LENGTH_LONG).show();
+				}
+			}
+		}
+		
+		@JavascriptInterface
+		public void download(String url, String id, String folder, String fileName) {
+			// 下载视频方法
+			Log.e("tag", "url = " + url);
+			Log.e("tag", "id = " + id);
+			VideoDAO videoDAO = new VideoDAO(context);
+			VideoModel videoModel = videoDAO.findById(id);
+			if (videoModel == null) {
+				if (!SettingUtil.getWifiDoSomeThing(context)) {
+					WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+					if (!wifiManager.isWifiEnabled()) {
+						Toast.makeText(context, R.string.this_video_not_to_download, Toast.LENGTH_SHORT).show();
+						return;
+					}
+				}
+				String pPath = LibIOUtil.createFileDir(LibIOUtil.getVideoPath(context) + folder);
+				if(pPath != null){
+					// 去下载
+					videoModel = new VideoModel();
+					videoModel.setId(id);
+					videoModel.setUrl(url);
+					videoModel.setTitle(title);
+					// 设置下载路径
+					String videoPath = pPath +LibIOUtil.FS + fileName + ".tmp";
+					videoModel.setVideoPath(videoPath);
+					videoDAO.add(videoModel);
+					DownloadTask downloadTask = new DownloadTask();
+					downloadTask.setFileId(id);
+					downloadTask.setVideo(videoModel);
+					DownloadTaskManager.getInstance(context).addTask(downloadTask, videoModel);
+					Toast.makeText(context, R.string.this_video_do_download, Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(context, "创建文件夹失败", Toast.LENGTH_LONG).show();
+				}
+				
 			} else {
 				if (videoModel.getDownloadPercent() < 100) {
 					// 正在下载中，弹出提示。
