@@ -141,24 +141,36 @@ public class StudyRecordAdapter extends BaseAdapter {
 							public void onClick(View v) {
 								// 将一个下载加载到下载队列中。
 								WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-								if (SettingUtil.getWifiDoSomeThing(context) && !wifiManager.isWifiEnabled()) {
-									new AlertDialog.Builder(context).setTitle(context.getString(R.string.wifi_tip))
-											.setMessage(context.getResources().getString(R.string.study_record_3G_tip))
-											.setPositiveButton(context.getResources().getString(R.string.downlaod), new DialogInterface.OnClickListener() {
-
-												@Override
-												public void onClick(DialogInterface dialog, int which) {
-													DownloadTaskManager.getInstance(context).startOneTask(model);
-												}
-											}).setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-
-												@Override
-												public void onClick(DialogInterface dialog, int which) {
-
-												}
-											}).create().show();
-								} else {
+								if(wifiManager.isWifiEnabled()){
 									DownloadTaskManager.getInstance(context).startOneTask(model);
+								} else {
+									if (SettingUtil.getWifiDoSomeThing(context) ){
+										new AlertDialog.Builder(context).setTitle(context.getString(R.string.wifi_tip))
+										.setMessage(context.getResources().getString(R.string.study_record_3G_tip))
+										.setPositiveButton(context.getResources().getString(R.string.downlaod), new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												DownloadTaskManager.getInstance(context).startOneTask(model);
+											}
+										}).setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+
+											}
+										}).create().show();
+									} else {
+										new AlertDialog.Builder(context).setTitle(context.getString(R.string.wifi_tip))
+										.setMessage(context.getResources().getString(R.string.this_video_not_to_download))
+										.setPositiveButton(context.getResources().getString(R.string.sure), new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												DownloadTaskManager.getInstance(context).startOneTask(model);
+											}
+										}).create().show();
+									}
 								}
 							}
 						});

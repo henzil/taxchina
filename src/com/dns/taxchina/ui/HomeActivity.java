@@ -171,7 +171,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	@Override
 	protected void onDestroy() {
-		DownloadTaskManager.getInstance(this).stop();
+		DownloadTaskManager.getInstance(this).destroy();
 		super.onDestroy();
 	}
 	

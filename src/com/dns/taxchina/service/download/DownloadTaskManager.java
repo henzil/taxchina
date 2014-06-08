@@ -51,8 +51,8 @@ public class DownloadTaskManager {
 	private List<DownloadTask> taskList = new ArrayList<DownloadTask>();
 
 	private Queue<DownloadTask> queue = new LinkedList<DownloadTask>();
-	
-	private Handler findHandler = new Handler(){
+
+	private Handler findHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -133,7 +133,7 @@ public class DownloadTaskManager {
 		Log.e("tag", "~~~~!!!~执行到这里~~~~~videoId =" + videoId);
 		if (videoId != null && videoId.equals(videoModel.getId())) {
 			// 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
-			Log.e("tag", "currentMap.toString() = " +currentMap.toString());
+			Log.e("tag", "currentMap.toString() = " + currentMap.toString());
 			executorService.shutdownNow();
 			executorService = Executors.newFixedThreadPool(1);
 			if (currentMap.containsKey(videoModel.getId())) {
@@ -142,7 +142,7 @@ public class DownloadTaskManager {
 				currentMap.remove(videoModel.getId());
 			}
 			videoId = null;
-			
+
 			if (queue.size() > 0) {
 				// 将新任务加入线程池
 				DownloadTask downloadTask = queue.poll();
@@ -220,7 +220,18 @@ public class DownloadTaskManager {
 		// 关闭线程池
 		queue.clear();
 		executorService.shutdownNow();
+		executorService = Executors.newFixedThreadPool(1);
 		currentMap.clear();
+	}
+
+	public void destroy() {
+		queue.clear();
+		executorService.shutdownNow();
+		currentMap.clear();
+		queue = null;
+		taskList = null;
+		executorService = null;
+		currentMap = null;
 	}
 
 	// 判断线程池是否停止
@@ -419,7 +430,7 @@ public class DownloadTaskManager {
 						context.sendBroadcast(intent);
 						videoId = null;
 						findHandler.sendEmptyMessage(0);
-						
+
 					}
 				} else {
 					videoId = null;
@@ -431,14 +442,14 @@ public class DownloadTaskManager {
 				}
 			} catch (Exception e) {
 				Log.e("DownloadTaskManager", e.getMessage(), e);
-				if(videoId != null && videoId.equals(video.getId()) ){
+				if (videoId != null && videoId.equals(video.getId())) {
 					videoId = null;
 				}
 				// 下载完成广播
 				intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
 						DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
 				context.sendBroadcast(intent);
-				if(videoId == null){
+				if (videoId == null) {
 					findHandler.sendEmptyMessage(0);
 				}
 //				throw new RuntimeException(e);
