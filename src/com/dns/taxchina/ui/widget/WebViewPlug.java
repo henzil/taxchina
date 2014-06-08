@@ -1,5 +1,7 @@
 package com.dns.taxchina.ui.widget;
 
+import java.io.File;
+
 import netlib.util.LibIOUtil;
 import netlib.util.SettingUtil;
 import android.annotation.SuppressLint;
@@ -153,6 +155,7 @@ public class WebViewPlug {
 			// 下载视频方法
 			Log.e("tag", "url = " + url);
 			Log.e("tag", "id = " + id);
+
 			VideoDAO videoDAO = new VideoDAO(context);
 			VideoModel videoModel = videoDAO.findById(id);
 			if (videoModel == null) {
@@ -185,7 +188,7 @@ public class WebViewPlug {
 				}
 			}
 		}
-		
+
 		@JavascriptInterface
 		public void download(String url, String id, String folder, String fileName) {
 			// 下载视频方法
@@ -193,6 +196,14 @@ public class WebViewPlug {
 			Log.e("tag", "id = " + id);
 			Log.e("tag", "folder = " + folder);
 			Log.e("tag", "fileName = " + fileName);
+			String sdVideoPath = LibIOUtil.getVideoPath(context) + folder + LibIOUtil.FS + fileName;
+			File file = new File(sdVideoPath);
+			if (file.exists() && file.isFile()) {
+				// TODO 去播放页面
+				Toast.makeText(context, R.string.this_video_downloaded, Toast.LENGTH_LONG).show();
+				return;
+			}
+
 			VideoDAO videoDAO = new VideoDAO(context);
 			VideoModel videoModel = videoDAO.findById(id);
 			if (videoModel == null) {
@@ -204,14 +215,14 @@ public class WebViewPlug {
 					}
 				}
 				String pPath = LibIOUtil.createFileDir(LibIOUtil.getVideoPath(context) + folder);
-				if(pPath != null){
+				if (pPath != null) {
 					// 去下载
 					videoModel = new VideoModel();
 					videoModel.setId(id);
 					videoModel.setUrl(url);
 					videoModel.setTitle(title);
 					// 设置下载路径
-					String videoPath = pPath +LibIOUtil.FS + fileName + ".tmp";
+					String videoPath = pPath + LibIOUtil.FS + fileName + ".tmp";
 					videoModel.setVideoPath(videoPath);
 					videoDAO.add(videoModel);
 					DownloadTask downloadTask = new DownloadTask();
@@ -222,7 +233,7 @@ public class WebViewPlug {
 				} else {
 					Toast.makeText(context, "创建文件夹失败", Toast.LENGTH_LONG).show();
 				}
-				
+
 			} else {
 				if (videoModel.getDownloadPercent() < 100) {
 					// 正在下载中，弹出提示。
