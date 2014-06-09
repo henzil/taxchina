@@ -325,9 +325,9 @@ public class DownloadTaskManager {
 					Header headerLength = httpResponse.getFirstHeader("Content-Length");
 //					Header headerDisposition = httpResponse.getFirstHeader("Content-Disposition");
 					String lengthStr = headerLength.getValue();
-					for (Header header : httpResponse.getAllHeaders()) {
-						Log.i("DownloadTaskManager", "###############header.toString() = " + header.toString());
-					}
+//					for (Header header : httpResponse.getAllHeaders()) {
+//						Log.i("DownloadTaskManager", "###############header.toString() = " + header.toString());
+//					}
 
 //					String path = AsyncTaskLoaderImage.getHash(url);
 					String path = video.getVideoPath();

@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.model.InternalVideoModel;
@@ -141,7 +142,9 @@ public class InstalledCourseActivity extends BaseActivity {
 
 		columnListView.setAdapter(columnListAdapter);
 		videoListView.setAdapter(videoListAdapter);
-
+		if (columnListAdapter.getCount() == 0) {
+			Toast.makeText(this, R.string.no_video_content, Toast.LENGTH_LONG).show();
+		}
 		getSDCard();
 	}
 

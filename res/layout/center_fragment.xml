@@ -5,7 +5,6 @@
     android:background="#EAEAEA"
     android:orientation="vertical" >
 
-    
     <include layout="@layout/top_bar_box" />
 
     <ScrollView
@@ -20,6 +19,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
                 android:layout_marginTop="15dp" >
 
                 <Button
@@ -44,7 +44,9 @@
                     android:text="课程收藏"
                     android:textColor="@color/white" />
             </LinearLayout>
-            
+
+            <View style="@style/line_style" />
+
             <Button
                 android:id="@+id/course_list_btn"
                 android:layout_width="fill_parent"
@@ -57,7 +59,7 @@
                 android:paddingTop="15dp"
                 android:text="课程目录"
                 android:textSize="16sp" />
-            
+
             <View style="@style/line_style" />
 
             <Button
@@ -102,11 +104,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:gravity="right"
                     android:layout_marginRight="55dp"
                     android:ellipsize="end"
-                    android:textColor="#727272"
+                    android:gravity="right"
                     android:singleLine="true"
+                    android:textColor="#727272"
                     android:textSize="16sp" />
             </RelativeLayout>
 

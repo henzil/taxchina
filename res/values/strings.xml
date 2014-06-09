@@ -41,4 +41,6 @@
     
     <string name="all_video_deleted">所有视频已删除</string>
     
+    <string name="no_video_content">您当前还没有下载课程视频</string>
+    
 </resources>
