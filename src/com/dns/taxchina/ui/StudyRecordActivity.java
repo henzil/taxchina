@@ -95,7 +95,7 @@ public class StudyRecordActivity extends BaseActivity {
 		notOver = (Button) findViewById(R.id.not_over_btn);
 		sd = (TextView) findViewById(R.id.available_text);
 		edit = (TextView) findViewById(R.id.edit_btn);
-
+		TouchUtil.createTouchDelegate(edit, 30);
 		listView = (ListView) findViewById(R.id.list_view);
 		adapter = new StudyRecordAdapter(StudyRecordActivity.this, TAG);
 		listView.setAdapter(adapter);

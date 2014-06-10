@@ -116,7 +116,7 @@ public class DownloadTaskManager {
 		DownloadTaskDAO downloadTaskDAO = new DownloadTaskDAO(context);
 		DownloadTask downloadTask = downloadTaskDAO.findById(videoModel.getId());
 		queue.add(downloadTask);
-		Log.e("tag", "startOneTask  ---------队列的size = " + queue.size());
+		Log.d("tag", "startOneTask  ---------queue size = " + queue.size());
 		if (videoId == null) {
 			// 将新任务加入线程池
 			DownLoadBytes downLoadBytes = new DownLoadBytes(context, queue.poll(), videoModel);
@@ -129,11 +129,9 @@ public class DownloadTaskManager {
 	}
 
 	public void stopOneTask(VideoModel videoModel) {
-		Log.e("tag", "~~~~!!!~执行到这里~~~~~videoModel =" + videoModel.toString());
-		Log.e("tag", "~~~~!!!~执行到这里~~~~~videoId =" + videoId);
 		if (videoId != null && videoId.equals(videoModel.getId())) {
 			// 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
-			Log.e("tag", "currentMap.toString() = " + currentMap.toString());
+			Log.d("tag", "currentMap.toString() = " + currentMap.toString());
 			executorService.shutdownNow();
 			executorService = Executors.newFixedThreadPool(1);
 			if (currentMap.containsKey(videoModel.getId())) {
@@ -207,10 +205,9 @@ public class DownloadTaskManager {
 	public HashSet<VideoModel> getCurrentDownLoadSet() {
 		HashSet<VideoModel> set = new HashSet<VideoModel>();
 		Iterator<DownloadTask> iterator = queue.iterator();
-		Log.e("tag", "getCurrentDownLoadSet   --------- 队列的size = " + queue.size());
+		Log.d("tag", "getCurrentDownLoadSet   --------- 队列的size = " + queue.size());
 		while (iterator.hasNext()) {
 			VideoModel videoModel = iterator.next().getVideo();
-			Log.e("tag", "videoModel.toString() = " + videoModel.toString());
 			set.add(videoModel);
 		}
 		return set;
@@ -293,7 +290,7 @@ public class DownloadTaskManager {
 						httpClient.getConnectionManager().shutdown();
 						inputStream.close();
 					} catch (Exception exception) {
-						Log.e("tag", exception.toString(), exception);
+//						Log.e("tag", exception.toString(), exception);
 					}
 				}
 			}).start();
@@ -307,7 +304,7 @@ public class DownloadTaskManager {
 			Log.e("tag", "wifiManager.isWifiEnabled() = " + wifiManager.isWifiEnabled());
 
 			String url = video.getUrl();
-			Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ url = " + url);
+			Log.d("DownloadTaskManager", "#执行到这里~~~~~~~~ url = " + url);
 			HttpGet httpGet = new HttpGet(url);
 			videoId = video.getId();
 			// 开始下载广播
@@ -320,7 +317,7 @@ public class DownloadTaskManager {
 				int res = 0;
 				HttpResponse httpResponse = httpClient.execute(httpGet);
 				res = httpResponse.getStatusLine().getStatusCode();
-				Log.e("DownloadTaskManager", "#执行到这里~~~~~~~~ res = " + res);
+				Log.d("DownloadTaskManager", "#执行到这里~~~~~~~~ res = " + res);
 				if (res == 200) {
 					Header headerLength = httpResponse.getFirstHeader("Content-Length");
 //					Header headerDisposition = httpResponse.getFirstHeader("Content-Disposition");
@@ -387,7 +384,7 @@ public class DownloadTaskManager {
 									oldCount += count;
 									fileOutputStream.write(b, 0, count);
 									if ((Float.parseFloat(Integer.toString(oldCount)) / Float.parseFloat(Long
-											.toString(fileLength))) > 0.01) {
+											.toString(fileLength))) > 0.005) {
 										oldCount = 0;
 										// 广播通知主线程重新绘制相应的进度条
 										int progressBarState = (int) (Float.parseFloat(Long.toString(total))
@@ -441,7 +438,7 @@ public class DownloadTaskManager {
 					findHandler.sendEmptyMessage(0);
 				}
 			} catch (Exception e) {
-				Log.e("DownloadTaskManager", e.getMessage(), e);
+//				Log.e("DownloadTaskManager", e.getMessage(), e);
 				if (videoId != null && videoId.equals(video.getId())) {
 					videoId = null;
 				}

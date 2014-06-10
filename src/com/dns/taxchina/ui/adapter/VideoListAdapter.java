@@ -1,5 +1,6 @@
 package com.dns.taxchina.ui.adapter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,13 +100,15 @@ public class VideoListAdapter extends BaseAdapter {
 	}
 
 	private String changeMB(String size) {
-		long l = 0;
+		float f = 0;
 		if (size != null && !size.equals("")) {
-			l = Long.parseLong(size);
+			f = Float.parseFloat(size);
+			DecimalFormat fnum = new DecimalFormat("##0.00");
+			String dd = fnum.format(f / 1000 / 1000);
+			size = dd + "MB";
+		} else {
+			size = "0MB";
 		}
-
-		size = (l / 1000 / 1000) + "MB";
-
 		return size;
 	}
 }
