@@ -196,6 +196,10 @@ public class DownloadTaskManager {
 				currentThread.stop();
 				currentThread = null;
 			}
+			//  一个刷新广播
+			Intent intent = new Intent(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
+			intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
+			context.sendBroadcast(intent);
 		}
 	}
 

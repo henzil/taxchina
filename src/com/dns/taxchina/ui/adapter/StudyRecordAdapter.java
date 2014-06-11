@@ -226,7 +226,7 @@ public class StudyRecordAdapter extends BaseAdapter {
 
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
-										DownloadTaskManager.getInstance(context).startOneTask(model);
+//										DownloadTaskManager.getInstance(context).startOneTask(model);
 									}
 								}).create().show();
 			}
