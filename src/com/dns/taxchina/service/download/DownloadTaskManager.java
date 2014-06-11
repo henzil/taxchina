@@ -4,12 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,14 +40,14 @@ public class DownloadTaskManager {
 
 	// 线程池，用于管理多个下载线程
 	private ExecutorService executorService;
+	
+	//  当前的线程，用来操作自己。让自己自生自灭
+	private DownLoadBytes currentThread = null;
 
-	// 正在下载的 videoId；
-	private String videoId = null;
-
-	private Map<String, DownLoadBytes> currentMap = new HashMap<String, DownloadTaskManager.DownLoadBytes>();
-
+	// 任务列表，包括未使用的。
 	private List<DownloadTask> taskList = new ArrayList<DownloadTask>();
 
+	// 激活的任务队列，只是属于等待状态的任务。
 	private Queue<DownloadTask> queue = new LinkedList<DownloadTask>();
 
 	private Handler findHandler = new Handler() {
@@ -103,12 +101,11 @@ public class DownloadTaskManager {
 		downloadTaskDAO.add(downloadTask);
 		taskList.add(downloadTask);
 		queue.add(downloadTask);
-		if (videoId == null) {
-			// 将新任务加入线程池
+		if(currentThread == null){
 			DownLoadBytes downLoadBytes = new DownLoadBytes(context, queue.poll(), videoModel);
-			currentMap.put(videoModel.getId(), downLoadBytes);
+			currentThread = downLoadBytes;
 			executorService.submit(downLoadBytes);
-		}
+		} 
 	}
 
 	// 开始一个下载任务，放在队列中
@@ -117,45 +114,36 @@ public class DownloadTaskManager {
 		DownloadTask downloadTask = downloadTaskDAO.findById(videoModel.getId());
 		queue.add(downloadTask);
 		Log.d("tag", "startOneTask  ---------queue size = " + queue.size());
-		if (videoId == null) {
-			// 将新任务加入线程池
+		if(currentThread == null){
 			DownLoadBytes downLoadBytes = new DownLoadBytes(context, queue.poll(), videoModel);
-			currentMap.put(videoModel.getId(), downLoadBytes);
+			currentThread = downLoadBytes;
 			executorService.submit(downLoadBytes);
-		}
+		} 
 		Intent intent = new Intent(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
 		intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, DownloadTaskContact.DOWNLOADING_TYPE_START_VALUE);
 		context.sendBroadcast(intent);
 	}
 
 	public void stopOneTask(VideoModel videoModel) {
-		if (videoId != null && videoId.equals(videoModel.getId())) {
-			// 如果当前正在下载此任务，先停止掉此线程，从正在下载的队列中删除。
-			Log.d("tag", "currentMap.toString() = " + currentMap.toString());
-			executorService.shutdownNow();
-			executorService = Executors.newFixedThreadPool(1);
-			if (currentMap.containsKey(videoModel.getId())) {
-				DownLoadBytes downLoadBytes = currentMap.get(videoModel.getId());
-				downLoadBytes.stop();
-				currentMap.remove(videoModel.getId());
-			}
-			videoId = null;
-
-			if (queue.size() > 0) {
-				// 将新任务加入线程池
-				DownloadTask downloadTask = queue.poll();
-				VideoDAO videoDAO = new VideoDAO(context);
-				VideoModel model = videoDAO.findById(downloadTask.getVideo().getId());
-				DownLoadBytes downLoadBytes = new DownLoadBytes(context, downloadTask, model);
-				currentMap.put(model.getId(), downLoadBytes);
-				executorService.submit(downLoadBytes);
-			}
-		} else {
-			for (int i = 0; i < taskList.size(); i++) {
-				DownloadTask downloadTask = taskList.get(i);
-				if (downloadTask.getFileId().equals(videoModel.getId())) {
-					queue.remove(downloadTask);
-					return;
+		Log.e("tag", "~~~~~~~~videoModel.getId() = " + videoModel.getId());
+		if(currentThread != null){
+			if(currentThread.getVideoId().equals(videoModel.getId())){
+				if(currentThread != null){
+					currentThread.stop();
+					currentThread = null;
+				}
+				//  一个刷新广播
+				Intent intent = new Intent(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
+				intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
+				context.sendBroadcast(intent);
+			} else {
+				// 单纯移除一个任务
+				for (int i = 0; i < taskList.size(); i++) {
+					DownloadTask downloadTask = taskList.get(i);
+					if (downloadTask.getFileId().equals(videoModel.getId())) {
+						queue.remove(downloadTask);
+						return;
+					}
 				}
 			}
 		}
@@ -172,7 +160,6 @@ public class DownloadTaskManager {
 				return;
 			}
 		}
-		currentMap.clear();
 	}
 
 	// 手动删除数据库中的数据
@@ -190,14 +177,25 @@ public class DownloadTaskManager {
 		stopOneTask(videoModel);
 	}
 
+	// 执行下一个任务。
 	private void startNext() {
 		DownloadTask downloadTask = queue.poll();
 		if (downloadTask != null) {
 			VideoDAO videoDAO = new VideoDAO(context);
 			VideoModel videoModel = videoDAO.findById(downloadTask.getVideo().getId());
 			DownLoadBytes downLoadBytes = new DownLoadBytes(context, downloadTask, videoModel);
-			currentMap.put(videoModel.getId(), downLoadBytes);
+			if(currentThread != null){
+				currentThread.stop();
+				currentThread = null;
+			}
+			currentThread = downLoadBytes;
 			executorService.submit(downLoadBytes);
+		} else {
+			// 如果队列中无任务了，则把当前的线程置空。
+			if(currentThread != null){
+				currentThread.stop();
+				currentThread = null;
+			}
 		}
 	}
 
@@ -218,17 +216,22 @@ public class DownloadTaskManager {
 		queue.clear();
 		executorService.shutdownNow();
 		executorService = Executors.newFixedThreadPool(1);
-		currentMap.clear();
+		if(currentThread != null){
+			currentThread.stop();
+			currentThread = null;
+		}
 	}
 
 	public void destroy() {
 		queue.clear();
 		executorService.shutdownNow();
-		currentMap.clear();
 		queue = null;
 		taskList = null;
 		executorService = null;
-		currentMap = null;
+		if(currentThread != null){
+			currentThread.stop();
+			currentThread = null;
+		}
 	}
 
 	// 判断线程池是否停止
@@ -237,7 +240,10 @@ public class DownloadTaskManager {
 	}
 
 	public String downloadingId() {
-		return videoId;
+		if(currentThread != null){
+			return currentThread.getVideoId();
+		}
+		return null;
 	}
 
 	// 下载线程（内部类）
@@ -278,19 +284,22 @@ public class DownloadTaskManager {
 				total = downloadFile.length();
 			}
 		}
+		
+		public String getVideoId(){
+			return this.fileId;
+		}
 
 		public void stop() {
-			videoId = null;
 			new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 					try {
-						fileOutputStream.close();
 						httpClient.getConnectionManager().shutdown();
 						inputStream.close();
+						fileOutputStream.close();
 					} catch (Exception exception) {
-//						Log.e("tag", exception.toString(), exception);
+						Log.e("tag", exception.toString(), exception);
 					}
 				}
 			}).start();
@@ -306,7 +315,6 @@ public class DownloadTaskManager {
 			String url = video.getUrl();
 			Log.d("DownloadTaskManager", "#执行到这里~~~~~~~~ url = " + url);
 			HttpGet httpGet = new HttpGet(url);
-			videoId = video.getId();
 			// 开始下载广播
 			Intent intent = new Intent(DownloadTaskContact.DOWNLOADING_PERCENT_INTENT_FILTER);
 			intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY, DownloadTaskContact.DOWNLOADING_TYPE_START_VALUE);
@@ -373,7 +381,6 @@ public class DownloadTaskManager {
 										fileOutputStream.close();
 										httpClient.getConnectionManager().shutdown();
 										inputStream.close();
-										videoId = null;
 										findHandler.sendEmptyMessage(0);
 										return;
 									}
@@ -425,12 +432,10 @@ public class DownloadTaskManager {
 								DownloadTaskContact.DOWNLOADING_TYPE_END_VALUE);
 						intent.putExtra(DownloadTaskContact.DOWNLOADING_VIDEO_PERCENT_ID, video.getId());
 						context.sendBroadcast(intent);
-						videoId = null;
 						findHandler.sendEmptyMessage(0);
 
 					}
 				} else {
-					videoId = null;
 					// 下载错误广播
 					intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
 							DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
@@ -438,17 +443,12 @@ public class DownloadTaskManager {
 					findHandler.sendEmptyMessage(0);
 				}
 			} catch (Exception e) {
-//				Log.e("DownloadTaskManager", e.getMessage(), e);
-				if (videoId != null && videoId.equals(video.getId())) {
-					videoId = null;
-				}
+				Log.e("DownloadTaskManager", e.getMessage(), e);
 				// 下载完成广播
 				intent.putExtra(DownloadTaskContact.DOWNLOADING_TYPE_KEY,
 						DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE);
 				context.sendBroadcast(intent);
-				if (videoId == null) {
-					findHandler.sendEmptyMessage(0);
-				}
+				findHandler.sendEmptyMessage(0);
 //				throw new RuntimeException(e);
 			}
 		}

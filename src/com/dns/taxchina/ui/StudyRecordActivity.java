@@ -219,7 +219,7 @@ public class StudyRecordActivity extends BaseActivity {
 					initDBData();
 					getSDCard();
 				} else if (type == DownloadTaskContact.DOWNLOADING_TYPE_START_VALUE || type == DownloadTaskContact.DOWNLOADING_TYPE_ERROR_VALUE) {
-					adapter.notifyDataSetChanged();
+					adapter.onlyRefresh();
 				}
 			}
 		}

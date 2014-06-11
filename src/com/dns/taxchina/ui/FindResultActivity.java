@@ -12,6 +12,7 @@ import netlib.net.DataMode;
 import netlib.util.AppUtil;
 import netlib.util.ErrorCodeUtil;
 import netlib.util.TouchUtil;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
@@ -39,6 +40,7 @@ import com.dns.taxchina.ui.widget.XListView;
  * @version create time:2014-5-6_下午1:39:04
  * @Description 搜索结果 Activity
  */
+@SuppressLint("HandlerLeak")
 public class FindResultActivity extends BaseActivity implements XListView.IXListViewListener, GetDataModeCostant {
 
 	private XListView listView;
@@ -51,12 +53,14 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 	private int pageNum;
 
 	private String titleStr;
+	private String id;
 	private TextView title, back;
 
 	protected ModelHelper jsonHelper;
 
 	public static final int PAGE_SIZE = 10;
 	public static final String LIST_TITLE = "list_title";
+	public static final String LIST_ID = "list_id";
 
 	@Override
 	protected void initData() {
@@ -73,6 +77,7 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 
 		Intent intent = getIntent();
 		titleStr = intent.getStringExtra(LIST_TITLE);
+		id = intent.getStringExtra(LIST_ID);
 		dataPool = new DataAsyncTaskPool();
 		jsonHelper = new ModelHelper(FindResultActivity.this);
 		dataServiceHelper = new DataServiceHelper() {
@@ -154,6 +159,9 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 		HashMap<String, String> reqMap = new HashMap<String, String>();
 		reqMap.put("mode", "7");
 		reqMap.put("searchKey", titleStr);
+		if(id != null){
+			reqMap.put("searchId", id);
+		}
 		reqMap.put("nowPage", 1 + "");
 		reqMap.put("pageSize", PAGE_SIZE + "");
 		jsonHelper.updateParams(getString(R.string.base_url), reqMap, "com.dns.taxchina.service.model.FindResultModel");
@@ -166,6 +174,9 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 		HashMap<String, String> reqMap = new HashMap<String, String>();
 		reqMap.put("mode", "7");
 		reqMap.put("searchKey", titleStr);
+		if(id != null){
+			reqMap.put("searchId", id);
+		}
 		reqMap.put("nowPage", 1 + "");
 		reqMap.put("pageSize", PAGE_SIZE + "");
 		jsonHelper.updateParams(getString(R.string.base_url), reqMap, "com.dns.taxchina.service.model.FindResultModel");
@@ -178,6 +189,9 @@ public class FindResultActivity extends BaseActivity implements XListView.IXList
 		HashMap<String, String> reqMap = new HashMap<String, String>();
 		reqMap.put("mode", "7");
 		reqMap.put("searchKey", titleStr);
+		if(id != null){
+			reqMap.put("searchId", id);
+		}
 		reqMap.put("nowPage", pageNum + 1 + "");
 		reqMap.put("pageSize", PAGE_SIZE + "");
 		jsonHelper.updateParams(getString(R.string.base_url), reqMap, "com.dns.taxchina.service.model.FindResultModel");

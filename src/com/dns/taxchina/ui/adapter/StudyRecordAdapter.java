@@ -3,6 +3,7 @@ package com.dns.taxchina.ui.adapter;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import netlib.util.SettingUtil;
@@ -38,6 +39,8 @@ public class StudyRecordAdapter extends BaseAdapter {
 	public static final int DISMISS_DELETE = 0;
 	public static final int SHOW_DELETE = 1;
 	public int type;
+	
+	private HashSet<VideoModel> set = new HashSet<VideoModel>();
 
 	public StudyRecordAdapter(StudyRecordActivity context, String TAG) {
 		this.context = context;
@@ -51,6 +54,12 @@ public class StudyRecordAdapter extends BaseAdapter {
 	public void refresh(List<VideoModel> arg0) {
 		list.clear();
 		list.addAll(arg0);
+		set = DownloadTaskManager.getInstance(context).getCurrentDownLoadSet();
+		notifyDataSetChanged();
+	}
+	
+	public void onlyRefresh() {
+		set = DownloadTaskManager.getInstance(context).getCurrentDownLoadSet();
 		notifyDataSetChanged();
 	}
 
@@ -131,7 +140,7 @@ public class StudyRecordAdapter extends BaseAdapter {
 								DownloadTaskManager.getInstance(context).stopOneTask(model);
 							}
 						});
-					} else if (DownloadTaskManager.getInstance(context).getCurrentDownLoadSet().contains(model)) {
+					} else if (set.contains(model)) {
 						studyRecordBtn.setText(context.getResources().getString(R.string.wait));
 						studyRecordBtn.setOnClickListener(new OnClickListener() {
 
