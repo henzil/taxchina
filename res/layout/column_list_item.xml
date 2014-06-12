@@ -2,43 +2,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
-    
-    <ImageView
-        android:id="@+id/column_item_tip_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/tip_icon" />
 
-    <TextView
-        android:id="@+id/column_item_title_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="25dp"
-        android:layout_toLeftOf="@+id/column_arrow_img"
-        android:layout_toRightOf="@+id/column_item_tip_img"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="小明阿斯顿发生大发阿斯顿阿斯蒂芬"
-        android:textColor="@color/micro_course_title_text_color"
-        android:textSize="16sp" />
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
-    <ImageView
-        android:id="@+id/column_arrow_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="15dp"
-        android:src="@drawable/arrow_img" />
+        <ImageView
+            android:id="@+id/column_item_tip_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tip_icon" />
 
-    <View
-        android:id="@+id/column_item_line"
-        style="@style/line_style"
-        android:layout_below="@+id/column_item_title_text"
-        android:layout_marginTop="15dip" />
+        <TextView
+            android:id="@+id/column_item_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="25dp"
+            android:layout_toLeftOf="@+id/column_arrow_img"
+            android:layout_toRightOf="@+id/column_item_tip_img"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="小明阿斯顿发生大发阿斯顿阿斯蒂芬"
+            android:textColor="@color/micro_course_title_text_color"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/column_arrow_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/arrow_img" />
+
+        <View
+            android:id="@+id/column_item_line"
+            style="@style/line_style"
+            android:layout_below="@+id/column_item_title_text"
+            android:layout_marginTop="15dip" />
+    </RelativeLayout>
+
 </RelativeLayout>

@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.dns.taxchina.R;
 import com.dns.taxchina.service.model.InternalVideoModel;
 import com.dns.taxchina.ui.adapter.ColumnListAdapter;
+import com.dns.taxchina.ui.adapter.PadVideoListAdapter;
 import com.dns.taxchina.ui.adapter.VideoListAdapter;
 import com.dns.taxchina.ui.util.SdCardUtil;
 
@@ -48,7 +49,7 @@ public class InstalledCourseActivity extends BaseActivity {
 	private List<InternalVideoModel> list = new ArrayList<InternalVideoModel>();
 
 	private ColumnListAdapter columnListAdapter;
-	private VideoListAdapter videoListAdapter;
+	private PadVideoListAdapter videoListAdapter;
 
 	@Override
 	protected void initData() {
@@ -138,7 +139,7 @@ public class InstalledCourseActivity extends BaseActivity {
 		columnListView = (ListView) findViewById(R.id.column_list_view);
 		videoListView = (ListView) findViewById(R.id.video_list_view);
 		columnListAdapter = new ColumnListAdapter(InstalledCourseActivity.this, TAG, pList);
-		videoListAdapter = new VideoListAdapter(InstalledCourseActivity.this, TAG, list);
+		videoListAdapter = new PadVideoListAdapter(InstalledCourseActivity.this, TAG, list);
 
 		columnListView.setAdapter(columnListAdapter);
 		videoListView.setAdapter(videoListAdapter);
@@ -173,6 +174,7 @@ public class InstalledCourseActivity extends BaseActivity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				columnListAdapter.setPosition(position);
 				Map<String, Object> map = pList.get(position);
 				getVideoData(map.get("name").toString());
 				videoListAdapter.refresh(list);
