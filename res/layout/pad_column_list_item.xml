@@ -12,8 +12,8 @@
             android:id="@+id/column_item_tip_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/icon_play" />
 
@@ -28,7 +28,7 @@
             android:layout_toRightOf="@+id/column_item_tip_img"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="小明阿斯顿发生大发阿斯顿阿斯蒂芬"
+            android:text="小明阿斯顿发生大发阿斯兰的房间阿里斯顿发的"
             android:textColor="@color/micro_course_title_text_color"
             android:textSize="16sp" />
 
@@ -40,12 +40,13 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:src="@drawable/arrow_img" />
-
+        
         <View
             android:id="@+id/column_item_line"
             style="@style/line_style"
             android:layout_below="@+id/column_item_title_text"
-            android:layout_marginTop="15dip" />
+            android:layout_marginTop="25dip" />
+
     </RelativeLayout>
 
 </RelativeLayout>

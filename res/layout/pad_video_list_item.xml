@@ -7,17 +7,16 @@
         android:id="@+id/video_list_item_tip_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:paddingLeft="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/tip_icon" />
 
     <RelativeLayout
         android:id="@+id/video_title_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:layout_toLeftOf="@+id/video_item_btn"
         android:layout_toRightOf="@+id/video_list_item_tip_img"

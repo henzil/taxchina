@@ -16,5 +16,5 @@
     <color name="title_tab_horizontal_text_default">#FFFFFFFF</color>
     <color name="title_tab_horizontal_text_press">#FF6cc7ff</color>
     
-    <color name="layout_bg">#cccccc</color>    
+    <color name="layout_bg">#eaeaea</color>    
 </resources>

@@ -89,10 +89,10 @@ public class InstalledCourseActivity extends BaseActivity {
 			Log.e("tag", "str = " + str);
 			Map<String, Object> map = new HashMap<String, Object>();
 			String childName = str;
-			map.put("name", childName);
 			String childPath = filePath.getPath() + File.separator + childName;
 			File childFile = new File(childPath);
 			if (childFile.exists() && childFile.isDirectory()) {
+				map.put("name", childName);
 				String childs2[] = childFile.list();
 				int count = 0;
 				for (String str2 : childs2) {
@@ -102,8 +102,8 @@ public class InstalledCourseActivity extends BaseActivity {
 					}
 				}
 				map.put("count", count);
+				pList.add(map);
 			}
-			pList.add(map);
 		}
 	}
 
