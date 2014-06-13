@@ -25,7 +25,6 @@ import com.dns.taxchina.R;
 import com.dns.taxchina.service.model.InternalVideoModel;
 import com.dns.taxchina.ui.adapter.PadColumnListAdapter;
 import com.dns.taxchina.ui.adapter.PadVideoListAdapter;
-import com.dns.taxchina.ui.adapter.VideoListAdapter;
 import com.dns.taxchina.ui.util.SdCardUtil;
 
 /**
@@ -185,8 +184,8 @@ public class InstalledCourseActivity extends BaseActivity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (view.getTag() instanceof VideoListAdapter.ViewHolder) {
-					VideoListAdapter.ViewHolder holder = (VideoListAdapter.ViewHolder) view.getTag();
+				if (view.getTag() instanceof PadVideoListAdapter.ViewHolder) {
+					PadVideoListAdapter.ViewHolder holder = (PadVideoListAdapter.ViewHolder) view.getTag();
 					Log.e("tag", "holder.model.getVideoPath(); = " + holder.model.getVideoName());
 					Intent intent = new Intent(InstalledCourseActivity.this, VideoActivity.class);
 					intent.putExtra(VideoActivity.VIDEO_MODEL_KEY, holder.model);
