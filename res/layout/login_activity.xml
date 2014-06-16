@@ -95,6 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:textSize="18sp"
                 android:layout_marginTop="30dp"
                 android:text="如果您无账号，请到中税网站免费注册后再登陆  http://www.taxchina.com/"/>
         </LinearLayout>
