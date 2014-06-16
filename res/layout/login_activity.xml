@@ -89,6 +89,14 @@
                 android:background="@drawable/login_btn"
                 android:text="登  录"
                 android:textColor="@color/white" />
+            
+            <TextView 
+                android:id="@+id/login_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                android:text="如果您无账号，请到中税网站免费注册后再登陆  http://www.taxchina.com/"/>
         </LinearLayout>
     </ScrollView>
 
