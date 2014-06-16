@@ -1,13 +1,7 @@
 package com.dns.taxchina.service.SharedPreferences;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 
 /**
  * 
