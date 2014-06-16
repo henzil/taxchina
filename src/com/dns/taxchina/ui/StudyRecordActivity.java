@@ -24,7 +24,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.download.DownloadTaskContact;
 import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.helper.ModelHelper;

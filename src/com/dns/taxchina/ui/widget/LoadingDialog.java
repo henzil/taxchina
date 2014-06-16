@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 
 
 public class LoadingDialog extends Dialog {

@@ -16,7 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.helper.ModelHelper;
 import com.dns.taxchina.ui.widget.LoadingDialog;
 

@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.download.DownloadTaskManager;
 import com.dns.taxchina.service.util.NetChangeFilter;
 import com.dns.taxchina.ui.widget.LoadingDialog;

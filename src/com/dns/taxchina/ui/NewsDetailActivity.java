@@ -13,7 +13,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.model.BaseItemModel;
 import com.dns.taxchina.ui.widget.TouchLinearLayout;
 

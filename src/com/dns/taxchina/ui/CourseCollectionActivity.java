@@ -18,7 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.db.CollectDBUtil;
 import com.dns.taxchina.service.model.BaseItemModel;
 import com.dns.taxchina.ui.adapter.CollectionListAdapter;

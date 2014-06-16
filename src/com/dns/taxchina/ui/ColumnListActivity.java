@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.ui.adapter.ColumnListAdapter;
 import com.dns.taxchina.ui.adapter.ColumnListAdapter.ViewHolder;
 

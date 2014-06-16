@@ -10,7 +10,7 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.ui.util.LoginUtil;
 import com.dns.taxchina.ui.widget.WebViewPlug;
 import com.dns.taxchina.ui.widget.WebViewPlug.LoadWebViewListener;

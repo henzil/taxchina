@@ -35,7 +35,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 
 
 public class UpdateOSServiceHelper {

@@ -8,9 +8,9 @@ import netlib.util.LibIOUtil;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.dns.taxchina.R;
 import com.dns.taxchina.service.model.InternalVideoModel;
 import com.dns.taxchina.service.model.PVideoModel;
+import com.dns.taxchina_pad.R;
 
 /**
  * Created with IntelliJ IDEA. User: wangjun Date: 13-4-17 Time: 下午9:33 To

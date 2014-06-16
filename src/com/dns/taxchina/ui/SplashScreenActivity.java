@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.view.KeyEvent;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.helper.ModelHelper;
 
 /**

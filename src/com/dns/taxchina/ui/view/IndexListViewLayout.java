@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.model.BaseItemModel;
 import com.dns.taxchina.ui.DetailActivity;
 import com.dns.taxchina.ui.adapter.IndexListViewAdapter;

@@ -12,7 +12,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 
 
 public class MyProgressBar extends ImageView {

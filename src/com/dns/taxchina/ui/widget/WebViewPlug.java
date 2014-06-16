@@ -18,7 +18,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.download.DownloadTaskManager;
 import com.dns.taxchina.service.download.VideoDAO;
 import com.dns.taxchina.service.model.BaseItemModel;

@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.model.InternalVideoModel;
 import com.dns.taxchina.ui.adapter.PadColumnListAdapter;
 import com.dns.taxchina.ui.adapter.PadVideoListAdapter;

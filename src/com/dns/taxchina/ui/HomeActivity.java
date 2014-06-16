@@ -8,7 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 import com.dns.taxchina.service.download.DownloadTaskManager;
 import com.dns.taxchina.ui.fragment.BaseFragment;
 import com.dns.taxchina.ui.util.FragmentUtil;

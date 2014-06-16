@@ -18,7 +18,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dns.taxchina.R;
+import com.dns.taxchina_pad.R;
 
 /**
  * @author henzil.jack E-mail:henzil.jack@gmail.com
